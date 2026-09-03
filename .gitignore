@@ -1,0 +1,32 @@
+﻿# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Environment Variables & Secrets (CRITICAL - NEVER COMMIT)
+.env
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+
+# Databases / Logs
+*.sqlite3
+*.db
+*.log
+
+# IDE & OS specific
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
