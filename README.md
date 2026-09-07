@@ -1,12 +1,32 @@
-# 🏠 RentSphere — Smart Room & Flatmate Finder API
+﻿# 🏠 RentSphere — Smart Room & Flatmate Finder API
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141+-009688.svg?style=flat&logo=FastAPI&logoColor=white)](https://fastapi.tiangolo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-316192.svg?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0+-D71F00.svg?style=flat&logo=python&logoColor=white)](https://www.sqlalchemy.org/)
 [![Alembic](https://img.shields.io/badge/Alembic-Migrations-8A2BE2.svg?style=flat)](https://alembic.sqlalchemy.org/)
+[![JWT](https://img.shields.io/badge/Auth-JWT_Bearer-orange.svg?style=flat)](https://jwt.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> A production-grade **REST API** built with **FastAPI**, **PostgreSQL**, and **SQLAlchemy** designed to help students and young professionals list spare rooms, find affordable housing, and discover compatible flatmates.
+> A production-grade **REST API** built with **FastAPI**, **PostgreSQL**, and **SQLAlchemy** designed to help students and young professionals list spare rooms, find affordable housing, and discover compatible flatmates without expensive broker fees.
+
+---
+
+## 💡 The Real-World Problem & Impact
+
+### ⚠️ The Problem
+Every semester and hiring cycle, millions of students and young professionals relocate to new cities. Finding affordable housing and safe flatmates remains a broken experience:
+* **Predatory Brokerage Fees:** Real-estate brokers often charge 1 to 2 months of rent upfront merely for passing contact numbers.
+* **Fake & Duplicate Listings:** Unregulated classified ads and social media groups are plagued with duplicate postings, outdated availability, and scams.
+* **Lack of Roommate Transparency:** Most platforms only show room dimensions, ignoring living habits, room types (single vs. shared), and transparent feedback.
+* **Zero Landlord/Property Accountability:** Renters rarely have an authentic, community-driven rating system to review properties or living conditions before committing.
+
+### 🛡️ How RentSphere Solves This
+RentSphere is engineered as an open, secure, direct-to-owner backend system:
+1. **Direct Peer-to-Peer Listings:** Owners and flatmates list rooms directly with complete price clarity, room specifications, and availability states—eliminating the middleman entirely.
+2. **Enterprise-Grade Security:** User passwords are encrypted with salted **Bcrypt** hashing. Protected operations are secured via stateless **JWT Bearer Tokens** (`python-jose`), preventing identity spoofing.
+3. **Smart Duplicate Prevention:** Engineered with composite primary keys (`user_id` + `room_id`) at the database layer to prevent duplicate bookmarking and data bloat.
+4. **Community Reviews & Ratings:** Integrated 1-to-many review schema enabling verified renters to score and comment on properties, creating authentic accountability.
+5. **High-Performance Querying:** Built for fast multi-parameter filtering (city, room type, rent limits) combined with SQL outer joins to calculate live popularity metrics in a single query.
 
 ---
 
@@ -16,20 +36,34 @@
   - Relational schema modeling with SQLAlchemy ORM
   - Database migrations configured with Alembic
   - Secure environment configuration with Pydantic BaseSettings
-- [x] **Milestone 2: Authentication & Security** *(Completed)*
+- [x] **Milestone 2: Authentication & Security**
   - User registration & validation with Pydantic schemas
   - Secure password salting & hashing via Bcrypt
   - Stateless JWT token issuance (`python-jose`)
   - Route protection dependency injection (`oauth2.get_current_user`)
-- [ ] **Milestone 3: Room CRUD & Advanced SQL Joins / Filters** *(Next)*
+- [ ] **Milestone 3: Room CRUD & Advanced SQL Joins / Filters**
 - [ ] **Milestone 4: Bookmarks & Review Rating System**
 - [ ] **Milestone 5: Production Polish & Documentation**
 
 ---
 
+## 📡 Live API Endpoints (Current Implementation)
+
+Interactive documentation is automatically generated and accessible at `/docs` (Swagger UI) and `/redoc`:
+
+| Method | Endpoint | Description | Access Level |
+|:---|:---|:---|:---:|
+| `POST` | `/users/` | Register a new user profile with hashed password | Public |
+| `POST` | `/login` | Authenticate with credentials and receive signed JWT Token | Public |
+| `GET` | `/users/me` | Fetch authenticated user profile via Bearer token | 🔒 Protected |
+| `GET` | `/users/{id}` | Lookup public user profile information by ID | Public |
+| `GET` | `/` | API healthcheck and status endpoint | Public |
+
+---
+
 ## 🗄️ Relational Data Model
 
-RentSphere is modeled with multi-table relationships to ensure data integrity and query efficiency:
+RentSphere is modeled with strict multi-table relationships to ensure data integrity and query efficiency:
 
 ```
 ┌────────────────────────┐         ┌───────────────────────────────────────┐
@@ -65,11 +99,6 @@ RentSphere is modeled with multi-table relationships to ensure data integrity an
                                     └───────────────────────────────────────┘
 ```
 
-### Architectural Highlights:
-1. **Composite Primary Keys (`bookmarks` table):** Prevents duplicate bookmarks by pairing `user_id` + `room_id` as a composite primary key.
-2. **Cascading Deletes:** Foreign keys utilize `ondelete="CASCADE"` to prevent orphaned data records.
-3. **Strict Validation:** Configured with Pydantic for input validation and serialized response models.
-
 ---
 
 ## 📁 Project Structure
@@ -84,8 +113,14 @@ RentSphere/
 │   ├── config.py            # Pydantic BaseSettings (.env loader)
 │   ├── database.py          # SQLAlchemy engine & session factory
 │   ├── models.py            # Relational database models (User, Room, Bookmark, Review)
-│   └── routers/             # Modular API route controllers
-│       └── __init__.py
+│   ├── oauth2.py            # JWT token creation, verification & user dependency
+│   ├── schemas.py           # Pydantic input validation & response models
+│   ├── utils.py             # Bcrypt password hashing & verification utilities
+│   ├── main.py              # FastAPI application initialization & CORS
+│   └── routers/             # Modular route controllers
+│       ├── __init__.py
+│       ├── auth.py          # /login authentication endpoint
+│       └── user.py          # /users/ registration & profile endpoints
 ├── .env.example             # Sanitized environment template
 ├── .gitignore               # Strict ignore rules (keeps secrets safe)
 ├── alembic.ini              # Alembic migration configuration
@@ -138,6 +173,12 @@ Apply the schema directly into PostgreSQL:
 ```bash
 alembic upgrade head
 ```
+
+### 6. Launch Server
+```bash
+uvicorn app.main:app --reload
+```
+Navigate to `http://localhost:8000/docs` to test via Swagger UI.
 
 ---
 
