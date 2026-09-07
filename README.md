@@ -1,4 +1,4 @@
-﻿# 🏠 RentSphere — Smart Room & Flatmate Finder API
+# 🏠 RentSphere — Smart Room & Flatmate Finder API
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141+-009688.svg?style=flat&logo=FastAPI&logoColor=white)](https://fastapi.tiangolo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-316192.svg?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
@@ -12,12 +12,16 @@
 
 ## 📌 Project Status: Building in Public 🚀
 
-- [x] **Milestone 1: Database Architecture & Relational Design** *(Current)*
+- [x] **Milestone 1: Database Architecture & Relational Design**
   - Relational schema modeling with SQLAlchemy ORM
   - Database migrations configured with Alembic
   - Secure environment configuration with Pydantic BaseSettings
-- [ ] **Milestone 2: Authentication & Security** (JWT + Passlib Bcrypt)
-- [ ] **Milestone 3: Room CRUD & Advanced SQL Joins / Filters**
+- [x] **Milestone 2: Authentication & Security** *(Completed)*
+  - User registration & validation with Pydantic schemas
+  - Secure password salting & hashing via Bcrypt
+  - Stateless JWT token issuance (`python-jose`)
+  - Route protection dependency injection (`oauth2.get_current_user`)
+- [ ] **Milestone 3: Room CRUD & Advanced SQL Joins / Filters** *(Next)*
 - [ ] **Milestone 4: Bookmarks & Review Rating System**
 - [ ] **Milestone 5: Production Polish & Documentation**
 
