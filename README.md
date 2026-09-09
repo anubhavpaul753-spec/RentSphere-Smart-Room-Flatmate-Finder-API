@@ -1,4 +1,4 @@
-﻿# 🏠 RentSphere — Smart Room & Flatmate Finder API
+# 🏠 RentSphere — Smart Room & Flatmate Finder API
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141+-009688.svg?style=flat&logo=FastAPI&logoColor=white)](https://fastapi.tiangolo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-316192.svg?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
@@ -41,7 +41,12 @@ RentSphere is engineered as an open, secure, direct-to-owner backend system:
   - Secure password salting & hashing via Bcrypt
   - Stateless JWT token issuance (`python-jose`)
   - Route protection dependency injection (`oauth2.get_current_user`)
-- [ ] **Milestone 3: Room CRUD & Advanced SQL Joins / Filters**
+- [x] **Milestone 3: Room CRUD & Advanced SQL Joins / Filters**
+  - Room listing, creation, updates, and deletion endpoints
+  - Multi-parameter search & filtering (keyword search, city, price range, room type, availability)
+  - Result pagination with `limit` and `skip` query parameters
+  - High-performance SQL outer join with bookmarks table to aggregate live popularity metrics
+  - Row-level ownership authorization (403 Forbidden for non-owners)
 - [ ] **Milestone 4: Bookmarks & Review Rating System**
 - [ ] **Milestone 5: Production Polish & Documentation**
 
@@ -57,7 +62,38 @@ Interactive documentation is automatically generated and accessible at `/docs` (
 | `POST` | `/login` | Authenticate with credentials and receive signed JWT Token | Public |
 | `GET` | `/users/me` | Fetch authenticated user profile via Bearer token | 🔒 Protected |
 | `GET` | `/users/{id}` | Lookup public user profile information by ID | Public |
+| `GET` | `/rooms/` | Discover rooms with search, city/price/type filters, pagination & bookmark counts | Public |
+| `POST` | `/rooms/` | Publish a new room listing (auto-linked to authenticated owner) | 🔒 Protected |
+| `GET` | `/rooms/{id}` | Retrieve room details by ID with owner profile & bookmark count | Public |
+| `PUT` | `/rooms/{id}` | Update room details (enforces owner-only authorization) | 🔒 Protected |
+| `DELETE` | `/rooms/{id}` | Delete room listing (enforces owner-only authorization) | 🔒 Protected |
 | `GET` | `/` | API healthcheck and status endpoint | Public |
+
+### 🔍 Advanced Room Discovery & Query Capabilities
+
+The `GET /rooms/` endpoint supports expressive multi-parameter filtering, case-insensitive keyword search, pagination, and dynamic popularity aggregation:
+
+| Parameter | Type | Default | Description | Example |
+|---|---|---|---|---|
+| `search` | `string` | `""` | Case-insensitive keyword search across `title` & `description` | `?search=balcony` |
+| `city` | `string` | `null` | Filter rooms by city name (case-insensitive) | `?city=Kolkata` |
+| `min_rent` | `integer` | `null` | Filter rooms with rent greater than or equal to value | `?min_rent=5000` |
+| `max_rent` | `integer` | `null` | Filter rooms with rent less than or equal to value | `?max_rent=15000` |
+| `room_type` | `string` | `null` | Filter by accommodation type (`single` / `shared`) | `?room_type=single` |
+| `is_available` | `boolean` | `null` | Filter listings by current vacancy status | `?is_available=true` |
+| `limit` | `integer` | `10` | Maximum number of listings returned per page | `?limit=20` |
+| `skip` | `integer` | `0` | Pagination offset (skip N listings) | `?skip=10` |
+
+#### ⚡ High-Performance SQL Aggregation
+Every room lookup performs a single-query `LEFT OUTER JOIN` against the `bookmarks` table grouped by `rooms.id`:
+```sql
+SELECT rooms.*, COUNT(bookmarks.room_id) AS bookmarks
+FROM rooms
+LEFT OUTER JOIN bookmarks ON bookmarks.room_id = rooms.id
+GROUP BY rooms.id
+ORDER BY rooms.created_at DESC;
+```
+This eliminates N+1 query overhead and provides live popularity counters directly serialized through Pydantic v2 schemas.
 
 ---
 
@@ -120,7 +156,8 @@ RentSphere/
 │   └── routers/             # Modular route controllers
 │       ├── __init__.py
 │       ├── auth.py          # /login authentication endpoint
-│       └── user.py          # /users/ registration & profile endpoints
+│       ├── user.py          # /users/ registration & profile endpoints
+│       └── room.py          # /rooms/ CRUD, search filters & SQL join aggregation
 ├── .env.example             # Sanitized environment template
 ├── .gitignore               # Strict ignore rules (keeps secrets safe)
 ├── alembic.ini              # Alembic migration configuration
