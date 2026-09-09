@@ -1,6 +1,6 @@
-﻿from fastapi import FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import user, auth
+from .routers import user, auth, room
 
 app = FastAPI(
     title="RentSphere API",
@@ -22,6 +22,7 @@ app.add_middleware(
 # Include Routers
 app.include_router(auth.router)
 app.include_router(user.router)
+app.include_router(room.router)
 
 
 @app.get("/")

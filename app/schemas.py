@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr, ConfigDict
 from datetime import datetime
 from typing import Optional
 
@@ -50,6 +50,10 @@ class RoomBase(BaseModel):
 
 
 class RoomCreate(RoomBase):
+    pass
+
+
+class RoomUpdate(RoomBase):
     pass
 
 
