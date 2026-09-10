@@ -77,7 +77,7 @@ def seed():
                 "distance_mall": "🎬 3.2 km to Junction Mall (City Centre)",
                 "distance_market": "🛍️ 1.8 km to Benachity Market Place",
                 "distance_food": "🌯 500m to Hostel Haven (Evening Food Stalls)",
-                "image_url": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/fuljhore_student_room.jpg",
                 "owner_id": rahul.id
             },
             {
@@ -94,7 +94,7 @@ def seed():
                 "distance_mall": "🎬 2.8 km to Junction Mall",
                 "distance_market": "🛍️ 1.4 km to Benachity Shopping Street",
                 "distance_food": "🍜 300m to Hostel Haven / Hall 7 Food Stalls",
-                "image_url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/bzone_shared_room.jpg",
                 "owner_id": rahul.id
             },
             {
@@ -111,7 +111,7 @@ def seed():
                 "distance_mall": "🎬 3.6 km to Junction Mall",
                 "distance_market": "🛍️ 2.1 km to Benachity Market",
                 "distance_food": "☕ 750m to Hostel Haven & Nescafe",
-                "image_url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/sri_krishna_kunj.jpg",
                 "owner_id": priya.id
             },
             {
@@ -128,7 +128,7 @@ def seed():
                 "distance_mall": "🎬 3.1 km to Junction Mall",
                 "distance_market": "🛍️ 1.7 km to Benachity Market",
                 "distance_food": "🍲 450m to Hostel Haven Food Hub",
-                "image_url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/goswami_nest.jpg",
                 "owner_id": priya.id
             },
             {
@@ -145,7 +145,7 @@ def seed():
                 "distance_mall": "🎬 2.2 km to Junction Mall",
                 "distance_market": "🛍️ 50m (Directly inside Benachity Market)",
                 "distance_food": "🥘 1.4 km to Hostel Haven",
-                "image_url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/chandidas_flat.jpg",
                 "owner_id": sourav.id
             },
             {
@@ -162,7 +162,7 @@ def seed():
                 "distance_mall": "🎬 200m (2 min walk) to Junction Mall & Inox",
                 "distance_market": "🛍️ 2.5 km to Benachity",
                 "distance_food": "🍕 250m to City Centre Food Court & KFC",
-                "image_url": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/fortune_park_suite.jpg",
                 "owner_id": sourav.id
             },
             {
@@ -179,7 +179,7 @@ def seed():
                 "distance_mall": "🎬 2.6 km to Junction Mall",
                 "distance_market": "🛍️ 1.1 km to Benachity Market",
                 "distance_food": "🥪 600m to Hostel Haven Food Stalls",
-                "image_url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/bzone_green_avenue.jpg",
                 "owner_id": ankit.id
             },
             {
@@ -196,7 +196,7 @@ def seed():
                 "distance_mall": "🎬 2.7 km to Junction Mall",
                 "distance_market": "🛍️ 300m to Benachity Main Market",
                 "distance_food": "🧆 1.1 km to Hostel Haven",
-                "image_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/bhiringi_pg.jpg",
                 "owner_id": ankit.id
             },
             {
@@ -213,7 +213,7 @@ def seed():
                 "distance_mall": "🎬 4.0 km to Junction Mall",
                 "distance_market": "🛍️ 2.4 km to Benachity",
                 "distance_food": "🌯 1.1 km to Hostel Haven",
-                "image_url": "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/jemua_horizon.jpg",
                 "owner_id": rahul.id
             },
             {
@@ -230,7 +230,7 @@ def seed():
                 "distance_mall": "🎬 4.2 km to Junction Mall",
                 "distance_market": "🛍️ 4.5 km to Benachity",
                 "distance_food": "🍛 100m to Muchipara Dhaba & Food Stalls",
-                "image_url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/muchipara_studio.jpg",
                 "owner_id": priya.id
             },
             {
@@ -247,7 +247,7 @@ def seed():
                 "distance_mall": "🎬 3.0 km to Junction Mall",
                 "distance_market": "🛍️ 1.6 km to Benachity Market",
                 "distance_food": "🍲 400m to Hostel Haven Food Street",
-                "image_url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/madhusudan_park.jpg",
                 "owner_id": sourav.id
             },
             {
@@ -264,7 +264,7 @@ def seed():
                 "distance_mall": "🎬 400m (5 min walk) to Junction Mall",
                 "distance_market": "🛍️ 2.8 km to Benachity",
                 "distance_food": "🍔 350m to City Centre Restaurants",
-                "image_url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/ananda_housing.jpg",
                 "owner_id": ankit.id
             },
             {
@@ -281,7 +281,7 @@ def seed():
                 "distance_mall": "🏢 300m to Central Mall New Town",
                 "distance_market": "🛍️ 100m to College More Grocery & Food Hub",
                 "distance_food": "☕ 50m to Tech Park Food Street",
-                "image_url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/saltlake_sector5.jpg",
                 "owner_id": rahul.id
             },
             {
@@ -298,7 +298,7 @@ def seed():
                 "distance_mall": "🎬 800m to Axis Mall & Multiplex",
                 "distance_market": "🛍️ 200m to New Town Daily Market",
                 "distance_food": "🍛 150m to Food Court Street",
-                "image_url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+                "image_url": "/static/assets/rooms/newtown_action_area.jpg",
                 "owner_id": priya.id
             }
         ]

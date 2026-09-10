@@ -24,6 +24,9 @@ I built **RentSphere** to solve this real campus headache. It connects student t
 
 Instead of handing recruiters a raw API documentation link, I built a lightweight, responsive web app that serves directly from FastAPI at `/app`:
 
+* **🗺️ Interactive Campus Proximity Map:** Integrated Leaflet.js map with custom price pins highlighting distances to NIT DGP Gates, Benachity Market, Junction Mall, and Hostel Haven food stalls.
+* **📸 100% Authentic Student Accommodation Visuals:** Real, locally-bundled high-resolution photography (`frontend/assets/rooms/`) capturing genuine Indian student PGs, study desks, engineering books, Godrej almirahs, and DSP township balconies — zero generic luxury stock photos.
+* **📍 Hyper-Local Durgapur Proximity Metrics:** Exact walking and toto-rickshaw distances to NIT DGP North/West Gates, Hall 7, Benachity Shopping Street, and City Centre food hubs on every listing card.
 * **⚡ 1-Click Demo Account:** Click "Try Demo Account" to immediately test protected features (posting rooms, saving bookmarks, writing reviews) without filling out a signup form.
 * **🔍 Instant Campus Discovery Feed:** Real-time search across listings, filter by campus area (NIT DGP B-Zone, Main Gate, Salt Lake Sector V), room type (Single Study Room vs. Shared Flat), and a live budget slider.
 * **⭐ Senior Ratings & Reviews:** Click any room's star rating to view verified comments from previous student tenants, or leave your own 1–5 star rating.
