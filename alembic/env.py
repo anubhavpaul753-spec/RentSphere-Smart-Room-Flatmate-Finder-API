@@ -1,4 +1,4 @@
-﻿from logging.config import fileConfig
+from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -11,11 +11,10 @@ from app.config import settings
 # access to the values within the .ini file in use.
 config = context.config
 
-# Configure database URL dynamically from app settings
-config.set_main_option(
-    "sqlalchemy.url",
-    f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}"
-)
+from app.database import SQLALCHEMY_DATABASE_URL
+
+# Configure database URL dynamically from app database settings
+config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
 
 # Interpret the config file for Python logging.
 if config.config_file_name is not None:

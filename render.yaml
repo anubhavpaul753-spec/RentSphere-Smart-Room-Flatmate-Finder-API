@@ -1,14 +1,46 @@
+databases:
+  - name: rentsphere-db
+    databaseName: rentsphere
+    user: rentsphere_user
+    plan: free
+    region: singapore
+
 services:
   - type: web
-    name: rentsphere-api
+    name: rentsphere
     runtime: python
+    plan: free
+    region: singapore
     buildCommand: pip install -r requirements.txt && alembic upgrade head && python seed_data.py
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.8
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rentsphere-db
+          property: connectionString
+      - key: DATABASE_HOSTNAME
+        fromDatabase:
+          name: rentsphere-db
+          property: host
+      - key: DATABASE_PORT
+        fromDatabase:
+          name: rentsphere-db
+          property: port
+      - key: DATABASE_NAME
+        fromDatabase:
+          name: rentsphere-db
+          property: database
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: rentsphere-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: rentsphere-db
+          property: password
+      - key: SECRET_KEY
+        generateValue: true
       - key: ALGORITHM
         value: HS256
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
-        value: 120
-      - fromGroup: rentsphere-secrets
+        value: '120'
