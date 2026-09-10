@@ -11,8 +11,8 @@ services:
     runtime: python
     plan: free
     region: singapore
-    buildCommand: pip install -r requirements.txt && alembic upgrade head && python seed_data.py
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 
+    buildCommand: pip install -r requirements.txt
+    startCommand: alembic upgrade head && python seed_data.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
         fromDatabase:
