@@ -30,3 +30,6 @@ dist/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Pytest cache
+.pytest_cache/

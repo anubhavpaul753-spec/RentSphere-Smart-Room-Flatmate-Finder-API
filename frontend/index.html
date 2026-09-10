@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RentSphere 🏠 — Smart Room & Flatmate Finder</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); }
+    .glass-card { background: rgba(31, 41, 55, 0.6); backdrop-filter: blur(8px); }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 border-b border-gray-800 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="resetAndLoadRooms()">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center shadow-lg shadow-brand-500/20">
+          <i class="fa-solid fa-house-chimney text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="text-xl font-extrabold bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">RentSphere</span>
+          <span class="hidden sm:inline-block text-xs text-gray-400 ml-2 px-2 py-0.5 rounded-full border border-gray-700 bg-gray-800/80">NIT DGP & Kolkata</span>
+        </div>
+      </div>
+
+      <!-- Center: API & Docs Links -->
+      <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-400">
+        <a href="/docs" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-book-open text-xs"></i>
+          <span>Swagger Docs</span>
+        </a>
+        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1.5">
+          <i class="fa-brands fa-github text-xs"></i>
+          <span>GitHub Repo</span>
+        </a>
+        <div class="flex items-center space-x-1.5 text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-1 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>API Online</span>
+        </div>
+      </div>
+
+      <!-- Right: User Actions -->
+      <div class="flex items-center space-x-3">
+        <!-- 1-Click Demo User Button -->
+        <button id="demoLoginBtn" onclick="quickDemoLogin()" class="text-xs bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-bolt text-amber-400"></i>
+          <span class="hidden sm:inline">1-Click</span> Demo Mode
+        </button>
+
+        <!-- Post a Room Button -->
+        <button onclick="openPostRoomModal()" class="text-xs sm:text-sm bg-brand-600 hover:bg-brand-500 text-white font-medium px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span>Post Room</span>
+        </button>
+
+        <!-- Auth State Container -->
+        <div id="authContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO & STATS BANNER ================= -->
+  <section class="border-b border-gray-800/80 bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 pt-10 pb-8 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+      <div class="inline-flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-1 rounded-full text-xs font-semibold text-emerald-300 mb-4">
+        <i class="fa-solid fa-graduation-cap text-sm"></i>
+        <span>Built for NIT Durgapur Students & Young Professionals</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white max-w-3xl mx-auto leading-tight">
+        Zero Brokerage. <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Direct Landlord</span> & Flatmate Connections.
+      </h1>
+      <p class="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mt-3">
+        Discover verified campus flats in B-Zone, City Centre, and Salt Lake Sector V. Real ratings, student reviews, and instant bookmarking.
+      </p>
+
+      <!-- Quick Metrics -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto mt-8">
+        <div class="glass-card border border-gray-800 rounded-xl p-3.5 text-center">
+          <div class="text-xl sm:text-2xl font-black text-white" id="statTotalRooms">8+</div>
+          <div class="text-xs text-gray-400 font-medium">Verified Rooms</div>
+        </div>
+        <div class="glass-card border border-gray-800 rounded-xl p-3.5 text-center">
+          <div class="text-xl sm:text-2xl font-black text-emerald-400">Rs. 0</div>
+          <div class="text-xs text-gray-400 font-medium">Brokerage Fee</div>
+        </div>
+        <div class="glass-card border border-gray-800 rounded-xl p-3.5 text-center">
+          <div class="text-xl sm:text-2xl font-black text-amber-400">4.8 ★</div>
+          <div class="text-xs text-gray-400 font-medium">Student Rating</div>
+        </div>
+        <div class="glass-card border border-gray-800 rounded-xl p-3.5 text-center">
+          <div class="text-xl sm:text-2xl font-black text-cyan-400">&lt; 15 ms</div>
+          <div class="text-xs text-gray-400 font-medium">FastAPI SQL Joins</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SEARCH & FILTER CONTROLS ================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 w-full">
+    <div class="glass-card border border-gray-800/90 rounded-2xl p-4 shadow-xl">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+        <!-- Search input -->
+        <div class="lg:col-span-4 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+          <input type="text" id="searchInput" placeholder="Search by title, wifi, balcony, B-Zone..." 
+                 class="w-full bg-gray-900/90 border border-gray-700/80 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500 transition"
+                 oninput="handleSearchDebounce()">
+        </div>
+
+        <!-- City Filter -->
+        <div class="lg:col-span-2">
+          <select id="cityFilter" onchange="loadRooms()" class="w-full bg-gray-900/90 border border-gray-700/80 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500 transition">
+            <option value="">All Cities</option>
+            <option value="Durgapur">NIT Durgapur</option>
+            <option value="Kolkata">Kolkata</option>
+          </select>
+        </div>
+
+        <!-- Room Type -->
+        <div class="lg:col-span-2">
+          <select id="typeFilter" onchange="loadRooms()" class="w-full bg-gray-900/90 border border-gray-700/80 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500 transition">
+            <option value="">All Types</option>
+            <option value="single">Single Room</option>
+            <option value="shared">Shared Room</option>
+          </select>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div class="lg:col-span-3">
+          <div class="flex justify-between text-xs text-gray-400 mb-1">
+            <span>Max Rent</span>
+            <span id="priceDisplay" class="text-emerald-400 font-bold">Rs. 15,000</span>
+          </div>
+          <input type="range" id="priceSlider" min="2000" max="15000" step="500" value="15000" 
+                 class="w-full accent-emerald-500 bg-gray-800 rounded-lg cursor-pointer h-1.5"
+                 oninput="handlePriceInput(this.value)">
+        </div>
+
+        <!-- Reset & Saved Rooms View -->
+        <div class="lg:col-span-1 flex space-x-2">
+          <button onclick="resetFilters()" title="Reset Filters" class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 p-2 rounded-xl text-sm transition text-center">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Filter Pills -->
+      <div class="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-800/80 text-xs">
+        <span class="text-gray-400">Quick Tags:</span>
+        <button onclick="quickFilter('city', 'Durgapur')" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 transition">🏫 Near NIT DGP</button>
+        <button onclick="quickFilter('type', 'single')" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 transition">🛏️ Single Study Room</button>
+        <button onclick="quickFilter('city', 'Kolkata')" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 transition">🏢 Salt Lake Sector V</button>
+        <button onclick="toggleMyBookmarksOnly()" id="myBookmarksBtn" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg text-amber-400 border border-amber-500/20 transition flex items-center space-x-1">
+          <i class="fa-solid fa-bookmark"></i>
+          <span>My Saved Rooms</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LISTINGS FEED ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
+    <!-- Active filter notification banner -->
+    <div id="filterBanner" class="hidden mb-4 p-3 bg-indigo-950/40 border border-indigo-800/50 rounded-xl text-xs text-indigo-300 flex justify-between items-center">
+      <span id="filterBannerText">Showing bookmarked rooms only</span>
+      <button onclick="resetAndLoadRooms()" class="underline font-bold hover:text-white">Show All Rooms</button>
+    </div>
+
+    <!-- Feed Header -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+          <span>Available Accommodation</span>
+          <span id="roomCountBadge" class="text-xs bg-gray-800 text-gray-300 px-2.5 py-0.5 rounded-full border border-gray-700">0</span>
+        </h2>
+        <p class="text-xs text-gray-400 mt-0.5">Real-time listings with live SQL popularity metrics</p>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="text-center py-16">
+      <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-500"></i>
+      <p class="text-gray-400 text-sm mt-3">Connecting to RentSphere API...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-16 glass-card rounded-2xl border border-gray-800">
+      <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mx-auto text-gray-500 text-2xl mb-3">
+        <i class="fa-solid fa-folder-open"></i>
+      </div>
+      <h3 class="text-lg font-bold text-white">No listings match your criteria</h3>
+      <p class="text-gray-400 text-xs mt-1 max-w-sm mx-auto">Try widening your price range, searching for another city, or resetting filters.</p>
+      <button onclick="resetFilters()" class="mt-4 text-xs bg-brand-600 hover:bg-brand-500 text-white font-medium px-4 py-2 rounded-lg transition">
+        Reset All Filters
+      </button>
+    </div>
+
+    <!-- Cards Grid -->
+    <div id="roomsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Cards injected by JS -->
+    </div>
+  </main>
+
+  <!-- ================= REVIEWS MODAL ================= -->
+  <div id="reviewsModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card border border-gray-700 rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl">
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-gray-800 flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-bold text-white" id="modalRoomTitle">Room Reviews</h3>
+          <div class="flex items-center space-x-2 text-xs text-gray-400 mt-0.5">
+            <span id="modalRoomCity">Durgapur</span>
+            <span>•</span>
+            <span id="modalRoomRating" class="text-amber-400 font-semibold">★ 0.0</span>
+            <span>•</span>
+            <span id="modalRoomTotalReviews">0 reviews</span>
+          </div>
+        </div>
+        <button onclick="closeReviewsModal()" class="text-gray-400 hover:text-white p-2 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable Reviews List) -->
+      <div class="p-5 overflow-y-auto custom-scrollbar flex-grow space-y-4" id="modalReviewsList">
+        <!-- Reviews injected by JS -->
+      </div>
+
+      <!-- Write a Review Form -->
+      <div class="p-5 border-t border-gray-800 bg-gray-900/60 rounded-b-2xl">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Leave a Verified Review</h4>
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="text-xs text-gray-300">Your Rating:</span>
+          <div class="flex space-x-1" id="starRatingSelector">
+            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-base hover:scale-110 transition" onclick="setRating(1)"></i>
+            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-base hover:scale-110 transition" onclick="setRating(2)"></i>
+            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-base hover:scale-110 transition" onclick="setRating(3)"></i>
+            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-base hover:scale-110 transition" onclick="setRating(4)"></i>
+            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-base hover:scale-110 transition" onclick="setRating(5)"></i>
+          </div>
+          <span id="selectedRatingText" class="text-xs font-bold text-amber-400 ml-2">5 Stars</span>
+        </div>
+        <div class="flex space-x-2">
+          <input type="text" id="reviewCommentInput" placeholder="Share your experience (WiFi, cleanliness, landlord, mess)..." 
+                 class="flex-grow bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500 transition">
+          <button onclick="submitReview()" class="bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition whitespace-nowrap">
+            Submit Review
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= POST ROOM MODAL ================= -->
+  <div id="postRoomModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card border border-gray-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
+        <h3 class="text-lg font-bold text-white">List a Room / Flatmate Space</h3>
+        <button onclick="closePostRoomModal()" class="text-gray-400 hover:text-white p-2">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handlePostRoom(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Listing Title</label>
+          <input type="text" id="newRoomTitle" required placeholder="e.g. 1 BHK Near NIT DGP B-Zone Market" 
+                 class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">City</label>
+            <input type="text" id="newRoomCity" required placeholder="Durgapur or Kolkata" 
+                   class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Monthly Rent (Rs.)</label>
+            <input type="number" id="newRoomRent" required min="500" max="100000" placeholder="e.g. 4500" 
+                   class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Room Type</label>
+            <select id="newRoomType" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+              <option value="single">Single</option>
+              <option value="shared">Shared</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">Current Availability</label>
+            <select id="newRoomAvail" class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+              <option value="true">Available Now</option>
+              <option value="false">Occupied / Upcoming</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Description & Amenities</label>
+          <textarea id="newRoomDesc" rows="3" required placeholder="Detail study table, WiFi speed, distance to college, mess access..." 
+                    class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-2.5 rounded-xl transition mt-2">
+          Publish Room Listing
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= AUTH MODAL (LOGIN / REGISTER) ================= -->
+  <div id="authModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card border border-gray-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl">
+      <!-- Tabs -->
+      <div class="flex border-b border-gray-800 mb-4">
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 pb-2 font-bold text-sm text-brand-500 border-b-2 border-brand-500 transition">Sign In</button>
+        <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 pb-2 font-bold text-sm text-gray-400 border-b-2 border-transparent transition">Register</button>
+        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white pb-2 pl-2">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Email</label>
+          <input type="email" id="loginEmail" required placeholder="demo@rentsphere.com" 
+                 class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Password</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••" 
+                 class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-2 rounded-xl transition text-sm">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 hidden">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Email</label>
+          <input type="email" id="regEmail" required placeholder="student@nitdgp.ac.in" 
+                 class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Password</label>
+          <input type="password" id="regPassword" required placeholder="Minimum 6 characters" 
+                 class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Phone Number</label>
+          <input type="text" id="regPhone" placeholder="+91 9883913522" 
+                 class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">City</label>
+          <input type="text" id="regCity" placeholder="Durgapur" 
+                 class="w-full bg-gray-950 border border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-100 focus:outline-none focus:border-brand-500">
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl transition text-sm">
+          Create Account
+        </button>
+      </form>
+
+      <!-- Quick credentials hint -->
+      <div class="mt-4 pt-3 border-t border-gray-800 text-center text-xs text-gray-400">
+        Tip: You can use <span class="text-emerald-400 font-mono">demo@rentsphere.com</span> / <span class="text-emerald-400 font-mono">Demo@12345</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST NOTIFICATION ================= -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-gray-900 border border-emerald-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 transition-all duration-300">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+    <span id="toastMsg" class="text-xs sm:text-sm font-medium">Notification</span>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-gray-800/80 bg-gray-950/80 mt-12 py-8 text-center text-xs text-gray-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-white">RentSphere</span>
+        <span>•</span>
+        <span>Engineered by <strong class="text-emerald-400">Anubhav Paul</strong> (NIT Durgapur)</span>
+      </div>
+      <div class="flex space-x-6 text-gray-400">
+        <a href="/docs" target="_blank" class="hover:text-emerald-400">FastAPI Swagger</a>
+        <a href="https://github.com/anubhavpaul753-spec" target="_blank" class="hover:text-emerald-400">GitHub Profile</a>
+        <a href="https://www.linkedin.com/in/anubhav-paul-437769391/" target="_blank" class="hover:text-emerald-400">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= APPLICATION JAVASCRIPT ================= -->
+  <script>
+    // Configuration
+    const API_BASE = window.location.origin;
+    let currentUser = null;
+    let currentAuthToken = localStorage.getItem("rentsphere_token") || null;
+    let activeRoomsData = [];
+    let currentActiveReviewRoomId = null;
+    let selectedRating = 5;
+    let isShowingOnlyBookmarks = false;
+    let searchDebounceTimer = null;
+
+    // Curated property images for realistic visual flair
+    const PROPERTY_IMAGES = [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80"
+    ];
+
+    // Initialize on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      checkAuthStatus();
+      loadRooms();
+    });
+
+    // ================= AUTHENTICATION =================
+    async function checkAuthStatus() {
+      if (!currentAuthToken) {
+        renderAuthUI(null);
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/users/me`, {
+          headers: { "Authorization": `Bearer ${currentAuthToken}` }
+        });
+        if (res.ok) {
+          currentUser = await res.json();
+          renderAuthUI(currentUser);
+        } else {
+          logout();
+        }
+      } catch (err) {
+        console.error("Auth check failed:", err);
+        logout();
+      }
+    }
+
+    function renderAuthUI(user) {
+      const container = document.getElementById("authContainer");
+      if (user) {
+        container.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-emerald-700/80 border border-emerald-500/50 flex items-center justify-center text-xs font-bold text-white shadow">
+              ${user.email.charAt(0).toUpperCase()}
+            </div>
+            <button onclick="logout()" title="Logout" class="text-xs text-gray-400 hover:text-red-400 p-1.5 transition">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <button onclick="openAuthModal()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium px-3 py-1.5 rounded-lg border border-gray-700 transition">
+            Sign In
+          </button>
+        `;
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      const formData = new URLSearchParams();
+      formData.append("username", email);
+      formData.append("password", password);
+
+      try {
+        const res = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData
+        });
+        const data = await res.json();
+        if (res.ok && data.access_token) {
+          currentAuthToken = data.access_token;
+          localStorage.setItem("rentsphere_token", currentAuthToken);
+          closeAuthModal();
+          showToast("Welcome back! Signed in successfully.", "success");
+          await checkAuthStatus();
+          loadRooms();
+        } else {
+          showToast(data.detail || "Invalid credentials", "error");
+        }
+      } catch (err) {
+        showToast("Server connection failed", "error");
+      }
+    }
+
+    async function quickDemoLogin() {
+      const formData = new URLSearchParams();
+      formData.append("username", "demo@rentsphere.com");
+      formData.append("password", "Demo@12345");
+
+      try {
+        const res = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData
+        });
+        const data = await res.json();
+        if (res.ok && data.access_token) {
+          currentAuthToken = data.access_token;
+          localStorage.setItem("rentsphere_token", currentAuthToken);
+          showToast("⚡ Logged in as Demo User (NIT DGP)", "success");
+          await checkAuthStatus();
+          loadRooms();
+        }
+      } catch (err) {
+        showToast("Demo login failed", "error");
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const email = document.getElementById("regEmail").value;
+      const password = document.getElementById("regPassword").value;
+      const phone_number = document.getElementById("regPhone").value;
+      const city = document.getElementById("regCity").value;
+
+      try {
+        const res = await fetch(`${API_BASE}/users/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, phone_number, city })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast("Account created! Please sign in.", "success");
+          switchAuthTab("login");
+          document.getElementById("loginEmail").value = email;
+        } else {
+          showToast(data.detail || "Registration failed", "error");
+        }
+      } catch (err) {
+        showToast("Server error during registration", "error");
+      }
+    }
+
+    function logout() {
+      currentAuthToken = null;
+      currentUser = null;
+      localStorage.removeItem("rentsphere_token");
+      renderAuthUI(null);
+      isShowingOnlyBookmarks = false;
+      document.getElementById("filterBanner").classList.add("hidden");
+      showToast("Logged out", "info");
+      loadRooms();
+    }
+
+    // ================= ROOM FEED & DISCOVERY =================
+    async function loadRooms() {
+      const loading = document.getElementById("loadingState");
+      const empty = document.getElementById("emptyState");
+      const grid = document.getElementById("roomsGrid");
+
+      loading.classList.remove("hidden");
+      empty.classList.add("hidden");
+      grid.innerHTML = "";
+
+      let endpoint = `${API_BASE}/rooms/`;
+
+      if (isShowingOnlyBookmarks) {
+        if (!currentAuthToken) {
+          openAuthModal();
+          loading.classList.add("hidden");
+          return;
+        }
+        endpoint = `${API_BASE}/bookmarks/me`;
+      } else {
+        const search = document.getElementById("searchInput").value.trim();
+        const city = document.getElementById("cityFilter").value;
+        const type = document.getElementById("typeFilter").value;
+        const maxRent = document.getElementById("priceSlider").value;
+
+        const params = new URLSearchParams();
+        if (search) params.append("search", search);
+        if (city) params.append("city", city);
+        if (type) params.append("room_type", type);
+        if (maxRent && maxRent < 15000) params.append("max_rent", maxRent);
+        params.append("limit", 50);
+
+        endpoint += `?${params.toString()}`;
+      }
+
+      try {
+        const headers = {};
+        if (currentAuthToken) {
+          headers["Authorization"] = `Bearer ${currentAuthToken}`;
+        }
+        const res = await fetch(endpoint, { headers });
+        const rooms = await res.json();
+        loading.classList.add("hidden");
+
+        if (!Array.isArray(rooms) || rooms.length === 0) {
+          empty.classList.remove("hidden");
+          document.getElementById("roomCountBadge").innerText = "0";
+          return;
+        }
+
+        activeRoomsData = rooms;
+        document.getElementById("roomCountBadge").innerText = rooms.length;
+        document.getElementById("statTotalRooms").innerText = `${rooms.length}+`;
+
+        grid.innerHTML = rooms.map((item, idx) => renderRoomCard(item, idx)).join("");
+      } catch (err) {
+        console.error("Error loading rooms:", err);
+        loading.classList.add("hidden");
+        empty.classList.remove("hidden");
+      }
+    }
+
+    function renderRoomCard(item, idx) {
+      const room = item.Room;
+      const bookmarks = item.bookmarks || 0;
+      const rating = item.avg_rating ? item.avg_rating.toFixed(1) : "New";
+      const reviewsCount = item.reviews_count || 0;
+      const imgUrl = PROPERTY_IMAGES[idx % PROPERTY_IMAGES.length];
+
+      const cityBadgeClass = room.city.toLowerCase().includes("durgapur")
+        ? "bg-emerald-900/80 text-emerald-300 border-emerald-700/60"
+        : "bg-cyan-900/80 text-cyan-300 border-cyan-700/60";
+
+      return `
+        <div class="glass-card border border-gray-800 hover:border-gray-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 flex flex-col group">
+          <!-- Card Image Header -->
+          <div class="relative h-48 overflow-hidden">
+            <img src="${imgUrl}" alt="${escapeHtml(room.title)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-black/30"></div>
+            
+            <!-- Badges -->
+            <div class="absolute top-3 left-3 flex space-x-1.5">
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${cityBadgeClass} backdrop-blur-md">
+                ${escapeHtml(room.city)}
+              </span>
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-gray-900/80 text-gray-200 border-gray-700 backdrop-blur-md capitalize">
+                ${escapeHtml(room.room_type)}
+              </span>
+            </div>
+
+            <!-- Bookmark Button -->
+            <button onclick="toggleBookmark(${room.id})" title="Save Room" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-gray-900/80 backdrop-blur-md border border-gray-700 flex items-center justify-center text-gray-300 hover:text-red-400 hover:scale-110 transition">
+              <i class="fa-solid fa-heart ${bookmarks > 0 ? 'text-red-500' : ''}"></i>
+            </button>
+
+            <!-- Price Tag -->
+            <div class="absolute bottom-3 left-3">
+              <span class="text-xl font-black text-white">Rs. ${room.rent_amount.toLocaleString()}</span>
+              <span class="text-xs text-gray-300 font-medium">/ month</span>
+            </div>
+          </div>
+
+          <!-- Card Content -->
+          <div class="p-4 flex-grow flex flex-col justify-between">
+            <div>
+              <h3 class="text-base font-bold text-white group-hover:text-emerald-400 transition line-clamp-1">
+                ${escapeHtml(room.title)}
+              </h3>
+              <p class="text-xs text-gray-400 mt-1.5 line-clamp-2 leading-relaxed">
+                ${escapeHtml(room.description)}
+              </p>
+            </div>
+
+            <!-- Meta & Actions -->
+            <div class="mt-4 pt-3 border-t border-gray-800/80 flex items-center justify-between">
+              <!-- Rating & Reviews trigger -->
+              <button onclick="openReviewsModal(${room.id}, '${escapeHtml(room.title)}', '${escapeHtml(room.city)}', ${item.avg_rating || 0}, ${reviewsCount})" 
+                      class="flex items-center space-x-1.5 text-xs text-amber-400 hover:text-amber-300 transition">
+                <i class="fa-solid fa-star"></i>
+                <span class="font-bold">${rating}</span>
+                <span class="text-gray-400">(${reviewsCount})</span>
+              </button>
+
+              <!-- Owner contact -->
+              <div class="flex items-center space-x-2">
+                <span class="text-[11px] text-gray-400">
+                  <i class="fa-solid fa-user-check text-emerald-400 mr-1"></i>Owner
+                </span>
+                <button onclick="contactOwner('${escapeHtml(room.owner.phone_number || room.owner.email)}')" class="text-xs bg-gray-800 hover:bg-emerald-700 text-gray-200 px-2.5 py-1 rounded-lg border border-gray-700 transition">
+                  Contact
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ================= BOOKMARK ACTIONS =================
+    async function toggleBookmark(roomId) {
+      if (!currentAuthToken) {
+        openAuthModal();
+        showToast("Please sign in to bookmark rooms", "info");
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/bookmarks/${roomId}`, {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${currentAuthToken}` }
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(data.message, data.bookmarked ? "success" : "info");
+          loadRooms();
+        } else {
+          showToast(data.detail || "Could not toggle bookmark", "error");
+        }
+      } catch (err) {
+        showToast("Error updating bookmark", "error");
+      }
+    }
+
+    function toggleMyBookmarksOnly() {
+      if (!currentAuthToken) {
+        openAuthModal();
+        return;
+      }
+      isShowingOnlyBookmarks = !isShowingOnlyBookmarks;
+      const banner = document.getElementById("filterBanner");
+      const btn = document.getElementById("myBookmarksBtn");
+
+      if (isShowingOnlyBookmarks) {
+        banner.classList.remove("hidden");
+        btn.classList.add("bg-amber-500/20", "border-amber-400");
+      } else {
+        banner.classList.add("hidden");
+        btn.classList.remove("bg-amber-500/20", "border-amber-400");
+      }
+      loadRooms();
+    }
+
+    // ================= REVIEWS SYSTEM =================
+    async function openReviewsModal(roomId, title, city, avgRating, totalReviews) {
+      currentActiveReviewRoomId = roomId;
+      document.getElementById("modalRoomTitle").innerText = title;
+      document.getElementById("modalRoomCity").innerText = city;
+      document.getElementById("modalRoomRating").innerText = avgRating > 0 ? `★ ${avgRating.toFixed(1)}` : "★ New";
+      document.getElementById("modalRoomTotalReviews").innerText = `${totalReviews} reviews`;
+
+      const list = document.getElementById("modalReviewsList");
+      list.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs"><i class="fa-solid fa-circle-notch fa-spin text-emerald-400 text-lg mb-2"></i><br>Loading reviews...</div>`;
+      document.getElementById("reviewsModal").classList.remove("hidden");
+
+      try {
+        const res = await fetch(`${API_BASE}/reviews/${roomId}`);
+        const data = await res.json();
+        if (res.ok && data.reviews && data.reviews.length > 0) {
+          list.innerHTML = data.reviews.map(rev => `
+            <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-3.5 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <div class="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-[10px] font-bold text-white">
+                    ${rev.user.email.charAt(0).toUpperCase()}
+                  </div>
+                  <span class="text-xs font-semibold text-gray-200">${escapeHtml(rev.user.email)}</span>
+                </div>
+                <div class="flex text-amber-400 text-xs">
+                  ${renderStarIcons(rev.rating)}
+                </div>
+              </div>
+              <p class="text-xs text-gray-300 pl-8 leading-relaxed">${escapeHtml(rev.comment || "No detailed comment provided.")}</p>
+            </div>
+          `).join("");
+        } else {
+          list.innerHTML = `
+            <div class="text-center py-8 text-gray-500 text-xs">
+              <i class="fa-regular fa-comment-dots text-3xl mb-2 text-gray-600"></i>
+              <p>No student reviews yet. Be the first to review this accommodation!</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        list.innerHTML = `<div class="text-center text-red-400 text-xs py-4">Failed to load reviews.</div>`;
+      }
+    }
+
+    function closeReviewsModal() {
+      document.getElementById("reviewsModal").classList.add("hidden");
+      currentActiveReviewRoomId = null;
+    }
+
+    function setRating(r) {
+      selectedRating = r;
+      document.getElementById("selectedRatingText").innerText = `${r} Star${r > 1 ? 's' : ''}`;
+      const container = document.getElementById("starRatingSelector");
+      const stars = container.querySelectorAll("i");
+      stars.forEach((star, idx) => {
+        if (idx < r) {
+          star.classList.remove("text-gray-600");
+          star.classList.add("text-amber-400");
+        } else {
+          star.classList.remove("text-amber-400");
+          star.classList.add("text-gray-600");
+        }
+      });
+    }
+
+    async function submitReview() {
+      if (!currentAuthToken) {
+        openAuthModal();
+        showToast("Please sign in to post a review", "info");
+        return;
+      }
+      if (!currentActiveReviewRoomId) return;
+
+      const comment = document.getElementById("reviewCommentInput").value.trim();
+      try {
+        const res = await fetch(`${API_BASE}/reviews/${currentActiveReviewRoomId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentAuthToken}`
+          },
+          body: JSON.stringify({ rating: selectedRating, comment })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById("reviewCommentInput").value = "";
+          showToast("Review submitted successfully! ⭐", "success");
+          closeReviewsModal();
+          loadRooms();
+        } else {
+          showToast(data.detail || "Failed to submit review", "error");
+        }
+      } catch (err) {
+        showToast("Network error submitting review", "error");
+      }
+    }
+
+    // ================= POST ROOM ACTION =================
+    function openPostRoomModal() {
+      if (!currentAuthToken) {
+        openAuthModal();
+        showToast("Please sign in to list a room", "info");
+        return;
+      }
+      document.getElementById("postRoomModal").classList.remove("hidden");
+    }
+
+    function closePostRoomModal() {
+      document.getElementById("postRoomModal").classList.add("hidden");
+    }
+
+    async function handlePostRoom(e) {
+      e.preventDefault();
+      if (!currentAuthToken) return;
+
+      const payload = {
+        title: document.getElementById("newRoomTitle").value.trim(),
+        city: document.getElementById("newRoomCity").value.trim(),
+        rent_amount: parseInt(document.getElementById("newRoomRent").value, 10),
+        room_type: document.getElementById("newRoomType").value,
+        is_available: document.getElementById("newRoomAvail").value === "true",
+        description: document.getElementById("newRoomDesc").value.trim()
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/rooms/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentAuthToken}`
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast("Room published live! 🏠", "success");
+          closePostRoomModal();
+          loadRooms();
+        } else {
+          showToast(data.detail || "Error publishing room", "error");
+        }
+      } catch (err) {
+        showToast("Network error", "error");
+      }
+    }
+
+    // ================= MODAL & FILTER UTILITIES =================
+    function openAuthModal() {
+      document.getElementById("authModal").classList.remove("hidden");
+    }
+
+    function closeAuthModal() {
+      document.getElementById("authModal").classList.add("hidden");
+    }
+
+    function switchAuthTab(tab) {
+      const loginForm = document.getElementById("loginForm");
+      const regForm = document.getElementById("registerForm");
+      const tabLogin = document.getElementById("tabLoginBtn");
+      const tabReg = document.getElementById("tabRegisterBtn");
+
+      if (tab === "login") {
+        loginForm.classList.remove("hidden");
+        regForm.classList.add("hidden");
+        tabLogin.classList.add("text-brand-500", "border-brand-500");
+        tabLogin.classList.remove("text-gray-400", "border-transparent");
+        tabReg.classList.remove("text-brand-500", "border-brand-500");
+        tabReg.classList.add("text-gray-400", "border-transparent");
+      } else {
+        loginForm.classList.add("hidden");
+        regForm.classList.remove("hidden");
+        tabReg.classList.add("text-brand-500", "border-brand-500");
+        tabReg.classList.remove("text-gray-400", "border-transparent");
+        tabLogin.classList.remove("text-brand-500", "border-brand-500");
+        tabLogin.classList.add("text-gray-400", "border-transparent");
+      }
+    }
+
+    function handleSearchDebounce() {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(loadRooms, 300);
+    }
+
+    function handlePriceInput(val) {
+      document.getElementById("priceDisplay").innerText = `Rs. ${parseInt(val).toLocaleString()}`;
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(loadRooms, 250);
+    }
+
+    function quickFilter(type, val) {
+      if (type === "city") document.getElementById("cityFilter").value = val;
+      if (type === "type") document.getElementById("typeFilter").value = val;
+      isShowingOnlyBookmarks = false;
+      document.getElementById("filterBanner").classList.add("hidden");
+      loadRooms();
+    }
+
+    function resetFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("cityFilter").value = "";
+      document.getElementById("typeFilter").value = "";
+      document.getElementById("priceSlider").value = 15000;
+      document.getElementById("priceDisplay").innerText = "Rs. 15,000";
+      isShowingOnlyBookmarks = false;
+      document.getElementById("filterBanner").classList.add("hidden");
+      document.getElementById("myBookmarksBtn").classList.remove("bg-amber-500/20", "border-amber-400");
+      loadRooms();
+    }
+
+    function resetAndLoadRooms() {
+      resetFilters();
+    }
+
+    function contactOwner(contact) {
+      alert(`📞 Landlord Contact Information:\n${contact}\n\nReach out directly mentioning RentSphere!`);
+    }
+
+    function showToast(msg, type = "success") {
+      const toast = document.getElementById("toast");
+      const icon = document.getElementById("toastIcon");
+      const text = document.getElementById("toastMsg");
+
+      text.innerText = msg;
+      if (type === "error") {
+        icon.className = "fa-solid fa-circle-exclamation text-red-400 text-lg";
+        toast.className = "fixed bottom-6 right-6 z-50 bg-gray-900 border border-red-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3";
+      } else if (type === "info") {
+        icon.className = "fa-solid fa-circle-info text-cyan-400 text-lg";
+        toast.className = "fixed bottom-6 right-6 z-50 bg-gray-900 border border-cyan-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3";
+      } else {
+        icon.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+        toast.className = "fixed bottom-6 right-6 z-50 bg-gray-900 border border-emerald-500/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3";
+      }
+      toast.classList.remove("hidden");
+      setTimeout(() => toast.classList.add("hidden"), 3500);
+    }
+
+    function renderStarIcons(count) {
+      let html = "";
+      for (let i = 1; i <= 5; i++) {
+        html += `<i class="fa-solid fa-star ${i <= count ? 'text-amber-400' : 'text-gray-700'}"></i>`;
+      }
+      return html;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
+    }
+  </script>
+</body>
+</html>

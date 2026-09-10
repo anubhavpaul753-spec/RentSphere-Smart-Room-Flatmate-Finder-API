@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: rentsphere-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt && alembic upgrade head && python seed_data.py
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 120
+      - fromGroup: rentsphere-secrets
