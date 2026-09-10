@@ -1,4 +1,4 @@
-﻿from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -28,6 +28,14 @@ class Room(Base):
     rent_amount = Column(Integer, nullable=False)
     room_type = Column(String, nullable=False, server_default='single')
     is_available = Column(Boolean, server_default=text('true'), nullable=False)
+    locality = Column(String, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    distance_campus = Column(String, nullable=True)
+    distance_mall = Column(String, nullable=True)
+    distance_market = Column(String, nullable=True)
+    distance_food = Column(String, nullable=True)
+    image_url = Column(String, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True),
                         nullable=False, server_default=text('now()'))
     owner_id = Column(Integer, ForeignKey(

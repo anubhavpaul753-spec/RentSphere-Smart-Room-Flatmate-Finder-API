@@ -47,6 +47,15 @@ class RoomBase(BaseModel):
     rent_amount: int
     room_type: str = "single"
     is_available: bool = True
+    locality: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    distance_campus: Optional[str] = None
+    distance_mall: Optional[str] = None
+    distance_market: Optional[str] = None
+    distance_food: Optional[str] = None
+    image_url: Optional[str] = None
+
 
 
 class RoomCreate(RoomBase):
