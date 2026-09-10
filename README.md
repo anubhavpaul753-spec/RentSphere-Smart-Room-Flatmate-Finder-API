@@ -187,9 +187,35 @@ uvicorn app.main:app --reload
 
 ---
 
+## 🚀 Live Cloud Deployment Guide (Zero-Lag Public URL)
+
+To give recruiters, students, and peers a single link where they can immediately click and test RentSphere with zero setup:
+
+### Option A: Render (Free Web Service + Free Managed PostgreSQL)
+1. **Push your repository to GitHub** (already set up).
+2. Go to [Render.com](https://render.com) and create a **Free PostgreSQL Database**:
+   - Copy the `Internal Database URL` and connection credentials.
+3. Create a **New Web Service** connected to your repository:
+   - **Environment:** `Python 3`
+   - **Build Command:** `pip install -r requirements.txt && alembic upgrade head && python seed_data.py`
+   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+4. In Render's **Environment Variables** tab, add your database credentials and secret key:
+   - `DATABASE_HOSTNAME`, `DATABASE_PORT`, `DATABASE_PASSWORD`, `DATABASE_NAME`, `DATABASE_USERNAME`
+   - `SECRET_KEY`, `ALGORITHM=HS256`, `ACCESS_TOKEN_EXPIRE_MINUTES=120`
+5. Click **Deploy Web Service** — Render gives you a live public URL (e.g., `https://rentsphere.onrender.com/app`).
+
+### Option B: Railway (One-Click Deploy)
+1. Sign up at [Railway.app](https://railway.app).
+2. Click **New Project** → **Deploy from GitHub repo** → select `RentSphere`.
+3. Add a **PostgreSQL** database service within the project.
+4. Set the environment variables linking to the Postgres service.
+5. Railway automatically builds from the included `Dockerfile` and generates a live public domain with sub-100ms response times.
+
+---
+
 ## 🐳 Docker Deployment
 
-To spin up the entire application along with PostgreSQL in containers:
+To spin up the entire application along with PostgreSQL in containers locally:
 
 ```bash
 docker compose up --build
