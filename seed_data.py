@@ -324,6 +324,26 @@ def seed():
                 created_rooms.append(existing)
                 print(f"  [OK] Updated listing: {r['title']} ({r['locality']})")
 
+
+        # Also ensure legacy prototype listings 1-9 are updated with authentic attributes
+        legacy_updates = {
+            1: {'title': 'Godrej Waterside Studio Flat (Salt Lake Sector V)', 'locality': 'Salt Lake Sector V (Near College More)', 'city': 'Kolkata', 'rent_amount': 8000, 'image_url': '/static/assets/rooms/kolkata_it_studio.jpg', 'latitude': 22.5735, 'longitude': 88.4330, 'distance_campus': '🚇 150m to Sector V Metro Station', 'distance_mall': '🏢 250m to Central Mall New Town', 'distance_market': '🛍️ 100m to College More Grocery Hub', 'distance_food': '☕ 50m to Godrej Waterside Food Stalls'},
+            2: {'title': 'Prantika Housing Complex 1BHK (Near NIT DGP)', 'locality': 'Prantika (NIT Main Gate)', 'city': 'Durgapur', 'rent_amount': 6000, 'image_url': '/static/assets/rooms/prantika_flat.jpg', 'latitude': 23.5480, 'longitude': 87.2940, 'distance_campus': '🚶 200m (3 min walk) to NIT DGP Main Gate', 'distance_mall': '🎬 2.9 km to Junction Mall', 'distance_market': '🛍️ 1.5 km to Benachity Market', 'distance_food': '🌯 400m to Nescafe & Hostel Haven'},
+            3: {'title': 'B-Zone Steel Township Flat (Near A-Zone Market)', 'locality': 'B-Zone (Steel Township)', 'city': 'Durgapur', 'rent_amount': 3800, 'image_url': '/static/assets/rooms/bzone_green_avenue.jpg', 'latitude': 23.5430, 'longitude': 87.2870, 'distance_campus': '🚶 400m (5 min walk) to NIT West Gate & Hall 7', 'distance_mall': '🎬 2.5 km to Junction Mall', 'distance_market': '🛍️ 800m to A-Zone Market', 'distance_food': '🍲 350m to Hostel Haven'},
+            4: {'title': 'Muchipara GT Road Scholar Room (GT Road)', 'locality': 'Muchipara (GT Road Junction)', 'city': 'Durgapur', 'rent_amount': 4500, 'image_url': '/static/assets/rooms/muchipara_studio.jpg', 'latitude': 23.5300, 'longitude': 87.3300, 'distance_campus': '🚌 3.5 km (Direct Toto to NIT Campus)', 'distance_mall': '🎬 4.0 km to Junction Mall', 'distance_market': '🛍️ 4.2 km to Benachity', 'distance_food': '🍛 150m to Muchipara Dhaba'},
+            5: {'title': 'Suhatta Housing Master Suite (City Centre)', 'locality': 'City Centre (Near Suhatta Complex)', 'city': 'Durgapur', 'rent_amount': 7500, 'image_url': '/static/assets/rooms/fortune_park_suite.jpg', 'latitude': 23.5350, 'longitude': 87.2990, 'distance_campus': '🚌 2.0 km (5 min auto) to NIT DGP Gate', 'distance_mall': '🎬 300m (4 min walk) to Junction Mall & Inox', 'distance_market': '🛍️ 2.6 km to Benachity', 'distance_food': '🍕 200m to City Centre Food Hub'},
+            6: {'title': 'DLF IT Park Tech Studio (Sector V)', 'locality': 'Sector V (Opposite DLF 1)', 'city': 'Kolkata', 'rent_amount': 9500, 'image_url': '/static/assets/rooms/saltlake_sector5.jpg', 'latitude': 22.5780, 'longitude': 88.4340, 'distance_campus': '🚇 180m to Sector V Metro Station', 'distance_mall': '🏢 350m to Central Mall', 'distance_market': '🛍️ 120m to College More Market', 'distance_food': '☕ 40m to Sector V IT Food Street'},
+            7: {'title': 'Action Area 1 Modern Twin Sharing (New Town)', 'locality': 'New Town Action Area 1', 'city': 'Kolkata', 'rent_amount': 6000, 'image_url': '/static/assets/rooms/newtown_action_area.jpg', 'latitude': 22.5880, 'longitude': 88.4600, 'distance_campus': '🚌 250m to Candor TechSpace', 'distance_mall': '🎬 600m to Axis Mall & Multiplex', 'distance_market': '🛍️ 180m to Daily Vegetable Market', 'distance_food': '🍛 100m to New Town Street Food'},
+            8: {'title': 'Jadavpur 8B Student Flat (South Kolkata)', 'locality': 'Jadavpur (Near 8B Bus Stand)', 'city': 'Kolkata', 'rent_amount': 8000, 'image_url': '/static/assets/rooms/jadavpur_student_flat.jpg', 'latitude': 22.4980, 'longitude': 88.3680, 'distance_campus': '🚶 250m (3 min walk) to Jadavpur University', 'distance_mall': '🎬 1.2 km to South City Mall', 'distance_market': '🛍️ 50m (Directly at 8B Market Hub)', 'distance_food': '🥘 100m to Jadavpur Coffee & Roll Stalls'},
+            9: {'title': 'Ruby Hospital / EM Bypass 3BHK Flatmate (Kolkata)', 'locality': 'Kasba / EM Bypass (Near Ruby Hospital)', 'city': 'Kolkata', 'rent_amount': 5000, 'image_url': '/static/assets/rooms/ruby_em_bypass.jpg', 'latitude': 22.5130, 'longitude': 88.4020, 'distance_campus': '🚇 200m to Hemanta Mukherjee (Ruby) Metro', 'distance_mall': '🎬 600m to Acropolis Mall & Geetanjali Stadium', 'distance_market': '🛍️ 150m to Ruby Daily Grocery Market', 'distance_food': '🍜 100m to EM Bypass Dhabas & Fast Food'}
+        }
+        for rid, leg_data in legacy_updates.items():
+            l_room = db.query(models.Room).filter(models.Room.id == rid).first()
+            if l_room:
+                for k, v in leg_data.items():
+                    setattr(l_room, k, v)
+        db.commit()
+
         # 3. Seed verified student reviews
         reviews_data = [
             (created_rooms[0].id, priya.id, 5, "Lived here during 3rd sem! 4 min walk to North Gate saves so much commute time. WiFi speed never drops during exams."),

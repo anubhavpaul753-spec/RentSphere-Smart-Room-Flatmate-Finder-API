@@ -708,22 +708,24 @@
       const imgUrl = resolveImageUrl(rawImg);
 
       const localityBadge = room.locality || room.city;
+      const hasProximity = room.distance_campus || room.distance_food || room.distance_market || room.distance_mall;
       const gmapsDirUrl = (room.latitude && room.longitude)
         ? `https://www.google.com/maps/dir/?api=1&destination=${room.latitude},${room.longitude}`
-        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(room.title + ' Durgapur')}`;
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(room.title + ' ' + (room.city || 'Durgapur'))}`;
 
       return `
-        <div id="room-card-${room.id}" class="bg-surface-850 border border-slate-800/90 hover:border-slate-700 rounded-2xl overflow-hidden flex flex-col justify-between transition duration-200 hover:-translate-y-1 shadow-lg group">
+        <div id="room-card-${room.id}" class="bg-surface-850 border border-slate-800/90 hover:border-slate-700 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 shadow-lg group relative" style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: translateZ(0);">
           
           <!-- Image Header with Badges -->
-          <div class="relative h-44 overflow-hidden bg-slate-900">
+          <div class="relative h-44 overflow-hidden bg-surface-850 -mb-px">
             <img src="${imgUrl}" alt="${escapeHtml(room.title)}" 
                  onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = this.src.includes('/static/') ? this.src.replace('/static/', '/') : 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80'; }"
-                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-surface-850 via-transparent to-black/40"></div>
+                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500 block">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-850 from-0% via-transparent to-black/40 pointer-events-none"></div>
+            <div class="absolute -bottom-0.5 left-0 right-0 h-4 bg-gradient-to-t from-surface-850 to-transparent pointer-events-none"></div>
             
             <!-- Top Badges -->
-            <div class="absolute top-2.5 left-2.5 flex space-x-1.5">
+            <div class="absolute top-2.5 left-2.5 flex space-x-1.5 z-10">
               <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-emerald-950/90 text-emerald-300 border-emerald-800/80 backdrop-blur-sm">
                 ${escapeHtml(localityBadge)}
               </span>
@@ -734,25 +736,26 @@
 
             <!-- Heart Bookmark Toggle -->
             <button onclick="toggleBookmark(${room.id})" title="Save Listing" 
-                    class="absolute top-2.5 right-2.5 w-7 h-7 rounded-lg bg-surface-950/80 backdrop-blur-sm border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-rose-400 transition">
+                    class="absolute top-2.5 right-2.5 w-7 h-7 rounded-lg bg-surface-950/80 backdrop-blur-sm border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-rose-400 transition z-10">
               <i class="fa-solid fa-heart text-xs ${bookmarks > 0 ? 'text-rose-500' : ''}"></i>
             </button>
 
             <!-- Rent Tag inside image -->
-            <div class="absolute bottom-2.5 left-2.5">
+            <div class="absolute bottom-2.5 left-2.5 z-10">
               <span class="text-lg font-extrabold text-white">Rs. ${room.rent_amount.toLocaleString()}</span>
               <span class="text-[11px] text-slate-300 font-medium">/month</span>
             </div>
           </div>
 
           <!-- Card Content -->
-          <div class="p-4 flex-grow flex flex-col justify-between">
+          <div class="p-4 flex-grow flex flex-col justify-between relative z-10 bg-surface-850">
             <div>
-              <h3 class="text-sm sm:text-base font-bold text-white group-hover:text-emerald-400 transition line-clamp-1">
+              <h3 class="text-sm sm:text-base font-bold text-white group-hover:text-emerald-400 transition line-clamp-2 min-h-[1.5rem] leading-snug">
                 ${escapeHtml(room.title)}
               </h3>
 
               <!-- Distance & Hotspot Proximity Pills -->
+              ${hasProximity ? `
               <div class="mt-2.5 space-y-1.5 bg-surface-950/70 border border-slate-800 p-2.5 rounded-xl text-[11px]">
                 ${room.distance_campus ? `
                   <div class="flex items-center text-emerald-300 font-semibold truncate">
@@ -779,6 +782,7 @@
                   </div>
                 ` : ''}
               </div>
+              ` : ''}
 
               <!-- Description -->
               <p class="text-xs text-slate-400 mt-2.5 line-clamp-2 leading-relaxed">
