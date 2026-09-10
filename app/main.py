@@ -1,6 +1,9 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import user, auth, room
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from .routers import user, auth, room, bookmark, review
 
 app = FastAPI(
     title="RentSphere API",
@@ -23,6 +26,24 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(room.router)
+app.include_router(bookmark.router)
+app.include_router(review.router)
+
+# Mount Frontend Static Assets
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+if os.path.exists(frontend_dir):
+    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
+
+@app.get("/app")
+def serve_app():
+    """
+    Serve the interactive single-page application frontend
+    """
+    index_file = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {"message": "Frontend index.html not found"}
 
 
 @app.get("/")
@@ -30,5 +51,7 @@ def root():
     return {
         "message": "Welcome to RentSphere API 🏠",
         "status": "online",
-        "docs": "/docs"
+        "docs": "/docs",
+        "app": "/app"
     }
+

@@ -30,9 +30,13 @@ def get_rooms(
     """
     query = db.query(
         models.Room,
-        func.count(models.Bookmark.room_id).label("bookmarks")
+        func.count(func.distinct(models.Bookmark.user_id)).label("bookmarks"),
+        func.coalesce(func.avg(models.Review.rating), 0.0).label("avg_rating"),
+        func.count(func.distinct(models.Review.id)).label("reviews_count")
     ).join(
         models.Bookmark, models.Bookmark.room_id == models.Room.id, isouter=True
+    ).join(
+        models.Review, models.Review.room_id == models.Room.id, isouter=True
     ).group_by(models.Room.id)
 
     # Keyword search across title and description (case-insensitive)
@@ -92,9 +96,13 @@ def get_room(id: int, db: Session = Depends(get_db)):
     """
     room = db.query(
         models.Room,
-        func.count(models.Bookmark.room_id).label("bookmarks")
+        func.count(func.distinct(models.Bookmark.user_id)).label("bookmarks"),
+        func.coalesce(func.avg(models.Review.rating), 0.0).label("avg_rating"),
+        func.count(func.distinct(models.Review.id)).label("reviews_count")
     ).join(
         models.Bookmark, models.Bookmark.room_id == models.Room.id, isouter=True
+    ).join(
+        models.Review, models.Review.room_id == models.Room.id, isouter=True
     ).group_by(models.Room.id).filter(models.Room.id == id).first()
 
     if not room:

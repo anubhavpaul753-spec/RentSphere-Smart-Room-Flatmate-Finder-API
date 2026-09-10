@@ -69,6 +69,8 @@ class RoomResponse(RoomBase):
 class RoomOut(BaseModel):
     Room: RoomResponse
     bookmarks: int
+    avg_rating: Optional[float] = 0.0
+    reviews_count: Optional[int] = 0
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -77,18 +79,37 @@ class RoomOut(BaseModel):
 
 class BookmarkCreate(BaseModel):
     room_id: int
-    dir: int  # 1 = bookmark, 0 = remove bookmark
+    dir: Optional[int] = 1  # 1 = bookmark, 0 = remove bookmark
+
+
+class BookmarkOut(BaseModel):
+    room_id: int
+    user_id: int
+    room: Optional[RoomResponse] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class BookmarkToggleResponse(BaseModel):
+    message: str
+    bookmarked: bool
+    room_id: int
 
 
 # ============ REVIEW SCHEMAS ============
 
 class ReviewCreate(BaseModel):
-    room_id: int
+    rating: int
+    comment: Optional[str] = None
+    room_id: Optional[int] = None
+
+
+class ReviewUpdate(BaseModel):
     rating: int
     comment: Optional[str] = None
 
 
-class ReviewResponse(BaseModel):
+class ReviewOut(BaseModel):
     id: int
     rating: int
     comment: Optional[str] = None
@@ -98,3 +119,15 @@ class ReviewResponse(BaseModel):
     user: UserOut
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ReviewResponse(ReviewOut):
+    pass
+
+
+class RoomReviewsSummary(BaseModel):
+    room_id: int
+    avg_rating: float
+    total_reviews: int
+    reviews: list[ReviewOut]
+
