@@ -394,8 +394,11 @@ def seed():
         print("[SUCCESS] 14 authentic listings, verified student reviews, and bookmarks are ready!")
 
     except Exception as e:
+        import traceback
         print(f"[ERROR] Seeding failed: {e}")
+        traceback.print_exc()
         db.rollback()
+        raise e
     finally:
         db.close()
 

@@ -35,10 +35,11 @@ if os.path.exists(frontend_dir):
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
 
 
+@app.get("/")
 @app.get("/app")
 def serve_app():
     """
-    Serve the interactive single-page application frontend
+    Serve the interactive single-page application frontend directly at root
     """
     index_file = os.path.join(frontend_dir, "index.html")
     if os.path.exists(index_file):
@@ -46,12 +47,12 @@ def serve_app():
     return {"message": "Frontend index.html not found"}
 
 
-@app.get("/")
-def root():
+@app.get("/api")
+def root_api():
     return {
         "message": "Welcome to RentSphere API 🏠",
         "status": "online",
         "docs": "/docs",
-        "app": "/app"
+        "app": "/"
     }
 

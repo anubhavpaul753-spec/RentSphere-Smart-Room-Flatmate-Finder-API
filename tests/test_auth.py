@@ -1,8 +1,13 @@
-﻿import pytest
+import pytest
 import uuid
 
 def test_root_endpoint(client):
     res = client.get("/")
+    assert res.status_code == 200
+    assert "RentSphere" in res.text
+
+def test_api_status_endpoint(client):
+    res = client.get("/api")
     assert res.status_code == 200
     data = res.json()
     assert "status" in data
