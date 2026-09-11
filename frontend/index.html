@@ -61,11 +61,13 @@
         radial-gradient(circle 800px at 0% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
       background-attachment: fixed;
     }
+    /* Autumn Sunset Ambient Mesh Background */
     html:not(.dark) .ue5-ambient-bg {
-      background-color: #f8fafc;
+      background-color: #fdfaf3;
       background-image: 
-        radial-gradient(ellipse 90% 45% at 50% -10%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
-        radial-gradient(circle 800px at 100% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+        radial-gradient(ellipse 90% 45% at 50% -10%, rgba(245, 158, 11, 0.14) 0%, transparent 60%),
+        radial-gradient(circle 800px at 100% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+        radial-gradient(circle 800px at 0% 80%, rgba(234, 179, 8, 0.06) 0%, transparent 50%);
       background-attachment: fixed;
     }
 
@@ -87,14 +89,14 @@
       box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.85), 0 0 25px -4px rgba(16, 185, 129, 0.2);
     }
     html:not(.dark) .ue5-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+      background: linear-gradient(180deg, #ffffff 0%, #fffdf8 100%);
+      border: 1px solid rgba(230, 215, 195, 0.85);
+      box-shadow: 0 10px 25px -5px rgba(180, 130, 70, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     }
     html:not(.dark) .ue5-card-hover:hover {
       transform: translateY(-4px);
-      border-color: #10b981;
-      box-shadow: 0 12px 28px -5px rgba(16, 185, 129, 0.15);
+      border-color: rgba(245, 158, 11, 0.55);
+      box-shadow: 0 16px 32px -8px rgba(217, 119, 6, 0.18), 0 0 20px -4px rgba(245, 158, 11, 0.15);
     }
 
     /* Mint & Emerald Phosphor Text Glow */
@@ -104,6 +106,7 @@
     
     .custom-scroll::-webkit-scrollbar { width: 5px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    html:not(.dark) .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; }
     
     #leafletMap { height: 380px; width: 100%; border-radius: 1rem; z-index: 10; }
     #miniLeafletMap { height: 180px; width: 100%; border-radius: 0.75rem; z-index: 10; }
@@ -123,43 +126,44 @@
       border-radius: 0.75rem;
     }
     html:not(.dark) .leaflet-popup-content-wrapper {
-      background: #ffffff;
-      color: #0f172a;
-      border: 1px solid #e2e8f0;
+      background: #fffdf8;
+      color: #1c1917;
+      border: 1px solid #e7d8c5;
+      box-shadow: 0 10px 25px -5px rgba(180, 130, 70, 0.15);
     }
     .leaflet-popup-tip { background: #0f172a; }
-    html:not(.dark) .leaflet-popup-tip { background: #ffffff; }
+    html:not(.dark) .leaflet-popup-tip { background: #fffdf8; }
   </style>
 </head>
 
-<body class="ue5-ambient-bg text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-300">
+<body class="ue5-ambient-bg text-stone-900 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 dark:selection:bg-emerald-500 selection:text-white transition-colors duration-300">
 
   <!-- ================= TOP NAVIGATION ================= -->
-  <nav class="sticky top-0 z-40 bg-surface-950/90 dark:bg-surface-950/90 backdrop-blur-xl border-b border-slate-800/80 dark:border-slate-800/80 light:bg-white/90 light:border-slate-200">
+  <nav class="sticky top-0 z-40 bg-[#fdfaf3]/90 dark:bg-surface-950/90 backdrop-blur-xl border-b border-amber-900/10 dark:border-slate-800/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Brand Logo -->
       <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 border border-emerald-400/30">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 dark:from-emerald-500 dark:to-teal-600 flex items-center justify-center shadow-lg shadow-amber-500/20 dark:shadow-emerald-500/25 border border-amber-400/30 dark:border-emerald-400/30">
           <i class="fa-solid fa-house-user text-white text-base"></i>
         </div>
         <div>
           <div class="flex items-center space-x-2">
-            <span class="text-lg font-extrabold tracking-tight text-white dark:text-white light:text-slate-900">RentSphere</span>
-            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950/90 border border-emerald-800/80 px-2 py-0.5 rounded-full mint-glow">NIT DGP</span>
+            <span class="text-lg font-extrabold tracking-tight text-stone-900 dark:text-white">RentSphere</span>
+            <span class="text-[10px] font-bold text-amber-800 dark:text-emerald-400 bg-amber-100/90 dark:bg-emerald-950/90 border border-amber-300/80 dark:border-emerald-800/80 px-2 py-0.5 rounded-full dark:mint-glow">NIT DGP</span>
           </div>
-          <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Campus Flats, PGs & Student Roommates</p>
+          <p class="text-[11px] text-stone-500 dark:text-slate-400 font-medium hidden sm:block">Campus Flats, PGs & Student Roommates</p>
         </div>
       </div>
 
       <!-- Quick Links -->
-      <div class="hidden md:flex items-center space-x-4 text-xs font-medium text-slate-400">
-        <a href="/docs" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1.5 py-1 px-2.5 rounded-lg hover:bg-slate-800/60">
-          <i class="fa-solid fa-code text-slate-500"></i>
+      <div class="hidden md:flex items-center space-x-4 text-xs font-medium text-stone-600 dark:text-slate-400">
+        <a href="/docs" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400 transition flex items-center space-x-1.5 py-1 px-2.5 rounded-lg hover:bg-amber-100/60 dark:hover:bg-slate-800/60">
+          <i class="fa-solid fa-code text-stone-400 dark:text-slate-500"></i>
           <span>Swagger Docs</span>
         </a>
-        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1.5 py-1 px-2.5 rounded-lg hover:bg-slate-800/60">
-          <i class="fa-brands fa-github text-slate-500"></i>
+        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400 transition flex items-center space-x-1.5 py-1 px-2.5 rounded-lg hover:bg-amber-100/60 dark:hover:bg-slate-800/60">
+          <i class="fa-brands fa-github text-stone-400 dark:text-slate-500"></i>
           <span>GitHub</span>
         </a>
       </div>
@@ -169,18 +173,18 @@
         
         <!-- Light / Dark Mode Toggle Button (☀️ / 🌙) -->
         <button id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Light / Dark Mode" 
-                class="w-9 h-9 rounded-xl flex items-center justify-center transition border border-white/10 dark:border-white/10 bg-surface-900/80 dark:bg-surface-900/80 text-amber-400 hover:text-amber-300 shadow-sm hover:border-emerald-500/40">
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition border border-amber-200/80 dark:border-white/10 bg-white/90 dark:bg-surface-900/80 text-amber-500 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 shadow-sm hover:border-amber-400 dark:hover:border-emerald-500/40">
           <i id="themeIcon" class="fa-solid fa-moon text-xs"></i>
         </button>
 
         <!-- 1-Click Demo Login (Visible in Nav) -->
-        <button id="navDemoBtn" onclick="quickDemoLogin()" class="text-xs bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold px-3 py-1.5 rounded-xl transition flex items-center space-x-1.5">
-          <i class="fa-solid fa-bolt text-emerald-400"></i>
+        <button id="navDemoBtn" onclick="quickDemoLogin()" class="text-xs bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-emerald-400 border border-amber-300/80 dark:border-emerald-500/30 font-semibold px-3 py-1.5 rounded-xl transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-bolt text-amber-600 dark:text-emerald-400"></i>
           <span class="hidden sm:inline">1-Click</span> Demo
         </button>
 
         <!-- Post a Room Button -->
-        <button onclick="openPostRoomModal()" class="text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold px-3 py-1.5 rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center space-x-1.5">
+        <button onclick="openPostRoomModal()" class="text-xs bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-500 dark:hover:to-teal-500 text-white font-semibold px-3 py-1.5 rounded-xl shadow-md shadow-amber-600/20 dark:shadow-emerald-600/20 transition flex items-center space-x-1.5">
           <i class="fa-solid fa-plus text-[10px]"></i>
           <span class="hidden sm:inline">List Room</span>
           <span class="sm:hidden">Post</span>
@@ -196,39 +200,39 @@
   </nav>
 
   <!-- ================= HERO SECTION WITH SPECULAR GLOW ================= -->
-  <header class="border-b border-slate-800/60 bg-gradient-to-b from-surface-950 via-surface-950/80 to-transparent py-7 px-4 sm:px-6 relative overflow-hidden">
+  <header class="border-b border-amber-900/10 dark:border-slate-800/60 bg-gradient-to-b from-amber-100/50 via-amber-50/25 to-transparent dark:from-surface-950 dark:via-surface-950/80 dark:to-transparent py-7 px-4 sm:px-6 relative overflow-hidden">
     <!-- Ambient mesh spotlight -->
-    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-amber-400/15 dark:bg-emerald-500/10 blur-3xl pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
       
       <!-- Headline -->
       <div class="max-w-2xl">
-        <div class="inline-flex items-center space-x-2 bg-emerald-950/80 border border-emerald-800/60 px-3 py-1 rounded-full text-xs font-semibold text-emerald-400 mb-2.5 mint-glow">
-          <i class="fa-solid fa-map-pin text-xs"></i>
+        <div class="inline-flex items-center space-x-2 bg-amber-100/90 dark:bg-emerald-950/80 border border-amber-300/80 dark:border-emerald-800/60 px-3 py-1 rounded-full text-xs font-semibold text-amber-900 dark:text-emerald-400 mb-2.5 dark:mint-glow shadow-xs">
+          <i class="fa-solid fa-map-pin text-xs text-amber-600 dark:text-emerald-400"></i>
           <span>Authentic NIT Durgapur Student Accommodations & PGs</span>
         </div>
-        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white dark:text-white light:text-slate-900 leading-tight">
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-stone-900 dark:text-white leading-tight">
           Find Your Campus Room & Flatmates near NIT DGP
         </h1>
-        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
-          Curated student rooms, single PGs, and shared flats within walking distance of <strong class="text-emerald-400 font-semibold">NIT Durgapur (North Gate, Hall 7, Fuljhore, Prantika)</strong> and prime residential areas like City Centre & Benachity Bazaar.
+        <p class="text-xs sm:text-sm text-stone-600 dark:text-slate-400 mt-2 leading-relaxed">
+          Curated student rooms, single PGs, and shared flats within walking distance of <strong class="text-amber-700 dark:text-emerald-400 font-semibold">NIT Durgapur (North Gate, Hall 7, Fuljhore, Prantika)</strong> and prime residential areas like City Centre & Benachity Bazaar.
         </p>
       </div>
 
       <!-- Quick Stats & Filter Trigger -->
       <div class="flex items-center space-x-3 w-full md:w-auto">
-        <div class="ue5-card p-3 rounded-2xl flex-1 md:flex-initial flex items-center space-x-3 border border-white/10">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-black text-sm">
+        <div class="ue5-card p-3 rounded-2xl flex-1 md:flex-initial flex items-center space-x-3 border border-amber-200/80 dark:border-white/10">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 dark:bg-emerald-500/10 border border-amber-300/80 dark:border-emerald-500/30 flex items-center justify-center text-amber-700 dark:text-emerald-400 font-black text-sm">
             <span id="statRoomCount">14</span>
           </div>
           <div>
-            <div class="text-xs font-bold text-white dark:text-white light:text-slate-900">Verified Listings</div>
-            <div class="text-[10px] text-slate-400">All with real photos</div>
+            <div class="text-xs font-bold text-stone-900 dark:text-white">Verified Listings</div>
+            <div class="text-[10px] text-stone-500 dark:text-slate-400">All with real photos</div>
           </div>
         </div>
 
-        <button id="myBookmarksBtn" onclick="toggleMyBookmarksOnly()" class="ue5-card p-3 rounded-2xl flex-1 md:flex-initial flex items-center space-x-2 hover:border-rose-500/40 text-slate-300 hover:text-rose-400 transition cursor-pointer">
+        <button id="myBookmarksBtn" onclick="toggleMyBookmarksOnly()" class="ue5-card p-3 rounded-2xl flex-1 md:flex-initial flex items-center space-x-2 hover:border-rose-400 dark:hover:border-rose-500/40 text-stone-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer border border-amber-200/80 dark:border-white/10">
           <i class="fa-solid fa-heart text-rose-500 text-sm"></i>
           <span class="text-xs font-semibold">Saved Rooms</span>
         </button>
@@ -252,19 +256,19 @@
     </div>
 
     <!-- ================= CONTROLS & FILTER BAR ================= -->
-    <section class="ue5-card p-4 rounded-2xl border border-white/10 space-y-3">
+    <section class="ue5-card p-4 rounded-2xl border border-amber-200/80 dark:border-white/10 space-y-3">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         
         <!-- Keyword Search -->
         <div class="relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-stone-400 dark:text-slate-400 text-xs"></i>
           <input type="text" id="searchInput" oninput="handleSearchDebounce()" placeholder="Search title, description or locality..." 
-                 class="w-full bg-surface-950/80 border border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 transition">
+                 class="w-full bg-white/90 dark:bg-surface-950/80 border border-amber-200/90 dark:border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 transition shadow-inner">
         </div>
 
         <!-- Locality Dropdown -->
         <div class="relative">
-          <select id="localityFilter" onchange="loadRooms()" class="w-full bg-surface-950/80 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 transition cursor-pointer">
+          <select id="localityFilter" onchange="loadRooms()" class="w-full bg-white/90 dark:bg-surface-950/80 border border-amber-200/90 dark:border-slate-700/80 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 transition cursor-pointer shadow-inner">
             <option value="">All Localities (NIT DGP & Durgapur)</option>
             <optgroup label="Near NIT Durgapur Campus">
               <option value="Fuljhore">Fuljhore (NIT North Gate)</option>
@@ -281,7 +285,7 @@
 
         <!-- Room Type Filter -->
         <div class="relative">
-          <select id="typeFilter" onchange="loadRooms()" class="w-full bg-surface-950/80 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 transition cursor-pointer">
+          <select id="typeFilter" onchange="loadRooms()" class="w-full bg-white/90 dark:bg-surface-950/80 border border-amber-200/90 dark:border-slate-700/80 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 transition cursor-pointer shadow-inner">
             <option value="">All Accommodation Types</option>
             <option value="single">Single Room (Independent)</option>
             <option value="shared">Shared Room / Flatmate</option>
@@ -289,78 +293,78 @@
         </div>
 
         <!-- Price Range Slider -->
-        <div class="bg-surface-950/80 border border-slate-700/80 rounded-xl px-3 py-1.5 flex flex-col justify-center">
+        <div class="bg-white/90 dark:bg-surface-950/80 border border-amber-200/90 dark:border-slate-700/80 rounded-xl px-3 py-1.5 flex flex-col justify-center shadow-inner">
           <div class="flex justify-between items-center text-[11px] mb-1">
-            <span class="text-slate-400 font-medium">Max Rent</span>
-            <span id="priceDisplay" class="text-emerald-400 font-bold font-mono">Up to Rs. 15,000/mo</span>
+            <span class="text-stone-500 dark:text-slate-400 font-medium">Max Rent</span>
+            <span id="priceDisplay" class="text-amber-700 dark:text-emerald-400 font-bold font-mono">Up to Rs. 15,000/mo</span>
           </div>
           <input type="range" id="priceSlider" min="2000" max="15000" step="500" value="15000" oninput="handlePriceInput(this.value)" 
-                 class="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                 class="w-full accent-amber-500 dark:accent-emerald-500 h-1.5 bg-amber-100 dark:bg-slate-800 rounded-lg cursor-pointer">
         </div>
 
       </div>
 
       <!-- Quick Campus Proximity Tags -->
-      <div class="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-800/80 text-[11px]">
-        <span class="text-slate-400 font-medium">Popular:</span>
-        <button onclick="quickFilter('locality', 'Fuljhore')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+      <div class="flex flex-wrap items-center gap-1.5 pt-2 border-t border-amber-100 dark:border-slate-800/80 text-[11px]">
+        <span class="text-stone-500 dark:text-slate-400 font-medium">Popular:</span>
+        <button onclick="quickFilter('locality', 'Fuljhore')" class="bg-amber-50/80 hover:bg-amber-100 text-stone-700 border border-amber-200/80 dark:bg-surface-950/90 dark:hover:bg-slate-800 dark:text-slate-300 dark:border-slate-700/70 px-2.5 py-1 rounded-lg transition shadow-xs">
           🚶 Fuljhore (North Gate)
         </button>
-        <button onclick="quickFilter('locality', 'Prantika')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+        <button onclick="quickFilter('locality', 'Prantika')" class="bg-amber-50/80 hover:bg-amber-100 text-stone-700 border border-amber-200/80 dark:bg-surface-950/90 dark:hover:bg-slate-800 dark:text-slate-300 dark:border-slate-700/70 px-2.5 py-1 rounded-lg transition shadow-xs">
           🎓 Prantika (Main Gate)
         </button>
-        <button onclick="quickFilter('locality', 'B-Zone')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+        <button onclick="quickFilter('locality', 'B-Zone')" class="bg-amber-50/80 hover:bg-amber-100 text-stone-700 border border-amber-200/80 dark:bg-surface-950/90 dark:hover:bg-slate-800 dark:text-slate-300 dark:border-slate-700/70 px-2.5 py-1 rounded-lg transition shadow-xs">
           🏡 B-Zone (Hall 7)
         </button>
-        <button onclick="quickFilter('locality', 'City Centre')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+        <button onclick="quickFilter('locality', 'City Centre')" class="bg-amber-50/80 hover:bg-amber-100 text-stone-700 border border-amber-200/80 dark:bg-surface-950/90 dark:hover:bg-slate-800 dark:text-slate-300 dark:border-slate-700/70 px-2.5 py-1 rounded-lg transition shadow-xs">
           🎬 City Centre
         </button>
-        <button onclick="quickFilter('locality', 'Benachity')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+        <button onclick="quickFilter('locality', 'Benachity')" class="bg-amber-50/80 hover:bg-amber-100 text-stone-700 border border-amber-200/80 dark:bg-surface-950/90 dark:hover:bg-slate-800 dark:text-slate-300 dark:border-slate-700/70 px-2.5 py-1 rounded-lg transition shadow-xs">
           🛍️ Benachity Bazaar
         </button>
-        <button onclick="resetFilters()" class="text-emerald-400 hover:underline ml-auto font-semibold">
+        <button onclick="resetFilters()" class="text-amber-700 hover:text-amber-800 dark:text-emerald-400 dark:hover:underline ml-auto font-semibold">
           Reset Filters
         </button>
       </div>
     </section>
 
     <!-- ================= INTERACTIVE CAMPUS & LOCALITY MAP ================= -->
-    <section class="ue5-card p-4 rounded-2xl border border-white/10 space-y-2.5">
+    <section class="ue5-card p-4 rounded-2xl border border-amber-200/80 dark:border-white/10 space-y-2.5">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-map-location-dot text-emerald-400 text-sm"></i>
-          <h2 class="text-sm font-bold text-white dark:text-white light:text-slate-900 tracking-tight">Interactive Campus & Transit Map</h2>
-          <span class="text-[10px] bg-emerald-950/80 border border-emerald-800/80 text-emerald-300 px-2 py-0.5 rounded-full">Live Pins</span>
+          <i class="fa-solid fa-map-location-dot text-amber-600 dark:text-emerald-400 text-sm"></i>
+          <h2 class="text-sm font-bold text-stone-900 dark:text-white tracking-tight">Interactive Campus & Transit Map</h2>
+          <span class="text-[10px] bg-amber-100 text-amber-800 border border-amber-300/80 dark:bg-emerald-950/80 dark:border-emerald-800/80 dark:text-emerald-300 px-2 py-0.5 rounded-full font-semibold">Live Pins</span>
         </div>
-        <p class="text-[11px] text-slate-400 hidden sm:block">Click any pin to inspect pricing and distances to NIT Gates</p>
+        <p class="text-[11px] text-stone-500 dark:text-slate-400 hidden sm:block">Click any pin to inspect pricing and distances to NIT Gates</p>
       </div>
-      <div id="leafletMap" class="w-full border border-slate-800/80 shadow-inner"></div>
+      <div id="leafletMap" class="w-full border border-amber-200/80 dark:border-slate-800/80 shadow-inner"></div>
     </section>
 
     <!-- ================= LISTINGS GRID SECTION ================= -->
     <section class="space-y-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <h2 class="text-lg font-bold text-white dark:text-white light:text-slate-900 tracking-tight">Available Accommodations</h2>
-          <span id="roomCountBadge" class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold px-2 py-0.5 rounded-full mint-glow">0</span>
+          <h2 class="text-lg font-bold text-stone-900 dark:text-white tracking-tight">Available Accommodations</h2>
+          <span id="roomCountBadge" class="text-xs bg-amber-500/10 text-amber-700 border border-amber-300/80 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20 font-bold px-2 py-0.5 rounded-full dark:mint-glow">0</span>
         </div>
-        <p class="text-xs text-slate-400">Click any card to explore full photos, amenities, host WhatsApp, and student reviews</p>
+        <p class="text-xs text-stone-500 dark:text-slate-400">Click any card to explore full photos, amenities, host WhatsApp, and student reviews</p>
       </div>
 
       <!-- Loading State -->
-      <div id="loadingIndicator" class="text-center py-16 text-slate-400 space-y-3">
-        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-400"></i>
+      <div id="loadingIndicator" class="text-center py-16 text-stone-500 dark:text-slate-400 space-y-3">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-amber-500 dark:text-emerald-400"></i>
         <p class="text-xs">Fetching verified campus accommodations...</p>
       </div>
 
       <!-- Empty State -->
-      <div id="emptyIndicator" class="hidden ue5-card p-12 text-center rounded-2xl border border-white/10 space-y-3">
-        <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-slate-400 text-lg">
+      <div id="emptyIndicator" class="hidden ue5-card p-12 text-center rounded-2xl border border-amber-200/80 dark:border-white/10 space-y-3">
+        <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-amber-600 dark:text-slate-400 text-lg">
           <i class="fa-solid fa-bed"></i>
         </div>
-        <h3 class="text-base font-bold text-white">No accommodations found</h3>
-        <p class="text-xs text-slate-400 max-w-sm mx-auto">Try widening your price range or clearing locality search filters to view more student rooms.</p>
-        <button onclick="resetFilters()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-xl transition">
+        <h3 class="text-base font-bold text-stone-900 dark:text-white">No accommodations found</h3>
+        <p class="text-xs text-stone-500 dark:text-slate-400 max-w-sm mx-auto">Try widening your price range or clearing locality search filters to view more student rooms.</p>
+        <button onclick="resetFilters()" class="text-xs bg-amber-600 hover:bg-amber-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-xl transition shadow-md">
           Reset All Filters
         </button>
       </div>
@@ -374,27 +378,27 @@
   </main>
 
   <!-- ================= SPLIT-SCREEN LISTING DETAIL VIEW (AIRBNB / HOUSING STYLE) ================= -->
-  <div id="roomDetailModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 transition-all duration-300">
-    <div class="relative w-full max-w-6xl max-h-[92vh] ue5-card rounded-3xl overflow-hidden flex flex-col border border-white/15 shadow-2xl">
+  <div id="roomDetailModal" class="fixed inset-0 z-50 hidden bg-black/60 dark:bg-black/80 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 transition-all duration-300">
+    <div class="relative w-full max-w-6xl max-h-[92vh] ue5-card rounded-3xl overflow-hidden flex flex-col border border-amber-200/90 dark:border-white/15 shadow-2xl bg-[#fffdf9] dark:bg-surface-950 text-stone-900 dark:text-white">
       
       <!-- Modal Header Bar -->
-      <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-slate-800/80 bg-surface-950/90 backdrop-blur-md">
+      <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-amber-200/80 dark:border-slate-800/80 bg-[#fdfaf3]/95 dark:bg-surface-950/90 backdrop-blur-md">
         <div class="flex items-center space-x-3 truncate">
-          <button onclick="closeRoomDetailModal()" class="text-xs font-bold text-slate-400 hover:text-white flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800/80 transition">
+          <button onclick="closeRoomDetailModal()" class="text-xs font-bold text-stone-600 hover:text-stone-900 dark:text-slate-400 dark:hover:text-white flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl hover:bg-amber-100/80 dark:hover:bg-slate-800/80 transition">
             <i class="fa-solid fa-arrow-left"></i>
             <span class="hidden sm:inline">Back to Listings</span>
           </button>
-          <span id="detailLocalityBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-emerald-950/90 text-emerald-300 border-emerald-800/80"></span>
-          <span id="detailTypeBadge" class="text-[11px] font-medium px-2 py-0.5 rounded-full border bg-slate-800 text-slate-300 border-slate-700 capitalize"></span>
+          <span id="detailLocalityBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-amber-100 text-amber-900 border-amber-300 dark:bg-emerald-950/90 dark:text-emerald-300 dark:border-emerald-800/80"></span>
+          <span id="detailTypeBadge" class="text-[11px] font-medium px-2 py-0.5 rounded-full border bg-stone-100 text-stone-700 border-stone-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 capitalize"></span>
         </div>
         <div class="flex items-center space-x-2">
-          <button id="detailBookmarkBtn" onclick="toggleBookmarkFromDetail()" class="p-2 rounded-xl bg-surface-950 border border-slate-700 text-slate-300 hover:text-rose-400 transition" title="Save Listing">
+          <button id="detailBookmarkBtn" onclick="toggleBookmarkFromDetail()" class="p-2 rounded-xl bg-white dark:bg-surface-950 border border-amber-200/80 dark:border-slate-700 text-stone-600 dark:text-slate-300 hover:text-rose-500 transition shadow-xs" title="Save Listing">
             <i class="fa-solid fa-heart text-xs"></i>
           </button>
-          <button onclick="shareListing()" class="p-2 rounded-xl bg-surface-950 border border-slate-700 text-slate-300 hover:text-emerald-400 transition" title="Share Listing">
+          <button onclick="shareListing()" class="p-2 rounded-xl bg-white dark:bg-surface-950 border border-amber-200/80 dark:border-slate-700 text-stone-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-emerald-400 transition shadow-xs" title="Share Listing">
             <i class="fa-solid fa-share-nodes text-xs"></i>
           </button>
-          <button onclick="closeRoomDetailModal()" class="p-2 rounded-xl bg-surface-950 border border-slate-700 text-slate-400 hover:text-white transition">
+          <button onclick="closeRoomDetailModal()" class="p-2 rounded-xl bg-white dark:bg-surface-950 border border-amber-200/80 dark:border-slate-700 text-stone-500 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white transition shadow-xs">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
@@ -407,14 +411,14 @@
         <div class="lg:col-span-7 space-y-6">
           
           <!-- Hero Photo Gallery -->
-          <div class="relative h-64 sm:h-80 rounded-2xl overflow-hidden ue5-card group border border-white/10">
+          <div class="relative h-64 sm:h-80 rounded-2xl overflow-hidden ue5-card group border border-amber-200/80 dark:border-white/10">
             <img id="detailHeroImg" src="" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-surface-950/90 via-surface-950/20 to-transparent pointer-events-none"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
             <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between pointer-events-none">
               <div class="max-w-[80%]">
                 <h2 id="detailTitle" class="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight drop-shadow-md"></h2>
-                <p id="detailLocalityFull" class="text-xs text-slate-300 mt-1 flex items-center space-x-1 font-medium">
-                  <i class="fa-solid fa-location-dot text-emerald-400 text-xs"></i>
+                <p id="detailLocalityFull" class="text-xs text-slate-200 mt-1 flex items-center space-x-1 font-medium">
+                  <i class="fa-solid fa-location-dot text-amber-400 dark:text-emerald-400 text-xs"></i>
                   <span></span>
                 </p>
               </div>
@@ -422,21 +426,21 @@
           </div>
 
           <!-- Detail Tabs Switcher -->
-          <div class="flex border-b border-slate-800 space-x-6 text-xs font-bold">
-            <button id="tabBtnOverview" onclick="switchDetailTab('overview')" class="pb-2.5 border-b-2 border-emerald-400 text-emerald-400 transition flex items-center space-x-1.5">
+          <div class="flex border-b border-amber-200/80 dark:border-slate-800 space-x-6 text-xs font-bold">
+            <button id="tabBtnOverview" onclick="switchDetailTab('overview')" class="pb-2.5 border-b-2 border-amber-600 text-amber-700 dark:border-emerald-400 dark:text-emerald-400 transition flex items-center space-x-1.5">
               <i class="fa-solid fa-circle-info"></i>
               <span>Overview</span>
             </button>
-            <button id="tabBtnAmenities" onclick="switchDetailTab('amenities')" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+            <button id="tabBtnAmenities" onclick="switchDetailTab('amenities')" class="pb-2.5 border-b-2 border-transparent text-stone-500 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white transition flex items-center space-x-1.5">
               <i class="fa-solid fa-wand-magic-sparkles"></i>
               <span>Amenities & Rules</span>
             </button>
-            <button id="tabBtnCommute" onclick="switchDetailTab('commute')" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+            <button id="tabBtnCommute" onclick="switchDetailTab('commute')" class="pb-2.5 border-b-2 border-transparent text-stone-500 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white transition flex items-center space-x-1.5">
               <i class="fa-solid fa-route"></i>
               <span>Commute & Proximity</span>
             </button>
-            <button id="tabBtnReviews" onclick="switchDetailTab('reviews')" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5">
-              <i class="fa-solid fa-star text-amber-400"></i>
+            <button id="tabBtnReviews" onclick="switchDetailTab('reviews')" class="pb-2.5 border-b-2 border-transparent text-stone-500 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-star text-amber-500"></i>
               <span>Reviews (<span id="detailReviewsCount">0</span>)</span>
             </button>
           </div>
@@ -444,26 +448,26 @@
           <!-- Tab 1: Overview -->
           <div id="detailTabOverview" class="space-y-4">
             <div>
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Property Description</h3>
-              <p id="detailDescription" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-slate-400 mb-1.5">Property Description</h3>
+              <p id="detailDescription" class="text-xs sm:text-sm text-stone-700 dark:text-slate-300 leading-relaxed"></p>
             </div>
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
-                <div class="text-[10px] text-slate-400 uppercase font-semibold">Occupancy</div>
-                <div id="detailOccupancy" class="text-xs font-bold text-white mt-1 capitalize">Single</div>
+              <div class="bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-stone-500 dark:text-slate-400 uppercase font-semibold">Occupancy</div>
+                <div id="detailOccupancy" class="text-xs font-bold text-stone-900 dark:text-white mt-1 capitalize">Single</div>
               </div>
-              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
-                <div class="text-[10px] text-slate-400 uppercase font-semibold">Bathroom</div>
-                <div class="text-xs font-bold text-emerald-400 mt-1">Attached</div>
+              <div class="bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-stone-500 dark:text-slate-400 uppercase font-semibold">Bathroom</div>
+                <div class="text-xs font-bold text-amber-700 dark:text-emerald-400 mt-1">Attached</div>
               </div>
-              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
-                <div class="text-[10px] text-slate-400 uppercase font-semibold">Security Deposit</div>
-                <div id="detailDeposit" class="text-xs font-bold text-white mt-1">1 Month</div>
+              <div class="bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-stone-500 dark:text-slate-400 uppercase font-semibold">Security Deposit</div>
+                <div id="detailDeposit" class="text-xs font-bold text-stone-900 dark:text-white mt-1">1 Month</div>
               </div>
-              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
-                <div class="text-[10px] text-slate-400 uppercase font-semibold">Notice Period</div>
-                <div class="text-xs font-bold text-white mt-1">30 Days</div>
+              <div class="bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-stone-500 dark:text-slate-400 uppercase font-semibold">Notice Period</div>
+                <div class="text-xs font-bold text-stone-900 dark:text-white mt-1">30 Days</div>
               </div>
             </div>
           </div>
@@ -471,44 +475,44 @@
           <!-- Tab 2: Amenities & Rules -->
           <div id="detailTabAmenities" class="space-y-4 hidden">
             <div>
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">Included Amenities</h3>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-slate-400 mb-2.5">Included Amenities</h3>
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
-                  <i class="fa-solid fa-wifi text-emerald-400 text-sm"></i>
+                <div class="flex items-center space-x-2.5 bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-2.5 rounded-xl text-xs text-stone-800 dark:text-slate-200">
+                  <i class="fa-solid fa-wifi text-amber-600 dark:text-emerald-400 text-sm"></i>
                   <span>100 Mbps Fiber WiFi</span>
                 </div>
-                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
-                  <i class="fa-solid fa-bolt text-amber-400 text-sm"></i>
+                <div class="flex items-center space-x-2.5 bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-2.5 rounded-xl text-xs text-stone-800 dark:text-slate-200">
+                  <i class="fa-solid fa-bolt text-amber-500 text-sm"></i>
                   <span>24/7 Inverter Backup</span>
                 </div>
-                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
-                  <i class="fa-solid fa-shower text-cyan-400 text-sm"></i>
+                <div class="flex items-center space-x-2.5 bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-2.5 rounded-xl text-xs text-stone-800 dark:text-slate-200">
+                  <i class="fa-solid fa-shower text-cyan-600 dark:text-cyan-400 text-sm"></i>
                   <span>Geyser / Hot Water</span>
                 </div>
-                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
-                  <i class="fa-solid fa-faucet-drip text-blue-400 text-sm"></i>
+                <div class="flex items-center space-x-2.5 bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-2.5 rounded-xl text-xs text-stone-800 dark:text-slate-200">
+                  <i class="fa-solid fa-faucet-drip text-blue-600 dark:text-blue-400 text-sm"></i>
                   <span>RO Drinking Water</span>
                 </div>
-                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
-                  <i class="fa-solid fa-shirt text-indigo-400 text-sm"></i>
+                <div class="flex items-center space-x-2.5 bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-2.5 rounded-xl text-xs text-stone-800 dark:text-slate-200">
+                  <i class="fa-solid fa-shirt text-indigo-600 dark:text-indigo-400 text-sm"></i>
                   <span>Washing Machine</span>
                 </div>
-                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
-                  <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
+                <div class="flex items-center space-x-2.5 bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 p-2.5 rounded-xl text-xs text-stone-800 dark:text-slate-200">
+                  <i class="fa-solid fa-shield-halved text-amber-700 dark:text-emerald-400 text-sm"></i>
                   <span>24/7 Gate Security</span>
                 </div>
               </div>
             </div>
 
             <div class="pt-2">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">House Rules</h3>
-              <div class="space-y-2 text-xs text-slate-300">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-slate-400 mb-2.5">House Rules</h3>
+              <div class="space-y-2 text-xs text-stone-700 dark:text-slate-300">
                 <div class="flex items-center space-x-2">
-                  <i class="fa-solid fa-clock text-amber-400 text-xs"></i>
+                  <i class="fa-solid fa-clock text-amber-500 text-xs"></i>
                   <span>Gate timing: Flexible / No strict night curfew for NIT DGP scholars.</span>
                 </div>
                 <div class="flex items-center space-x-2">
-                  <i class="fa-solid fa-graduation-cap text-emerald-400 text-xs"></i>
+                  <i class="fa-solid fa-graduation-cap text-amber-700 dark:text-emerald-400 text-xs"></i>
                   <span>Quiet hours during semester exams & GATE test sessions.</span>
                 </div>
               </div>
@@ -518,7 +522,7 @@
           <!-- Tab 3: Commute & Distances -->
           <div id="detailTabCommute" class="space-y-4 hidden">
             <div>
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">Proximity to Key Hubs</h3>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-slate-400 mb-2.5">Proximity to Key Hubs</h3>
               <div id="detailCommuteList" class="space-y-2 text-xs">
                 <!-- Injected by JS -->
               </div>
@@ -528,10 +532,10 @@
           <!-- Tab 4: Student Reviews & Submission -->
           <div id="detailTabReviews" class="space-y-5 hidden">
             <!-- Review Submission Box -->
-            <div class="bg-surface-950/90 border border-slate-800 rounded-2xl p-4 space-y-3">
+            <div class="bg-amber-50/80 dark:bg-surface-950/90 border border-amber-200/80 dark:border-slate-800 rounded-2xl p-4 space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-white">Rate your stay at this accommodation</span>
-                <span id="detailRatingSelectedText" class="text-xs font-bold text-amber-400">5 Stars</span>
+                <span class="text-xs font-bold text-stone-900 dark:text-white">Rate your stay at this accommodation</span>
+                <span id="detailRatingSelectedText" class="text-xs font-bold text-amber-600 dark:text-amber-400">5 Stars</span>
               </div>
               
               <!-- Clickable Star Selector -->
@@ -544,9 +548,9 @@
               </div>
 
               <textarea id="detailReviewComment" rows="2" placeholder="Share your experience (WiFi reliability, owner friendliness, load-shedding...)"
-                        class="w-full bg-surface-900 border border-slate-700/80 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"></textarea>
+                        class="w-full bg-white dark:bg-surface-900 border border-amber-200 dark:border-slate-700/80 rounded-xl p-2.5 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner"></textarea>
               
-              <button onclick="submitDetailReview()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-xl text-xs transition shadow-md">
+              <button onclick="submitDetailReview()" class="w-full bg-amber-600 hover:bg-amber-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-semibold py-2 rounded-xl text-xs transition shadow-md">
                 Submit Verified Review
               </button>
             </div>
@@ -561,65 +565,65 @@
 
         <!-- RIGHT COLUMN (5 cols ~ 40% Sticky): Pricing, Verified Host Card, WhatsApp / Call, Mini Map -->
         <div class="lg:col-span-5 space-y-5">
-          <div class="ue5-card rounded-2xl p-5 border border-white/10 space-y-4 sticky top-0">
+          <div class="ue5-card rounded-2xl p-5 border border-amber-200/80 dark:border-white/10 space-y-4 sticky top-0 bg-white dark:bg-surface-950">
             
             <!-- Pricing Block -->
-            <div class="flex items-baseline justify-between border-b border-slate-800/80 pb-3">
+            <div class="flex items-baseline justify-between border-b border-amber-100 dark:border-slate-800/80 pb-3">
               <div>
-                <span class="text-2xl sm:text-3xl font-black text-white mint-glow">Rs. <span id="detailRent"></span></span>
-                <span class="text-xs text-slate-400">/ month</span>
+                <span class="text-2xl sm:text-3xl font-black text-stone-900 dark:text-white">Rs. <span id="detailRent"></span></span>
+                <span class="text-xs text-stone-500 dark:text-slate-400">/ month</span>
               </div>
-              <div id="detailRatingBadge" class="flex items-center space-x-1 text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-xl">
+              <div id="detailRatingBadge" class="flex items-center space-x-1 text-xs font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-xl">
                 <i class="fa-solid fa-star text-[10px]"></i>
                 <span id="detailAvgRating">5.0</span>
               </div>
             </div>
 
             <!-- Verified Host Profile -->
-            <div class="flex items-center space-x-3 bg-surface-950/70 border border-slate-800 p-3 rounded-xl">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center font-bold text-white text-sm shadow-md">
+            <div class="flex items-center space-x-3 bg-amber-50/70 dark:bg-surface-950/70 border border-amber-200/80 dark:border-slate-800 p-3 rounded-xl">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 dark:from-emerald-600 dark:to-teal-700 flex items-center justify-center font-bold text-white text-sm shadow-md">
                 <span id="detailHostInitials">RS</span>
               </div>
               <div class="flex-grow">
                 <div class="flex items-center space-x-1.5">
-                  <span id="detailHostName" class="text-xs font-bold text-white">Rahul Sen</span>
-                  <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]" title="Verified Landlord"></i>
+                  <span id="detailHostName" class="text-xs font-bold text-stone-900 dark:text-white">Rahul Sen</span>
+                  <i class="fa-solid fa-circle-check text-amber-600 dark:text-emerald-400 text-[11px]" title="Verified Landlord"></i>
                 </div>
-                <p id="detailHostSubtitle" class="text-[11px] text-slate-400 font-medium">NIT Durgapur Senior & Landlord</p>
+                <p id="detailHostSubtitle" class="text-[11px] text-stone-500 dark:text-slate-400 font-medium">NIT Durgapur Senior & Landlord</p>
               </div>
             </div>
 
             <!-- Instant Contact Buttons -->
             <div class="space-y-2">
               <!-- WhatsApp Host -->
-              <a id="detailWhatsAppBtn" href="#" target="_blank" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 text-xs">
+              <a id="detailWhatsAppBtn" href="#" target="_blank" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 text-xs">
                 <i class="fa-brands fa-whatsapp text-sm"></i>
                 <span>Chat on WhatsApp</span>
               </a>
               
               <!-- Call Landlord -->
-              <a id="detailCallBtn" href="#" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
-                <i class="fa-solid fa-phone text-xs text-emerald-400"></i>
+              <a id="detailCallBtn" href="#" class="w-full bg-amber-100/80 hover:bg-amber-200 text-stone-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-amber-200 dark:border-slate-700 font-semibold py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
+                <i class="fa-solid fa-phone text-xs text-amber-700 dark:text-emerald-400"></i>
                 <span>Call Landlord</span>
               </a>
 
               <!-- Schedule a Visit -->
-              <button onclick="openScheduleVisitModal()" class="w-full bg-surface-950 hover:bg-surface-900 text-slate-300 border border-slate-800 font-medium py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
-                <i class="fa-solid fa-calendar-days text-xs text-amber-400"></i>
+              <button onclick="openScheduleVisitModal()" class="w-full bg-white hover:bg-amber-50 dark:bg-surface-950 dark:hover:bg-surface-900 text-stone-700 dark:text-slate-300 border border-amber-200 dark:border-slate-800 font-medium py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs shadow-xs">
+                <i class="fa-solid fa-calendar-days text-xs text-amber-500"></i>
                 <span>Schedule Room Visit</span>
               </button>
             </div>
 
             <!-- Embedded Mini Leaflet Map -->
-            <div class="pt-2 border-t border-slate-800/80">
-              <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400 mb-2">
+            <div class="pt-2 border-t border-amber-100 dark:border-slate-800/80">
+              <div class="flex items-center justify-between text-[11px] font-semibold text-stone-600 dark:text-slate-400 mb-2">
                 <span>Location & Campus Route</span>
-                <a id="detailGmapsRoute" href="#" target="_blank" class="text-emerald-400 hover:underline flex items-center space-x-1">
+                <a id="detailGmapsRoute" href="#" target="_blank" class="text-amber-700 dark:text-emerald-400 hover:underline flex items-center space-x-1">
                   <span>Google Maps</span>
                   <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                 </a>
               </div>
-              <div id="miniLeafletMap" class="h-44 w-full rounded-xl border border-slate-800 overflow-hidden shadow-inner"></div>
+              <div id="miniLeafletMap" class="h-44 w-full rounded-xl border border-amber-200/80 dark:border-slate-800 overflow-hidden shadow-inner"></div>
             </div>
 
           </div>
@@ -631,34 +635,34 @@
   </div>
 
   <!-- ================= SCHEDULE ROOM VISIT MODAL ================= -->
-  <div id="scheduleVisitModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="relative w-full max-w-sm ue5-card rounded-2xl p-5 border border-white/15 space-y-4">
+  <div id="scheduleVisitModal" class="fixed inset-0 z-50 hidden bg-black/60 dark:bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-sm ue5-card rounded-2xl p-5 border border-amber-200/90 dark:border-white/15 space-y-4 bg-[#fffdf9] dark:bg-surface-950 text-stone-900 dark:text-white">
       <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
-          <i class="fa-solid fa-calendar-check text-emerald-400"></i>
+        <h3 class="text-sm font-bold text-stone-900 dark:text-white flex items-center space-x-2">
+          <i class="fa-solid fa-calendar-check text-amber-600 dark:text-emerald-400"></i>
           <span>Schedule Room Inspection</span>
         </h3>
-        <button onclick="closeScheduleVisitModal()" class="text-slate-400 hover:text-white">
+        <button onclick="closeScheduleVisitModal()" class="text-stone-400 hover:text-stone-900 dark:text-slate-400 dark:hover:text-white">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
-      <p class="text-xs text-slate-400">Select a preferred date and time to meet the landlord and tour the room.</p>
+      <p class="text-xs text-stone-500 dark:text-slate-400">Select a preferred date and time to meet the landlord and tour the room.</p>
       
       <form onsubmit="handleScheduleVisitSubmit(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block text-slate-400 mb-1 font-medium">Preferred Date</label>
+          <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Preferred Date</label>
           <input type="date" id="visitDateInput" required 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
         <div>
-          <label class="block text-slate-400 mb-1 font-medium">Preferred Time</label>
-          <select id="visitTimeInput" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+          <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Preferred Time</label>
+          <select id="visitTimeInput" class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
             <option value="11:00 AM">Morning (11:00 AM - 1:00 PM)</option>
             <option value="4:00 PM">Afternoon (4:00 PM - 6:00 PM)</option>
             <option value="7:00 PM">Evening (7:00 PM - 8:30 PM)</option>
           </select>
         </div>
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition shadow-md">
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition shadow-md">
           Confirm Schedule Request
         </button>
       </form>
@@ -666,47 +670,47 @@
   </div>
 
   <!-- ================= MANDATORY AUTHENTICATION GATEWAY MODAL ================= -->
-  <div id="authGateOverlay" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-2xl flex items-center justify-center p-4 transition-all duration-300">
-    <div class="relative w-full max-w-md ue5-card rounded-3xl p-6 sm:p-8 text-center border border-white/15 shadow-2xl">
+  <div id="authGateOverlay" class="fixed inset-0 z-50 hidden bg-black/70 dark:bg-black/85 backdrop-blur-2xl flex items-center justify-center p-4 transition-all duration-300">
+    <div class="relative w-full max-w-md ue5-card rounded-3xl p-6 sm:p-8 text-center border border-amber-200/90 dark:border-white/15 shadow-2xl bg-[#fffdf9] dark:bg-surface-950 text-stone-900 dark:text-white">
       
       <!-- Ambient Halo -->
-      <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-44 h-44 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-44 h-44 bg-amber-400/20 dark:bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
       <!-- Glowing Logo Icon -->
-      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 border border-emerald-400/40">
+      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 dark:from-emerald-500 dark:to-teal-600 flex items-center justify-center shadow-lg shadow-amber-500/20 dark:shadow-emerald-500/30 border border-amber-400/30 dark:border-emerald-400/40">
         <i class="fa-solid fa-house-user text-white text-2xl"></i>
       </div>
 
-      <h2 class="text-2xl font-black text-white tracking-tight">Welcome to RentSphere</h2>
-      <p class="text-xs text-emerald-400 font-bold mt-1 mint-glow">NIT Durgapur Student Accommodation Portal</p>
-      <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+      <h2 class="text-2xl font-black text-stone-900 dark:text-white tracking-tight">Welcome to RentSphere</h2>
+      <p class="text-xs text-amber-700 dark:text-emerald-400 font-bold mt-1 dark:mint-glow">NIT Durgapur Student Accommodation Portal</p>
+      <p class="text-xs text-stone-600 dark:text-slate-400 mt-2.5 leading-relaxed">
         Access student room listings, check walking distances to campus gates, read verified senior reviews, and contact landlords directly.
       </p>
 
       <!-- 1-Click Quick Demo Login Button -->
       <div class="mt-6">
-        <button onclick="quickDemoLogin()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold py-3 px-4 rounded-2xl transition shadow-xl shadow-emerald-500/25 flex items-center justify-center space-x-2 text-sm">
-          <i class="fa-solid fa-bolt text-amber-300"></i>
+        <button onclick="quickDemoLogin()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 dark:from-emerald-500 dark:to-teal-600 dark:hover:from-emerald-400 dark:hover:to-teal-500 text-white font-extrabold py-3 px-4 rounded-2xl transition shadow-xl shadow-amber-500/20 dark:shadow-emerald-500/25 flex items-center justify-center space-x-2 text-sm">
+          <i class="fa-solid fa-bolt text-amber-200"></i>
           <span>1-Click Instant Demo Login</span>
         </button>
-        <div class="text-[11px] text-slate-400 mt-1.5 font-mono">
+        <div class="text-[11px] text-stone-500 dark:text-slate-400 mt-1.5 font-mono">
           Instant access with verified demo student credentials
         </div>
       </div>
 
       <!-- Divider -->
       <div class="relative my-5 flex items-center justify-center">
-        <div class="border-t border-slate-800 w-full"></div>
-        <span class="bg-surface-900 px-3 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Or Email Account</span>
-        <div class="border-t border-slate-800 w-full"></div>
+        <div class="border-t border-amber-200 dark:border-slate-800 w-full"></div>
+        <span class="bg-[#fdfaf3] dark:bg-surface-900 px-3 text-[10px] text-stone-500 dark:text-slate-500 uppercase tracking-widest font-semibold">Or Email Account</span>
+        <div class="border-t border-amber-200 dark:border-slate-800 w-full"></div>
       </div>
 
       <!-- Sign In / Register Tabs -->
-      <div class="flex border-b border-slate-800 mb-4 justify-center space-x-6">
-        <button id="gateTabLoginBtn" onclick="switchGateAuthTab('login')" class="font-bold text-xs text-emerald-400 border-b-2 border-emerald-400 pb-1.5 transition">
+      <div class="flex border-b border-amber-200 dark:border-slate-800 mb-4 justify-center space-x-6">
+        <button id="gateTabLoginBtn" onclick="switchGateAuthTab('login')" class="font-bold text-xs text-amber-700 border-b-2 border-amber-600 dark:text-emerald-400 dark:border-emerald-400 pb-1.5 transition">
           Sign In
         </button>
-        <button id="gateTabRegisterBtn" onclick="switchGateAuthTab('register')" class="font-bold text-xs text-slate-400 border-b-2 border-transparent pb-1.5 transition">
+        <button id="gateTabRegisterBtn" onclick="switchGateAuthTab('register')" class="font-bold text-xs text-stone-500 dark:text-slate-400 border-b-2 border-transparent pb-1.5 transition">
           Create Account
         </button>
       </div>
@@ -714,16 +718,16 @@
       <!-- Gate Login Form -->
       <form id="gateLoginForm" onsubmit="handleGateLogin(event)" class="space-y-3 text-left">
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Student Email</label>
+          <label class="block text-[11px] text-stone-600 dark:text-slate-400 mb-1 font-medium">Student Email</label>
           <input type="email" id="gateLoginEmail" required placeholder="demo@rentsphere.com" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Password</label>
+          <label class="block text-[11px] text-stone-600 dark:text-slate-400 mb-1 font-medium">Password</label>
           <input type="password" id="gateLoginPassword" required placeholder="••••••••" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
           Sign In
         </button>
       </form>
@@ -731,26 +735,26 @@
       <!-- Gate Register Form -->
       <form id="gateRegisterForm" onsubmit="handleGateRegister(event)" class="space-y-3 text-left hidden">
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Student / Landlord Email</label>
+          <label class="block text-[11px] text-stone-600 dark:text-slate-400 mb-1 font-medium">Student / Landlord Email</label>
           <input type="email" id="gateRegEmail" required placeholder="yourname@nitdgp.ac.in" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Password</label>
+          <label class="block text-[11px] text-stone-600 dark:text-slate-400 mb-1 font-medium">Password</label>
           <input type="password" id="gateRegPassword" required placeholder="At least 6 characters" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Phone Number</label>
+          <label class="block text-[11px] text-stone-600 dark:text-slate-400 mb-1 font-medium">Phone Number</label>
           <input type="text" id="gateRegPhone" placeholder="+91 9883913522" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1 font-medium">City</label>
+          <label class="block text-[11px] text-stone-600 dark:text-slate-400 mb-1 font-medium">City</label>
           <input type="text" id="gateRegCity" placeholder="Durgapur" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
           Create Account & Unlock
         </button>
       </form>
@@ -759,49 +763,49 @@
   </div>
 
   <!-- ================= POST A ROOM MODAL ================= -->
-  <div id="postRoomModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="relative w-full max-w-lg ue5-card rounded-2xl p-6 border border-white/15 space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
+  <div id="postRoomModal" class="fixed inset-0 z-50 hidden bg-black/60 dark:bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-lg ue5-card rounded-2xl p-6 border border-amber-200/90 dark:border-white/15 space-y-4 max-h-[90vh] overflow-y-auto custom-scroll bg-[#fffdf9] dark:bg-surface-950 text-stone-900 dark:text-white">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-bold text-white flex items-center space-x-2">
-          <i class="fa-solid fa-plus-circle text-emerald-400"></i>
+        <h3 class="text-base font-bold text-stone-900 dark:text-white flex items-center space-x-2">
+          <i class="fa-solid fa-plus-circle text-amber-600 dark:text-emerald-400"></i>
           <span>List a Campus Accommodation</span>
         </h3>
-        <button onclick="closePostRoomModal()" class="text-slate-400 hover:text-white">
+        <button onclick="closePostRoomModal()" class="text-stone-400 hover:text-stone-900 dark:text-slate-400 dark:hover:text-white">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
       <form onsubmit="handlePostRoom(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block text-slate-400 mb-1 font-medium">Listing Title</label>
+          <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Listing Title</label>
           <input type="text" id="newRoomTitle" required placeholder="e.g. Aashirbad PG & Student Home (Fuljhore)" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-slate-400 mb-1 font-medium">Locality / Landmark</label>
+            <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Locality / Landmark</label>
             <input type="text" id="newRoomLocality" required placeholder="Fuljhore Road" 
-                   class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+                   class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
           </div>
           <div>
-            <label class="block text-slate-400 mb-1 font-medium">Monthly Rent (₹)</label>
+            <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Monthly Rent (₹)</label>
             <input type="number" id="newRoomRent" required placeholder="4500" 
-                   class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+                   class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-slate-400 mb-1 font-medium">Room Type</label>
-            <select id="newRoomType" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+            <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Room Type</label>
+            <select id="newRoomType" class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
               <option value="single">Single Room</option>
               <option value="shared">Shared Room</option>
             </select>
           </div>
           <div>
-            <label class="block text-slate-400 mb-1 font-medium">Availability</label>
-            <select id="newRoomAvail" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+            <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Availability</label>
+            <select id="newRoomAvail" class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
               <option value="true">Immediate Availability</option>
               <option value="false">Occupied</option>
             </select>
@@ -809,18 +813,18 @@
         </div>
 
         <div>
-          <label class="block text-slate-400 mb-1 font-medium">Distance Metric (e.g. 🚶 350m to NIT North Gate)</label>
+          <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Distance Metric (e.g. 🚶 350m to NIT North Gate)</label>
           <input type="text" id="newRoomDistance" placeholder="🚶 350m (4 min walk) to NIT DGP North Gate" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+                 class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner">
         </div>
 
         <div>
-          <label class="block text-slate-400 mb-1 font-medium">Description</label>
+          <label class="block text-stone-600 dark:text-slate-400 mb-1 font-medium">Description</label>
           <textarea id="newRoomDesc" rows="3" required placeholder="Furnishing details, power backup, study table, wifi..." 
-                    class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500"></textarea>
+                    class="w-full bg-white dark:bg-surface-950 border border-amber-200 dark:border-slate-700 rounded-xl px-3 py-2 text-stone-900 dark:text-slate-100 placeholder-stone-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-emerald-500 shadow-inner"></textarea>
         </div>
 
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
           Publish Accommodation
         </button>
       </form>
@@ -828,21 +832,21 @@
   </div>
 
   <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden ue5-card border border-emerald-500/50 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs transition-all">
-    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden ue5-card border border-amber-400/80 dark:border-emerald-500/50 bg-[#fffdf9] dark:bg-surface-950 text-stone-900 dark:text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs transition-all">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-amber-600 dark:text-emerald-400 text-sm"></i>
     <span id="toastMsg" class="font-medium">Action completed</span>
   </div>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="border-t border-slate-800/80 bg-surface-950/90 py-6 text-xs text-slate-400 mt-12">
+  <footer class="border-t border-amber-900/10 dark:border-slate-800/80 bg-[#f5efe4] dark:bg-surface-950/90 py-6 text-xs text-stone-600 dark:text-slate-400 mt-12">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
       <div>
-        <span class="font-bold text-white dark:text-white light:text-slate-900">RentSphere</span> — Built by <strong class="text-emerald-400">Anubhav Paul</strong> (B.Tech '29, NIT Durgapur)
+        <span class="font-bold text-stone-900 dark:text-white">RentSphere</span> — Built by <strong class="text-amber-700 dark:text-emerald-400">Anubhav Paul</strong> (B.Tech '29, NIT Durgapur)
       </div>
-      <div class="flex space-x-4 text-slate-400 text-xs">
-        <a href="/docs" target="_blank" class="hover:text-emerald-400">FastAPI Swagger</a>
-        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-emerald-400">Source Code</a>
-        <a href="https://www.linkedin.com/in/anubhav-paul-437769391/" target="_blank" class="hover:text-emerald-400">LinkedIn Profile</a>
+      <div class="flex space-x-4 text-stone-600 dark:text-slate-400 text-xs">
+        <a href="/docs" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">FastAPI Swagger</a>
+        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">Source Code</a>
+        <a href="https://www.linkedin.com/in/anubhav-paul-437769391/" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">LinkedIn Profile</a>
       </div>
     </div>
   </footer>
@@ -951,16 +955,16 @@
       const container = document.getElementById("authContainer");
       if (user) {
         container.innerHTML = `
-          <div class="flex items-center space-x-2 bg-surface-900 border border-slate-700/80 px-2.5 py-1 rounded-xl">
-            <span class="text-xs font-bold text-emerald-400 font-mono">${user.email.split('@')[0]}</span>
-            <button onclick="logout()" title="Logout" class="text-xs text-slate-400 hover:text-rose-400 transition pl-1">
+          <div class="flex items-center space-x-2 bg-amber-100/80 dark:bg-surface-900 border border-amber-300/80 dark:border-slate-700/80 px-2.5 py-1 rounded-xl">
+            <span class="text-xs font-bold text-amber-800 dark:text-emerald-400 font-mono">${user.email.split('@')[0]}</span>
+            <button onclick="logout()" title="Logout" class="text-xs text-stone-500 hover:text-rose-500 dark:text-slate-400 dark:hover:text-rose-400 transition pl-1">
               <i class="fa-solid fa-power-off"></i>
             </button>
           </div>
         `;
       } else {
         container.innerHTML = `
-          <button onclick="showAuthGate()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-3 py-1.5 rounded-xl border border-slate-700 transition">
+          <button onclick="showAuthGate()" class="text-xs bg-amber-100 hover:bg-amber-200 text-stone-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 font-medium px-3 py-1.5 rounded-xl border border-amber-300/80 dark:border-slate-700 transition shadow-sm">
             Sign In
           </button>
         `;
@@ -1197,66 +1201,66 @@
 
       return `
         <div id="room-card-${room.id}" onclick="handleCardClick(event, ${room.id})" 
-             class="ue5-card ue5-card-hover rounded-3xl overflow-hidden flex flex-col justify-between cursor-pointer group relative bg-surface-850 dark:bg-surface-850"
+             class="ue5-card ue5-card-hover rounded-3xl overflow-hidden flex flex-col justify-between cursor-pointer group relative bg-white dark:bg-surface-850 border border-amber-200/80 dark:border-white/10"
              style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: translateZ(0);">
           
           <!-- Image Header with Badges -->
-          <div class="relative h-48 overflow-hidden bg-surface-950 -mb-2">
+          <div class="relative h-48 overflow-hidden bg-slate-900 -mb-2">
             <img src="${imgUrl}" alt="${escapeHtml(room.title)}" 
                  onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = this.src.includes('/static/assets/') ? this.src.replace('/static/assets/', '/assets/') : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&w=800&q=80'; }"
                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500 block">
-            <div class="absolute inset-0 bg-gradient-to-t from-surface-950/90 from-0% via-transparent to-black/30 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 from-0% via-transparent to-black/30 pointer-events-none"></div>
             <!-- Bottom overlap shield ensuring 0px gap at fractional display scaling -->
-            <div class="absolute -bottom-1 left-0 right-0 h-4 bg-surface-850 dark:bg-surface-850 pointer-events-none z-10"></div>
+            <div class="absolute -bottom-1 left-0 right-0 h-4 bg-white dark:bg-surface-850 pointer-events-none z-10"></div>
             
             <!-- Top Badges -->
             <div class="absolute top-3 left-3 flex space-x-1.5 z-10">
-              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border bg-emerald-950/90 text-emerald-300 border-emerald-800/80 backdrop-blur-sm shadow-sm">
+              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border bg-amber-100 text-amber-900 border-amber-300 dark:bg-emerald-950/90 dark:text-emerald-300 dark:border-emerald-800/80 backdrop-blur-sm shadow-sm">
                 ${escapeHtml(localityBadge)}
               </span>
-              <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-slate-900/90 text-slate-300 border-slate-700 backdrop-blur-sm capitalize">
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-stone-900/80 text-white border-stone-600/80 dark:bg-slate-900/90 dark:text-slate-300 dark:border-slate-700 backdrop-blur-sm capitalize">
                 ${escapeHtml(room.room_type)}
               </span>
             </div>
 
             <!-- Heart Bookmark Toggle -->
             <button onclick="event.stopPropagation(); toggleBookmark(${room.id})" title="Save Listing" 
-                    class="absolute top-3 right-3 w-8 h-8 rounded-xl bg-surface-950/80 backdrop-blur-md border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-rose-400 transition z-10 shadow-sm">
+                    class="absolute top-3 right-3 w-8 h-8 rounded-xl bg-white/85 dark:bg-surface-950/80 backdrop-blur-md border border-amber-200/80 dark:border-slate-700/80 flex items-center justify-center text-stone-600 dark:text-slate-300 hover:text-rose-500 transition z-10 shadow-sm">
               <i class="fa-solid fa-heart text-xs ${bookmarks > 0 ? 'text-rose-500' : ''}"></i>
             </button>
 
             <!-- Rent Tag inside image -->
             <div class="absolute bottom-3 left-3 z-10">
               <span class="text-xl font-black text-white drop-shadow-md">Rs. ${room.rent_amount.toLocaleString()}</span>
-              <span class="text-[11px] text-slate-300 font-medium">/month</span>
+              <span class="text-[11px] text-slate-200 font-medium">/month</span>
             </div>
           </div>
 
           <!-- Card Content (Solid Background + Overlap z-20) -->
-          <div class="p-4 flex-grow flex flex-col justify-between relative z-20 bg-surface-850 dark:bg-surface-850 pt-3">
+          <div class="p-4 flex-grow flex flex-col justify-between relative z-20 bg-white dark:bg-surface-850 pt-3">
             <div>
-              <h3 class="text-sm sm:text-base font-bold text-white group-hover:text-emerald-400 transition line-clamp-2 min-h-[1.5rem] leading-snug">
+              <h3 class="text-sm sm:text-base font-bold text-stone-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-emerald-400 transition line-clamp-2 min-h-[1.5rem] leading-snug">
                 ${escapeHtml(room.title)}
               </h3>
 
               <!-- Distance & Hotspot Proximity Pills -->
               ${hasProximity ? `
-              <div class="mt-2.5 space-y-1.5 bg-surface-950/70 border border-slate-800/80 p-2.5 rounded-2xl text-[11px]">
+              <div class="mt-2.5 space-y-1.5 bg-amber-50/70 dark:bg-surface-950/70 border border-amber-200/60 dark:border-slate-800/80 p-2.5 rounded-2xl text-[11px]">
                 ${room.distance_campus ? `
-                  <div class="flex items-center text-emerald-300 font-semibold truncate">
-                    <i class="fa-solid fa-graduation-cap w-4 text-emerald-400 text-xs"></i>
+                  <div class="flex items-center text-amber-800 dark:text-emerald-300 font-semibold truncate">
+                    <i class="fa-solid fa-graduation-cap w-4 text-amber-600 dark:text-emerald-400 text-xs"></i>
                     <span class="truncate">${escapeHtml(room.distance_campus)}</span>
                   </div>
                 ` : ''}
                 ${room.distance_food ? `
-                  <div class="flex items-center text-amber-300/90 truncate">
-                    <i class="fa-solid fa-utensils w-4 text-amber-400 text-xs"></i>
+                  <div class="flex items-center text-stone-700 dark:text-amber-300/90 truncate">
+                    <i class="fa-solid fa-utensils w-4 text-amber-500 dark:text-amber-400 text-xs"></i>
                     <span class="truncate">${escapeHtml(room.distance_food)}</span>
                   </div>
                 ` : ''}
                 ${room.distance_market ? `
-                  <div class="flex items-center text-slate-300 truncate">
-                    <i class="fa-solid fa-bag-shopping w-4 text-slate-400 text-xs"></i>
+                  <div class="flex items-center text-stone-600 dark:text-slate-300 truncate">
+                    <i class="fa-solid fa-bag-shopping w-4 text-stone-400 dark:text-slate-400 text-xs"></i>
                     <span class="truncate">${escapeHtml(room.distance_market)}</span>
                   </div>
                 ` : ''}
@@ -1264,23 +1268,23 @@
               ` : ''}
 
               <!-- Description Preview -->
-              <p class="text-xs text-slate-400 mt-2.5 line-clamp-2 leading-relaxed">
+              <p class="text-xs text-stone-600 dark:text-slate-400 mt-2.5 line-clamp-2 leading-relaxed">
                 ${escapeHtml(room.description)}
               </p>
             </div>
 
             <!-- Card Bottom Actions -->
-            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+            <div class="mt-4 pt-3 border-t border-amber-100 dark:border-slate-800/80 flex items-center justify-between">
               <!-- Rating Pill -->
-              <div class="text-xs font-semibold text-amber-400 flex items-center space-x-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-xl">
+              <div class="text-xs font-semibold text-amber-700 dark:text-amber-400 flex items-center space-x-1 bg-amber-500/10 border border-amber-500/30 px-2 py-1 rounded-xl">
                 <i class="fa-solid fa-star text-[10px]"></i>
                 <span>${rating}</span>
-                <span class="text-slate-400 text-[10px]">(${reviewsCount})</span>
+                <span class="text-stone-500 dark:text-slate-400 text-[10px]">(${reviewsCount})</span>
               </div>
 
               <!-- View Details Button -->
               <div class="flex items-center space-x-1.5">
-                <button class="text-xs font-bold bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/30 px-3 py-1 rounded-xl transition flex items-center space-x-1">
+                <button class="text-xs font-bold bg-amber-500/15 hover:bg-amber-600 text-amber-800 hover:text-white border border-amber-300/80 dark:bg-emerald-600/20 dark:hover:bg-emerald-600 dark:text-emerald-300 dark:hover:text-white dark:border-emerald-500/30 px-3 py-1 rounded-xl transition flex items-center space-x-1 shadow-xs">
                   <span>Explore</span>
                   <i class="fa-solid fa-chevron-right text-[10px]"></i>
                 </button>
@@ -1394,8 +1398,8 @@
         const content = document.getElementById(`detailTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
         if (btn) {
           btn.className = isCurrent 
-            ? "pb-2.5 border-b-2 border-emerald-400 text-emerald-400 transition flex items-center space-x-1.5"
-            : "pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5";
+            ? "pb-2.5 border-b-2 border-amber-600 text-amber-700 dark:border-emerald-400 dark:text-emerald-400 font-semibold transition flex items-center space-x-1.5"
+            : "pb-2.5 border-b-2 border-transparent text-stone-500 hover:text-stone-900 dark:text-slate-400 dark:hover:text-white transition flex items-center space-x-1.5";
         }
         if (content) {
           content.classList.toggle("hidden", !isCurrent);
@@ -1431,26 +1435,26 @@
 
     async function loadDetailReviews(roomId) {
       const container = document.getElementById("detailReviewsContainer");
-      container.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs"><i class="fa-solid fa-spinner fa-spin text-emerald-400 mr-1.5"></i> Loading feedback...</div>`;
+      container.innerHTML = `<div class="text-center py-4 text-stone-500 dark:text-slate-400 text-xs"><i class="fa-solid fa-spinner fa-spin text-amber-500 dark:text-emerald-400 mr-1.5"></i> Loading feedback...</div>`;
 
       try {
         const res = await fetch(`${API_BASE}/reviews/${roomId}`);
         const data = await res.json();
         if (res.ok && data.reviews && data.reviews.length > 0) {
           container.innerHTML = data.reviews.map(rev => `
-            <div class="bg-surface-950/80 border border-slate-800 rounded-2xl p-3.5 space-y-1">
+            <div class="bg-amber-50/80 dark:bg-surface-950/80 border border-amber-200/80 dark:border-slate-800 rounded-2xl p-3.5 space-y-1 shadow-sm">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-200">${escapeHtml(rev.user.email.split('@')[0])}</span>
-                <span class="text-amber-400 font-mono font-bold">${'★'.repeat(rev.rating)}</span>
+                <span class="font-bold text-stone-900 dark:text-slate-200">${escapeHtml(rev.user.email.split('@')[0])}</span>
+                <span class="text-amber-500 font-mono font-bold">${'★'.repeat(rev.rating)}</span>
               </div>
-              <p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(rev.comment || "Verified student resident.")}</p>
+              <p class="text-xs text-stone-700 dark:text-slate-300 leading-relaxed">${escapeHtml(rev.comment || "Verified student resident.")}</p>
             </div>
           `).join("");
         } else {
-          container.innerHTML = `<div class="text-center py-4 text-slate-500 text-xs">No reviews submitted yet. Be the first to share your rating!</div>`;
+          container.innerHTML = `<div class="text-center py-4 text-stone-500 dark:text-slate-500 text-xs">No reviews submitted yet. Be the first to share your rating!</div>`;
         }
       } catch (err) {
-        container.innerHTML = `<div class="text-center text-rose-400 text-xs py-4">Unable to load reviews.</div>`;
+        container.innerHTML = `<div class="text-center text-rose-500 dark:text-rose-400 text-xs py-4">Unable to load reviews.</div>`;
       }
     }
 
