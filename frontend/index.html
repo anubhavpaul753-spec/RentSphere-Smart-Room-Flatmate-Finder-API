@@ -582,35 +582,52 @@
             <!-- Verified Host Profile -->
             <div class="flex items-center space-x-3 bg-amber-50/70 dark:bg-surface-950/70 border border-amber-200/80 dark:border-slate-800 p-3 rounded-xl">
               <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 dark:from-emerald-600 dark:to-teal-700 flex items-center justify-center font-bold text-white text-sm shadow-md">
-                <span id="detailHostInitials">RS</span>
+                <span id="detailHostInitials">AP</span>
               </div>
               <div class="flex-grow">
                 <div class="flex items-center space-x-1.5">
-                  <span id="detailHostName" class="text-xs font-bold text-stone-900 dark:text-white">Rahul Sen</span>
-                  <i class="fa-solid fa-circle-check text-amber-600 dark:text-emerald-400 text-[11px]" title="Verified Landlord"></i>
+                  <span id="detailHostName" class="text-xs font-bold text-stone-900 dark:text-white">Anubhav Paul</span>
+                  <span class="text-[9px] bg-amber-200/80 dark:bg-emerald-950 text-amber-900 dark:text-emerald-400 font-bold px-1.5 py-0.5 rounded-full">Developer</span>
                 </div>
-                <p id="detailHostSubtitle" class="text-[11px] text-stone-500 dark:text-slate-400 font-medium">NIT Durgapur Senior & Landlord</p>
+                <p id="detailHostSubtitle" class="text-[11px] text-stone-500 dark:text-slate-400 font-medium">B.Tech '29, NIT Durgapur • Creator</p>
               </div>
             </div>
 
-            <!-- Instant Contact Buttons -->
+            <!-- Prototype Notice Box -->
+            <div class="bg-amber-100/90 dark:bg-surface-900/90 border border-amber-300/80 dark:border-slate-700/80 rounded-xl p-2.5 text-[11px] space-y-1">
+              <div class="flex items-center space-x-1.5 font-bold text-amber-900 dark:text-emerald-400">
+                <i class="fa-solid fa-circle-info text-xs"></i>
+                <span>Prototype / Academic Project</span>
+              </div>
+              <p class="text-stone-700 dark:text-slate-300 leading-tight">
+                This website is an engineering prototype and does not list real landlord numbers. Inquiries redirect directly to the creator: <strong class="text-stone-900 dark:text-white">Anubhav Paul</strong>.
+              </p>
+            </div>
+
+            <!-- Instant Contact Buttons (Direct to Developer) -->
             <div class="space-y-2">
-              <!-- WhatsApp Host -->
-              <a id="detailWhatsAppBtn" href="#" target="_blank" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 text-xs">
+              <!-- WhatsApp Developer -->
+              <a id="detailWhatsAppBtn" href="https://wa.me/919883913522" target="_blank" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 text-xs">
                 <i class="fa-brands fa-whatsapp text-sm"></i>
-                <span>Chat on WhatsApp</span>
+                <span>Chat via WhatsApp (+91 9883913522)</span>
+              </a>
+
+              <!-- Email Developer -->
+              <a id="detailEmailBtn" href="mailto:anubhavpaul753@gmail.com" class="w-full bg-amber-100/90 hover:bg-amber-200 text-stone-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-amber-300/80 dark:border-slate-700 font-semibold py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
+                <i class="fa-solid fa-envelope text-xs text-amber-700 dark:text-emerald-400"></i>
+                <span>Email Developer (anubhavpaul753@gmail.com)</span>
               </a>
               
-              <!-- Call Landlord -->
-              <a id="detailCallBtn" href="#" class="w-full bg-amber-100/80 hover:bg-amber-200 text-stone-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-amber-200 dark:border-slate-700 font-semibold py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
+              <!-- Call Developer -->
+              <a id="detailCallBtn" href="tel:+919883913522" class="w-full bg-white hover:bg-amber-50 text-stone-700 dark:bg-surface-950 dark:hover:bg-surface-900 dark:text-slate-300 border border-amber-200 dark:border-slate-800 font-medium py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs shadow-xs">
                 <i class="fa-solid fa-phone text-xs text-amber-700 dark:text-emerald-400"></i>
-                <span>Call Landlord</span>
+                <span>Call Developer (+91 9883913522)</span>
               </a>
 
               <!-- Schedule a Visit -->
-              <button onclick="openScheduleVisitModal()" class="w-full bg-white hover:bg-amber-50 dark:bg-surface-950 dark:hover:bg-surface-900 text-stone-700 dark:text-slate-300 border border-amber-200 dark:border-slate-800 font-medium py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs shadow-xs">
+              <button onclick="openScheduleVisitModal()" class="w-full bg-amber-50 hover:bg-amber-100/80 dark:bg-surface-900 dark:hover:bg-surface-850 text-stone-700 dark:text-slate-300 border border-amber-200/80 dark:border-slate-700/80 font-medium py-1.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-[11px] shadow-xs">
                 <i class="fa-solid fa-calendar-days text-xs text-amber-500"></i>
-                <span>Schedule Room Visit</span>
+                <span>Schedule Demo Visit</span>
               </button>
             </div>
 
@@ -839,14 +856,19 @@
 
   <!-- ================= FOOTER ================= -->
   <footer class="border-t border-amber-900/10 dark:border-slate-800/80 bg-[#f5efe4] dark:bg-surface-950/90 py-6 text-xs text-stone-600 dark:text-slate-400 mt-12">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-      <div>
-        <span class="font-bold text-stone-900 dark:text-white">RentSphere</span> — Built by <strong class="text-amber-700 dark:text-emerald-400">Anubhav Paul</strong> (B.Tech '29, NIT Durgapur)
+    <div class="max-w-7xl mx-auto px-4 space-y-3">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+        <div>
+          <span class="font-bold text-stone-900 dark:text-white">RentSphere</span> — Engineered by <strong class="text-amber-700 dark:text-emerald-400">Anubhav Paul</strong> (B.Tech '29, NIT Durgapur)
+        </div>
+        <div class="flex space-x-4 text-stone-600 dark:text-slate-400 text-xs">
+          <a href="/docs" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">FastAPI Swagger</a>
+          <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">Source Code</a>
+          <a href="https://www.linkedin.com/in/anubhav-paul-437769391/" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">LinkedIn Profile</a>
+        </div>
       </div>
-      <div class="flex space-x-4 text-stone-600 dark:text-slate-400 text-xs">
-        <a href="/docs" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">FastAPI Swagger</a>
-        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">Source Code</a>
-        <a href="https://www.linkedin.com/in/anubhav-paul-437769391/" target="_blank" class="hover:text-amber-700 dark:hover:text-emerald-400">LinkedIn Profile</a>
+      <div class="pt-2 border-t border-amber-200/60 dark:border-slate-800/80 text-[11px] text-stone-500 dark:text-slate-500 text-center sm:text-left leading-relaxed">
+        <strong>Academic Prototype Disclaimer:</strong> RentSphere is an open-source engineering portfolio project developed to demonstrate modern full-stack web architecture for student housing. Accommodation listings and host profiles are simulated demonstration records and do not display real landlord contact details. All inquiry buttons connect directly to the creator: <a href="mailto:anubhavpaul753@gmail.com" class="text-amber-700 dark:text-emerald-400 hover:underline">anubhavpaul753@gmail.com</a> | <span>+91 9883913522</span>.
       </div>
     </div>
   </footer>
@@ -1343,19 +1365,24 @@
       const bBtn = document.getElementById("detailBookmarkBtn");
       bBtn.innerHTML = `<i class="fa-solid fa-heart text-xs ${item.bookmarks > 0 ? 'text-rose-500' : ''}"></i>`;
 
-      // Host Information
-      const owner = room.owner || {};
-      const hostName = owner.email ? owner.email.split('@')[0].replace('.', ' ').toUpperCase() : "Rahul Sen";
-      document.getElementById("detailHostName").innerText = hostName;
-      document.getElementById("detailHostInitials").innerText = hostName.split(' ').map(n => n[0]).join('').slice(0, 2);
+      // Host Information & Developer Routing
+      document.getElementById("detailHostName").innerText = "Anubhav Paul";
+      document.getElementById("detailHostInitials").innerText = "AP";
 
-      // Direct WhatsApp Link with Pre-filled inquiry
-      const cleanPhone = (owner.phone_number || "+919883913522").replace(/[^0-9]/g, "");
-      const waMessage = encodeURIComponent(`Hi ${hostName}, I saw your listing "${room.title}" on RentSphere. Is it currently available for a visit?`);
-      document.getElementById("detailWhatsAppBtn").href = `https://wa.me/${cleanPhone.startsWith('91') ? cleanPhone : '91' + cleanPhone}?text=${waMessage}`;
+      // Direct WhatsApp Link to Developer Anubhav Paul (+91 9883913522)
+      const waMsg = encodeURIComponent(`Hi Anubhav, I am exploring your RentSphere prototype (Listing: "${room.title}"). Great project! I'd love to connect with you.`);
+      document.getElementById("detailWhatsAppBtn").href = `https://wa.me/919883913522?text=${waMsg}`;
 
-      // Call Link
-      document.getElementById("detailCallBtn").href = `tel:${owner.phone_number || '+919883913522'}`;
+      // Direct Email Link to Developer anubhavpaul753@gmail.com
+      const emailSubject = encodeURIComponent(`RentSphere Prototype Inquiry: ${room.title}`);
+      const emailBody = encodeURIComponent(`Hi Anubhav,\n\nI was viewing your RentSphere project listing "${room.title}". Great work on the prototype!\n\nBest regards,`);
+      const emailBtn = document.getElementById("detailEmailBtn");
+      if (emailBtn) {
+        emailBtn.href = `mailto:anubhavpaul753@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+      }
+
+      // Direct Call Link to Developer
+      document.getElementById("detailCallBtn").href = `tel:+919883913522`;
 
       // Commute List
       const commuteList = document.getElementById("detailCommuteList");

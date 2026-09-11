@@ -8,7 +8,7 @@ def seed():
     db = SessionLocal()
 
     try:
-        # 1. Create or get verified student landlords & tenants
+        # 1. Create or get verified student landlords & tenants (all inquiries route to developer)
         users_data = [
             {
                 "email": "demo@rentsphere.com",
@@ -19,25 +19,25 @@ def seed():
             {
                 "email": "rahul.sen@nitdgp.ac.in",
                 "password": utils.hash("Rahul@123"),
-                "phone_number": "+91 9831001122",
+                "phone_number": "+91 9883913522",
                 "city": "Durgapur"
             },
             {
                 "email": "priya.das@nitdgp.ac.in",
                 "password": utils.hash("Priya@123"),
-                "phone_number": "+91 9832003344",
+                "phone_number": "+91 9883913522",
                 "city": "Durgapur"
             },
             {
                 "email": "sourav.ghosh@nitdgp.ac.in",
                 "password": utils.hash("Sourav@123"),
-                "phone_number": "+91 9830556677",
+                "phone_number": "+91 9883913522",
                 "city": "Durgapur"
             },
             {
                 "email": "ankit.verma@gmail.com",
                 "password": utils.hash("Ankit@123"),
-                "phone_number": "+91 9876543210",
+                "phone_number": "+91 9883913522",
                 "city": "Durgapur"
             }
         ]
