@@ -600,7 +600,7 @@
                 <span>Prototype / Academic Project</span>
               </div>
               <p class="text-stone-700 dark:text-slate-300 leading-tight">
-                This website is an engineering prototype and does not list real landlord numbers. Inquiries redirect directly to the creator: <strong class="text-stone-900 dark:text-white">Anubhav Paul</strong>.
+                This website is an engineering prototype and does not list real landlord numbers. Inquiries connect directly to creator <strong class="text-stone-900 dark:text-white">Anubhav Paul</strong> via WhatsApp or Email.
               </p>
             </div>
 
@@ -617,15 +617,9 @@
                 <i class="fa-solid fa-envelope text-xs text-amber-700 dark:text-emerald-400"></i>
                 <span>Email Developer (anubhavpaul753@gmail.com)</span>
               </a>
-              
-              <!-- Call Developer -->
-              <a id="detailCallBtn" href="tel:+919883913522" class="w-full bg-white hover:bg-amber-50 text-stone-700 dark:bg-surface-950 dark:hover:bg-surface-900 dark:text-slate-300 border border-amber-200 dark:border-slate-800 font-medium py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs shadow-xs">
-                <i class="fa-solid fa-phone text-xs text-amber-700 dark:text-emerald-400"></i>
-                <span>Call Developer (+91 9883913522)</span>
-              </a>
 
               <!-- Schedule a Visit -->
-              <button onclick="openScheduleVisitModal()" class="w-full bg-amber-50 hover:bg-amber-100/80 dark:bg-surface-900 dark:hover:bg-surface-850 text-stone-700 dark:text-slate-300 border border-amber-200/80 dark:border-slate-700/80 font-medium py-1.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-[11px] shadow-xs">
+              <button onclick="openScheduleVisitModal()" class="w-full bg-amber-50 hover:bg-amber-100/80 dark:bg-surface-900 dark:hover:bg-surface-850 text-stone-700 dark:text-slate-300 border border-amber-200/80 dark:border-slate-700/80 font-medium py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs shadow-xs">
                 <i class="fa-solid fa-calendar-days text-xs text-amber-500"></i>
                 <span>Schedule Demo Visit</span>
               </button>
@@ -868,7 +862,7 @@
         </div>
       </div>
       <div class="pt-2 border-t border-amber-200/60 dark:border-slate-800/80 text-[11px] text-stone-500 dark:text-slate-500 text-center sm:text-left leading-relaxed">
-        <strong>Academic Prototype Disclaimer:</strong> RentSphere is an open-source engineering portfolio project developed to demonstrate modern full-stack web architecture for student housing. Accommodation listings and host profiles are simulated demonstration records and do not display real landlord contact details. All inquiry buttons connect directly to the creator: <a href="mailto:anubhavpaul753@gmail.com" class="text-amber-700 dark:text-emerald-400 hover:underline">anubhavpaul753@gmail.com</a> | <span>+91 9883913522</span>.
+        <strong>Academic Prototype Disclaimer:</strong> RentSphere is an open-source engineering portfolio project developed to demonstrate modern full-stack web architecture for student housing. Accommodation listings and host profiles are simulated demonstration records and do not display real landlord contact details. All inquiry buttons connect directly to the creator via Email (<a href="mailto:anubhavpaul753@gmail.com" class="text-amber-700 dark:text-emerald-400 hover:underline">anubhavpaul753@gmail.com</a>) or WhatsApp (+91 9883913522).
       </div>
     </div>
   </footer>
@@ -1380,9 +1374,6 @@
       if (emailBtn) {
         emailBtn.href = `mailto:anubhavpaul753@gmail.com?subject=${emailSubject}&body=${emailBody}`;
       }
-
-      // Direct Call Link to Developer
-      document.getElementById("detailCallBtn").href = `tel:+919883913522`;
 
       // Commute List
       const commuteList = document.getElementById("detailCommuteList");
