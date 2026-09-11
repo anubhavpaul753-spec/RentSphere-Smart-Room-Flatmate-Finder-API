@@ -14,14 +14,16 @@
         extend: {
           colors: {
             brand: {
+              400: '#34d399',
               500: '#10b981',
               600: '#059669',
               700: '#047857'
             },
             surface: {
-              850: '#131b2e',
+              800: '#1e293b',
+              850: '#111827',
               900: '#0b1120',
-              950: '#060a12'
+              950: '#070a0f'
             }
           },
           fontFamily: {
@@ -41,62 +43,139 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Unreal Engine 5 Ambient Shader Mesh Background */
+    .ue5-ambient-bg {
+      background-color: #070a0f;
+      background-image: 
+        radial-gradient(ellipse 90% 45% at 50% -10%, rgba(16, 185, 129, 0.15) 0%, transparent 60%),
+        radial-gradient(circle 800px at 100% 20%, rgba(5, 150, 105, 0.05) 0%, transparent 50%),
+        radial-gradient(circle 800px at 0% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    html:not(.dark) .ue5-ambient-bg {
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(ellipse 90% 45% at 50% -10%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
+        radial-gradient(circle 800px at 100% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Unreal Engine 5 Specular Carbon Card */
+    .ue5-card {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.85) 0%, rgba(11, 17, 32, 0.95) 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ue5-card-hover:hover {
+      transform: translateY(-4px);
+      border-top-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.85), 0 0 25px -4px rgba(16, 185, 129, 0.2);
+    }
+    html:not(.dark) .ue5-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+    html:not(.dark) .ue5-card-hover:hover {
+      transform: translateY(-4px);
+      border-color: #10b981;
+      box-shadow: 0 12px 28px -5px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Mint & Emerald Phosphor Text Glow */
+    .mint-glow {
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+    
     .custom-scroll::-webkit-scrollbar { width: 5px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    
     #leafletMap { height: 380px; width: 100%; border-radius: 1rem; z-index: 10; }
-    .leaflet-popup-content-wrapper { background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 0.75rem; }
+    #miniLeafletMap { height: 180px; width: 100%; border-radius: 0.75rem; z-index: 10; }
+    
+    .leaflet-popup-content-wrapper {
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      border-radius: 0.75rem;
+    }
+    html:not(.dark) .leaflet-popup-content-wrapper {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+    }
     .leaflet-popup-tip { background: #0f172a; }
+    html:not(.dark) .leaflet-popup-tip { background: #ffffff; }
   </style>
 </head>
 
-<body class="bg-surface-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+<body class="ue5-ambient-bg text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-300">
 
   <!-- ================= TOP NAVIGATION ================= -->
-  <nav class="sticky top-0 z-40 bg-surface-900/95 backdrop-blur-md border-b border-slate-800/80">
+  <nav class="sticky top-0 z-40 bg-surface-950/90 dark:bg-surface-950/90 backdrop-blur-xl border-b border-slate-800/80 dark:border-slate-800/80 light:bg-white/90 light:border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Brand Logo -->
       <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/20">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 border border-emerald-400/30">
           <i class="fa-solid fa-house-user text-white text-base"></i>
         </div>
         <div>
           <div class="flex items-center space-x-2">
-            <span class="text-lg font-extrabold tracking-tight text-white">RentSphere</span>
-            <span class="text-[10px] font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800/70 px-2 py-0.5 rounded-full">NIT DGP</span>
+            <span class="text-lg font-extrabold tracking-tight text-white dark:text-white light:text-slate-900">RentSphere</span>
+            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950/90 border border-emerald-800/80 px-2 py-0.5 rounded-full mint-glow">NIT DGP</span>
           </div>
-          <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Campus Flats, PGs & Roommate Finder</p>
+          <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Campus Flats, PGs & Student Roommates</p>
         </div>
       </div>
 
       <!-- Quick Links -->
       <div class="hidden md:flex items-center space-x-4 text-xs font-medium text-slate-400">
-        <a href="/docs" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1 py-1 px-2.5 rounded-lg hover:bg-slate-800/60">
+        <a href="/docs" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1.5 py-1 px-2.5 rounded-lg hover:bg-slate-800/60">
           <i class="fa-solid fa-code text-slate-500"></i>
           <span>Swagger Docs</span>
         </a>
-        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1 py-1 px-2.5 rounded-lg hover:bg-slate-800/60">
+        <a href="https://github.com/anubhavpaul753-spec/RentSphere-Smart-Room-Flatmate-Finder-API" target="_blank" class="hover:text-emerald-400 transition flex items-center space-x-1.5 py-1 px-2.5 rounded-lg hover:bg-slate-800/60">
           <i class="fa-brands fa-github text-slate-500"></i>
           <span>GitHub</span>
         </a>
       </div>
 
       <!-- Right Action Bar -->
-      <div class="flex items-center space-x-2.5">
-        <!-- 1-Click Demo Login -->
-        <button id="demoBtn" onclick="quickDemoLogin()" class="text-xs bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold px-3 py-1.5 rounded-lg transition flex items-center space-x-1.5">
-          <i class="fa-solid fa-bolt text-amber-400"></i>
-          <span class="hidden sm:inline">1-Click</span> Demo Mode
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        
+        <!-- Light / Dark Mode Toggle Button (☀️ / 🌙) -->
+        <button id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Light / Dark Mode" 
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition border border-white/10 dark:border-white/10 bg-surface-900/80 dark:bg-surface-900/80 text-amber-400 hover:text-amber-300 shadow-sm hover:border-emerald-500/40">
+          <i id="themeIcon" class="fa-solid fa-moon text-xs"></i>
+        </button>
+
+        <!-- 1-Click Demo Login (Visible in Nav) -->
+        <button id="navDemoBtn" onclick="quickDemoLogin()" class="text-xs bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold px-3 py-1.5 rounded-xl transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-bolt text-emerald-400"></i>
+          <span class="hidden sm:inline">1-Click</span> Demo
         </button>
 
         <!-- Post a Room Button -->
-        <button onclick="openPostRoomModal()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg shadow-sm transition flex items-center space-x-1.5">
+        <button onclick="openPostRoomModal()" class="text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold px-3 py-1.5 rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center space-x-1.5">
           <i class="fa-solid fa-plus text-[10px]"></i>
-          <span>List Room</span>
+          <span class="hidden sm:inline">List Room</span>
+          <span class="sm:hidden">Post</span>
         </button>
 
         <!-- Auth State Container -->
@@ -108,364 +187,649 @@
     </div>
   </nav>
 
-  <!-- ================= HERO WITH AUTHENTIC CAMPUS LOCATIONS ================= -->
-  <header class="border-b border-slate-800/60 bg-gradient-to-b from-surface-900 via-surface-950 to-surface-950 py-7 px-4 sm:px-6">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+  <!-- ================= HERO SECTION WITH SPECULAR GLOW ================= -->
+  <header class="border-b border-slate-800/60 bg-gradient-to-b from-surface-950 via-surface-950/80 to-transparent py-7 px-4 sm:px-6 relative overflow-hidden">
+    <!-- Ambient mesh spotlight -->
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
       
       <!-- Headline -->
       <div class="max-w-2xl">
-        <div class="inline-flex items-center space-x-2 bg-emerald-950/60 border border-emerald-800/50 px-3 py-1 rounded-full text-xs font-semibold text-emerald-400 mb-2.5">
+        <div class="inline-flex items-center space-x-2 bg-emerald-950/80 border border-emerald-800/60 px-3 py-1 rounded-full text-xs font-semibold text-emerald-400 mb-2.5 mint-glow">
           <i class="fa-solid fa-map-pin text-xs"></i>
-          <span>Real Durgapur Listings • Fuljhore, B-Zone, Benachity & City Centre</span>
+          <span>Real Durgapur & Kolkata Student Accommodations</span>
         </div>
-        <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-snug">
-          Verified student flats around NIT Durgapur with real proximity metrics.
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white dark:text-white light:text-slate-900 leading-tight">
+          Find Your Perfect Campus Room or Flatmate
         </h1>
-        <p class="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">
-          Compare exact walking distances to <strong>NIT North & West Gates</strong>, <strong>Hostel Haven evening food stalls</strong>, <strong>Benachity grocery market</strong>, and <strong>Junction Mall</strong>. Zero broker fees.
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+          Curated student flats, single PGs, and shared rooms within 500m of <strong class="text-emerald-400 font-semibold">NIT Durgapur (North Gate, Hall 7, Fuljhore)</strong> and tech parks in Kolkata.
         </p>
       </div>
 
-      <!-- Campus Quick Toggle / Map View Trigger -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-        <button onclick="toggleMap()" id="mapToggleBtn" class="bg-surface-850 hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 font-semibold px-4 py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-lg">
-          <i class="fa-solid fa-map-location-dot text-emerald-400 text-sm"></i>
-          <span id="mapToggleText">Open Interactive Campus Map</span>
+      <!-- Quick Stats & Filter Trigger -->
+      <div class="flex items-center space-x-3 w-full md:w-auto">
+        <div class="ue5-card p-3 rounded-2xl flex-1 md:flex-initial flex items-center space-x-3 border border-white/10">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-black text-sm">
+            <span id="statRoomCount">14</span>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-white dark:text-white light:text-slate-900">Verified Listings</div>
+            <div class="text-[10px] text-slate-400">All with real photos</div>
+          </div>
+        </div>
+
+        <button id="myBookmarksBtn" onclick="toggleMyBookmarksOnly()" class="ue5-card p-3 rounded-2xl flex-1 md:flex-initial flex items-center space-x-2 hover:border-rose-500/40 text-slate-300 hover:text-rose-400 transition cursor-pointer">
+          <i class="fa-solid fa-heart text-rose-500 text-sm"></i>
+          <span class="text-xs font-semibold">Saved Rooms</span>
         </button>
       </div>
 
     </div>
   </header>
 
-  <!-- ================= INTERACTIVE CAMPUS MAP CONTAINER (LEAFLET.JS) ================= -->
-  <section id="mapSection" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 w-full transition-all">
-    <div class="bg-surface-850 border border-slate-800 rounded-2xl p-4 shadow-xl">
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center space-x-2 text-xs text-slate-300">
-          <i class="fa-solid fa-layer-group text-emerald-400"></i>
-          <span class="font-bold text-white">Interactive NIT Durgapur Map</span>
-          <span class="text-slate-500">• Click any marker to view room price, photos and walking distance</span>
-        </div>
-        <button onclick="toggleMap()" class="text-xs text-slate-400 hover:text-white px-2 py-1">
-          <i class="fa-solid fa-xmark"></i> Close Map
-        </button>
-      </div>
-      <div id="leafletMap" class="shadow-inner"></div>
-      
-      <!-- Map Legend -->
-      <div class="flex flex-wrap items-center gap-4 mt-3 pt-2 border-t border-slate-800 text-[11px] text-slate-400">
-        <span class="flex items-center space-x-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span><span>NIT Durgapur Campus Gates</span></span>
-        <span class="flex items-center space-x-1.5"><span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span><span>Rental Accommodations (Fuljhore / B-Zone)</span></span>
-        <span class="flex items-center space-x-1.5"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span><span>Junction Mall / City Centre</span></span>
-        <span class="flex items-center space-x-1.5"><span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span><span>Benachity Market Place</span></span>
-      </div>
-    </div>
-  </section>
+  <!-- ================= MAIN APP CONTAINER ================= -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
 
-  <!-- ================= SEARCH & INTERACTIVE FILTERS ================= -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 w-full">
-    <div class="bg-surface-850/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
-      
-      <!-- Primary Search Inputs Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+    <!-- Active Filter Banner (When Bookmarks Mode Active) -->
+    <div id="filterBanner" class="hidden ue5-card bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl flex items-center justify-between">
+      <div class="flex items-center space-x-2 text-amber-300 text-xs font-semibold">
+        <i class="fa-solid fa-bookmark text-amber-400"></i>
+        <span>Viewing Bookmarked Listings Only</span>
+      </div>
+      <button onclick="resetFilters()" class="text-xs text-amber-300 hover:underline">
+        Show All Listings
+      </button>
+    </div>
+
+    <!-- ================= CONTROLS & FILTER BAR ================= -->
+    <section class="ue5-card p-4 rounded-2xl border border-white/10 space-y-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         
         <!-- Keyword Search -->
-        <div class="lg:col-span-5 relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
-          <input type="text" id="searchInput" placeholder="Search by area (Fuljhore, B-Zone, Benachity, Hall 7, AC)..." 
-                 class="w-full bg-surface-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
-                 oninput="handleSearchDebounce()">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          <input type="text" id="searchInput" oninput="handleSearchDebounce()" placeholder="Search title, description or locality..." 
+                 class="w-full bg-surface-950/80 border border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 transition">
         </div>
 
-        <!-- Locality / Area Dropdown -->
-        <div class="lg:col-span-2">
-          <select id="localityFilter" onchange="loadRooms()" 
-                  class="w-full bg-surface-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition">
-            <option value="">All Localities</option>
-            <option value="Fuljhore">Fuljhore (Near Campus)</option>
-            <option value="B-Zone">B-Zone (Near Hall 7)</option>
-            <option value="Benachity">Benachity Market</option>
-            <option value="City Centre">City Centre / Mall</option>
-            <option value="Muchipara">Muchipara (GT Road)</option>
-            <option value="Kolkata">Kolkata (Tech Interns)</option>
+        <!-- Locality Dropdown -->
+        <div class="relative">
+          <select id="localityFilter" onchange="loadRooms()" class="w-full bg-surface-950/80 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 transition cursor-pointer">
+            <option value="">All Localities (Durgapur & Kolkata)</option>
+            <optgroup label="Durgapur (Near NIT DGP)">
+              <option value="Fuljhore">Fuljhore (NIT North Gate)</option>
+              <option value="B-Zone">B-Zone (Hall 7 / West Gate)</option>
+              <option value="City Centre">City Centre (Junction Mall)</option>
+              <option value="Benachity">Benachity Market</option>
+              <option value="Muchipara">Muchipara (GT Road)</option>
+            </optgroup>
+            <optgroup label="Kolkata (IT Parks)">
+              <option value="Salt Lake Sector V">Salt Lake Sector V</option>
+              <option value="New Town">New Town Action Area</option>
+              <option value="Jadavpur">Jadavpur (8B Stand)</option>
+              <option value="EM Bypass">EM Bypass (Ruby Hospital)</option>
+            </optgroup>
           </select>
         </div>
 
-        <!-- Room Type Dropdown -->
-        <div class="lg:col-span-2">
-          <select id="typeFilter" onchange="loadRooms()" 
-                  class="w-full bg-surface-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition">
-            <option value="">All Types</option>
-            <option value="single">Single Room / 1BHK</option>
-            <option value="shared">Shared Flat / PG</option>
+        <!-- Room Type Filter -->
+        <div class="relative">
+          <select id="typeFilter" onchange="loadRooms()" class="w-full bg-surface-950/80 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 transition cursor-pointer">
+            <option value="">All Accommodation Types</option>
+            <option value="single">Single Room (Independent)</option>
+            <option value="shared">Shared Room / Flatmate</option>
           </select>
         </div>
 
         <!-- Price Range Slider -->
-        <div class="lg:col-span-3">
-          <div class="flex justify-between text-[11px] text-slate-400 mb-1">
-            <span>Budget Cap</span>
-            <span id="priceDisplay" class="text-emerald-400 font-bold">Up to Rs. 15,000/mo</span>
+        <div class="bg-surface-950/80 border border-slate-700/80 rounded-xl px-3 py-1.5 flex flex-col justify-center">
+          <div class="flex justify-between items-center text-[11px] mb-1">
+            <span class="text-slate-400 font-medium">Max Rent</span>
+            <span id="priceDisplay" class="text-emerald-400 font-bold font-mono">Up to Rs. 15,000/mo</span>
           </div>
-          <input type="range" id="priceSlider" min="2000" max="15000" step="500" value="15000" 
-                 class="w-full accent-emerald-500 bg-slate-800 rounded-lg cursor-pointer h-1.5"
-                 oninput="handlePriceInput(this.value)">
+          <input type="range" id="priceSlider" min="2000" max="15000" step="500" value="15000" oninput="handlePriceInput(this.value)" 
+                 class="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
         </div>
 
       </div>
 
-      <!-- Quick Campus Zone Pills -->
-      <div class="flex flex-wrap items-center gap-2 mt-3.5 pt-3 border-t border-slate-800/80 text-xs">
-        <span class="text-slate-500 font-medium">Campus Hotspots:</span>
-        <button onclick="quickFilter('locality', 'Fuljhore')" class="px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700/80 rounded-lg text-slate-300 transition">🚶 Fuljhore (3-5 min walk)</button>
-        <button onclick="quickFilter('locality', 'B-Zone')" class="px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700/80 rounded-lg text-slate-300 transition">🚲 B-Zone (Behind Hall 7)</button>
-        <button onclick="quickFilter('locality', 'Benachity')" class="px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700/80 rounded-lg text-slate-300 transition">🛍️ Benachity Market</button>
-        <button onclick="quickFilter('locality', 'City Centre')" class="px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700/80 rounded-lg text-slate-300 transition">🎬 Near Junction Mall</button>
-        <button onclick="toggleMyBookmarksOnly()" id="myBookmarksBtn" class="px-2.5 py-1 bg-slate-800/80 hover:bg-slate-700/80 rounded-lg text-amber-300 border border-amber-500/20 transition flex items-center space-x-1">
-          <i class="fa-solid fa-heart text-xs text-amber-400"></i>
-          <span>My Saved Listings</span>
+      <!-- Quick Campus Proximity Tags -->
+      <div class="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-800/80 text-[11px]">
+        <span class="text-slate-400 font-medium">Popular:</span>
+        <button onclick="quickFilter('locality', 'Fuljhore')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+          🚶 Fuljhore (North Gate)
         </button>
-        <button onclick="resetFilters()" class="text-slate-400 hover:text-white px-2 py-1 text-xs transition ml-auto flex items-center space-x-1">
-          <i class="fa-solid fa-arrow-rotate-left text-[10px]"></i>
-          <span>Reset</span>
+        <button onclick="quickFilter('locality', 'B-Zone')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+          🏡 B-Zone (Hall 7)
+        </button>
+        <button onclick="quickFilter('locality', 'City Centre')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+          🎬 City Centre (Junction Mall)
+        </button>
+        <button onclick="quickFilter('locality', 'Salt Lake Sector V')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+          💻 Sector V Tech Studio
+        </button>
+        <button onclick="resetFilters()" class="text-emerald-400 hover:underline ml-auto font-semibold">
+          Reset Filters
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= INTERACTIVE CAMPUS & LOCALITY MAP ================= -->
+    <section class="ue5-card p-4 rounded-2xl border border-white/10 space-y-2.5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-map-location-dot text-emerald-400 text-sm"></i>
+          <h2 class="text-sm font-bold text-white dark:text-white light:text-slate-900 tracking-tight">Interactive Campus & Transit Map</h2>
+          <span class="text-[10px] bg-emerald-950/80 border border-emerald-800/80 text-emerald-300 px-2 py-0.5 rounded-full">Live Pins</span>
+        </div>
+        <p class="text-[11px] text-slate-400 hidden sm:block">Click any pin to inspect pricing and distances to NIT Gates</p>
+      </div>
+      <div id="leafletMap" class="w-full border border-slate-800/80 shadow-inner"></div>
+    </section>
+
+    <!-- ================= LISTINGS GRID SECTION ================= -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <h2 class="text-lg font-bold text-white dark:text-white light:text-slate-900 tracking-tight">Available Accommodations</h2>
+          <span id="roomCountBadge" class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold px-2 py-0.5 rounded-full mint-glow">0</span>
+        </div>
+        <p class="text-xs text-slate-400">Click any card to explore full photos, amenities, host WhatsApp, and student reviews</p>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loadingIndicator" class="text-center py-16 text-slate-400 space-y-3">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-400"></i>
+        <p class="text-xs">Fetching verified campus accommodations...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyIndicator" class="hidden ue5-card p-12 text-center rounded-2xl border border-white/10 space-y-3">
+        <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-slate-400 text-lg">
+          <i class="fa-solid fa-bed"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">No accommodations found</h3>
+        <p class="text-xs text-slate-400 max-w-sm mx-auto">Try widening your price range or clearing locality search filters to view more student rooms.</p>
+        <button onclick="resetFilters()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-xl transition">
+          Reset All Filters
         </button>
       </div>
 
-    </div>
-  </section>
-
-  <!-- ================= MAIN LISTINGS FEED ================= -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
-    
-    <!-- Active filter alert -->
-    <div id="filterBanner" class="hidden mb-4 p-3 bg-amber-950/40 border border-amber-800/60 rounded-xl text-xs text-amber-300 flex justify-between items-center">
-      <span><i class="fa-solid fa-bookmark mr-1.5"></i> Viewing your bookmarked rooms only</span>
-      <button onclick="resetFilters()" class="underline font-bold hover:text-white">View All Listings</button>
-    </div>
-
-    <!-- Feed Status Header -->
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h2 class="text-lg font-bold text-white flex items-center space-x-2">
-          <span>Available Accommodations</span>
-          <span id="roomCountBadge" class="text-xs bg-slate-800 text-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-slate-700">0</span>
-        </h2>
-        <p class="text-xs text-slate-400 mt-0.5">Real-time availability, dynamic bookmark counts & student ratings</p>
+      <!-- Cards Grid -->
+      <div id="roomsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Populated dynamically by JS -->
       </div>
-    </div>
-
-    <!-- Loading State -->
-    <div id="loadingState" class="text-center py-16">
-      <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-500"></i>
-      <p class="text-slate-400 text-xs mt-3">Connecting to RentSphere PostgreSQL database...</p>
-    </div>
-
-    <!-- Empty State -->
-    <div id="emptyState" class="hidden text-center py-16 bg-surface-850 border border-slate-800 rounded-2xl">
-      <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-slate-400 text-lg mb-2">
-        <i class="fa-solid fa-bed"></i>
-      </div>
-      <h3 class="text-base font-bold text-white">No rooms matched this filter</h3>
-      <p class="text-slate-400 text-xs mt-1 max-w-sm mx-auto">Try broadening your search term or adjusting the rent slider.</p>
-      <button onclick="resetFilters()" class="mt-4 text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3.5 py-1.5 rounded-lg transition">
-        Reset Filters
-      </button>
-    </div>
-
-    <!-- Cards Grid -->
-    <div id="roomsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Cards rendered dynamically by JS -->
-    </div>
+    </section>
 
   </main>
 
-  <!-- ================= REVIEWS MODAL ================= -->
-  <div id="reviewsModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-surface-900 border border-slate-800 rounded-2xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl">
+  <!-- ================= SPLIT-SCREEN LISTING DETAIL VIEW (AIRBNB / HOUSING STYLE) ================= -->
+  <div id="roomDetailModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 transition-all duration-300">
+    <div class="relative w-full max-w-6xl max-h-[92vh] ue5-card rounded-3xl overflow-hidden flex flex-col border border-white/15 shadow-2xl">
       
-      <!-- Modal Header -->
-      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
-        <div>
-          <h3 class="text-sm font-bold text-white line-clamp-1" id="modalRoomTitle">Room Feedback</h3>
-          <div class="flex items-center space-x-2 text-xs text-slate-400 mt-0.5">
-            <span id="modalRoomLocality">Fuljhore</span>
-            <span>•</span>
-            <span id="modalRoomRating" class="text-amber-400 font-bold">★ 0.0</span>
-            <span>•</span>
-            <span id="modalRoomTotalReviews">0 reviews</span>
-          </div>
+      <!-- Modal Header Bar -->
+      <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-slate-800/80 bg-surface-950/90 backdrop-blur-md">
+        <div class="flex items-center space-x-3 truncate">
+          <button onclick="closeRoomDetailModal()" class="text-xs font-bold text-slate-400 hover:text-white flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-800/80 transition">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="hidden sm:inline">Back to Listings</span>
+          </button>
+          <span id="detailLocalityBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-emerald-950/90 text-emerald-300 border-emerald-800/80"></span>
+          <span id="detailTypeBadge" class="text-[11px] font-medium px-2 py-0.5 rounded-full border bg-slate-800 text-slate-300 border-slate-700 capitalize"></span>
         </div>
-        <button onclick="closeReviewsModal()" class="text-slate-400 hover:text-white p-1 text-base">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Modal Body (Reviews List) -->
-      <div class="p-4 overflow-y-auto custom-scroll flex-grow space-y-3" id="modalReviewsList">
-        <!-- Reviews injected by JS -->
-      </div>
-
-      <!-- Leave a Review Form -->
-      <div class="p-4 border-t border-slate-800 bg-surface-950/60 rounded-b-2xl">
-        <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Write a Verified Student Review</h4>
-        <div class="flex items-center space-x-2 mb-2.5">
-          <span class="text-xs text-slate-300">Your Rating:</span>
-          <div class="flex space-x-1" id="starRatingSelector">
-            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-sm" onclick="setRating(1)"></i>
-            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-sm" onclick="setRating(2)"></i>
-            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-sm" onclick="setRating(3)"></i>
-            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-sm" onclick="setRating(4)"></i>
-            <i class="fa-solid fa-star text-amber-400 cursor-pointer text-sm" onclick="setRating(5)"></i>
-          </div>
-          <span id="selectedRatingText" class="text-xs font-bold text-amber-400 ml-2">5 Stars</span>
-        </div>
-        <div class="flex space-x-2">
-          <input type="text" id="reviewCommentInput" placeholder="Comment on power backup, WiFi speed, quietness, landlord..." 
-                 class="flex-grow bg-surface-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500">
-          <button onclick="submitReview()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition whitespace-nowrap">
-            Submit
+        <div class="flex items-center space-x-2">
+          <button id="detailBookmarkBtn" onclick="toggleBookmarkFromDetail()" class="p-2 rounded-xl bg-surface-950 border border-slate-700 text-slate-300 hover:text-rose-400 transition" title="Save Listing">
+            <i class="fa-solid fa-heart text-xs"></i>
+          </button>
+          <button onclick="shareListing()" class="p-2 rounded-xl bg-surface-950 border border-slate-700 text-slate-300 hover:text-emerald-400 transition" title="Share Listing">
+            <i class="fa-solid fa-share-nodes text-xs"></i>
+          </button>
+          <button onclick="closeRoomDetailModal()" class="p-2 rounded-xl bg-surface-950 border border-slate-700 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
       </div>
 
+      <!-- Modal Content: Two-Column Split Layout -->
+      <div class="flex-grow overflow-y-auto custom-scroll p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT COLUMN (7 cols ~ 60% width): Photo, Tabs, Story, Amenities, Commute, Reviews -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Hero Photo Gallery -->
+          <div class="relative h-64 sm:h-80 rounded-2xl overflow-hidden ue5-card group border border-white/10">
+            <img id="detailHeroImg" src="" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-950/90 via-surface-950/20 to-transparent pointer-events-none"></div>
+            <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between pointer-events-none">
+              <div class="max-w-[80%]">
+                <h2 id="detailTitle" class="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight drop-shadow-md"></h2>
+                <p id="detailLocalityFull" class="text-xs text-slate-300 mt-1 flex items-center space-x-1 font-medium">
+                  <i class="fa-solid fa-location-dot text-emerald-400 text-xs"></i>
+                  <span></span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detail Tabs Switcher -->
+          <div class="flex border-b border-slate-800 space-x-6 text-xs font-bold">
+            <button id="tabBtnOverview" onclick="switchDetailTab('overview')" class="pb-2.5 border-b-2 border-emerald-400 text-emerald-400 transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>Overview</span>
+            </button>
+            <button id="tabBtnAmenities" onclick="switchDetailTab('amenities')" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>Amenities & Rules</span>
+            </button>
+            <button id="tabBtnCommute" onclick="switchDetailTab('commute')" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-route"></i>
+              <span>Commute & Proximity</span>
+            </button>
+            <button id="tabBtnReviews" onclick="switchDetailTab('reviews')" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-star text-amber-400"></i>
+              <span>Reviews (<span id="detailReviewsCount">0</span>)</span>
+            </button>
+          </div>
+
+          <!-- Tab 1: Overview -->
+          <div id="detailTabOverview" class="space-y-4">
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Property Description</h3>
+              <p id="detailDescription" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Occupancy</div>
+                <div id="detailOccupancy" class="text-xs font-bold text-white mt-1 capitalize">Single</div>
+              </div>
+              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Bathroom</div>
+                <div class="text-xs font-bold text-emerald-400 mt-1">Attached</div>
+              </div>
+              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Security Deposit</div>
+                <div id="detailDeposit" class="text-xs font-bold text-white mt-1">1 Month</div>
+              </div>
+              <div class="bg-surface-950/80 border border-slate-800 p-3 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Notice Period</div>
+                <div class="text-xs font-bold text-white mt-1">30 Days</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Amenities & Rules -->
+          <div id="detailTabAmenities" class="space-y-4 hidden">
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">Included Amenities</h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
+                  <i class="fa-solid fa-wifi text-emerald-400 text-sm"></i>
+                  <span>100 Mbps Fiber WiFi</span>
+                </div>
+                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
+                  <i class="fa-solid fa-bolt text-amber-400 text-sm"></i>
+                  <span>24/7 Inverter Backup</span>
+                </div>
+                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
+                  <i class="fa-solid fa-shower text-cyan-400 text-sm"></i>
+                  <span>Geyser / Hot Water</span>
+                </div>
+                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
+                  <i class="fa-solid fa-faucet-drip text-blue-400 text-sm"></i>
+                  <span>RO Drinking Water</span>
+                </div>
+                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
+                  <i class="fa-solid fa-shirt text-indigo-400 text-sm"></i>
+                  <span>Washing Machine</span>
+                </div>
+                <div class="flex items-center space-x-2.5 bg-surface-950/80 border border-slate-800 p-2.5 rounded-xl text-xs text-slate-200">
+                  <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
+                  <span>24/7 Gate Security</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">House Rules</h3>
+              <div class="space-y-2 text-xs text-slate-300">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-clock text-amber-400 text-xs"></i>
+                  <span>Gate timing: Flexible / No strict night curfew for NIT DGP scholars.</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-graduation-cap text-emerald-400 text-xs"></i>
+                  <span>Quiet hours during semester exams & GATE test sessions.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Commute & Distances -->
+          <div id="detailTabCommute" class="space-y-4 hidden">
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">Proximity to Key Hubs</h3>
+              <div id="detailCommuteList" class="space-y-2 text-xs">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Student Reviews & Submission -->
+          <div id="detailTabReviews" class="space-y-5 hidden">
+            <!-- Review Submission Box -->
+            <div class="bg-surface-950/90 border border-slate-800 rounded-2xl p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white">Rate your stay at this accommodation</span>
+                <span id="detailRatingSelectedText" class="text-xs font-bold text-amber-400">5 Stars</span>
+              </div>
+              
+              <!-- Clickable Star Selector -->
+              <div id="detailStarSelector" class="flex space-x-2 text-base cursor-pointer">
+                <i class="fa-solid fa-star text-amber-400" onclick="setDetailRating(1)"></i>
+                <i class="fa-solid fa-star text-amber-400" onclick="setDetailRating(2)"></i>
+                <i class="fa-solid fa-star text-amber-400" onclick="setDetailRating(3)"></i>
+                <i class="fa-solid fa-star text-amber-400" onclick="setDetailRating(4)"></i>
+                <i class="fa-solid fa-star text-amber-400" onclick="setDetailRating(5)"></i>
+              </div>
+
+              <textarea id="detailReviewComment" rows="2" placeholder="Share your experience (WiFi reliability, owner friendliness, load-shedding...)"
+                        class="w-full bg-surface-900 border border-slate-700/80 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"></textarea>
+              
+              <button onclick="submitDetailReview()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-xl text-xs transition shadow-md">
+                Submit Verified Review
+              </button>
+            </div>
+
+            <!-- Reviews List Container -->
+            <div id="detailReviewsContainer" class="space-y-2.5">
+              <!-- Injected by JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN (5 cols ~ 40% Sticky): Pricing, Verified Host Card, WhatsApp / Call, Mini Map -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="ue5-card rounded-2xl p-5 border border-white/10 space-y-4 sticky top-0">
+            
+            <!-- Pricing Block -->
+            <div class="flex items-baseline justify-between border-b border-slate-800/80 pb-3">
+              <div>
+                <span class="text-2xl sm:text-3xl font-black text-white mint-glow">Rs. <span id="detailRent"></span></span>
+                <span class="text-xs text-slate-400">/ month</span>
+              </div>
+              <div id="detailRatingBadge" class="flex items-center space-x-1 text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-xl">
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <span id="detailAvgRating">5.0</span>
+              </div>
+            </div>
+
+            <!-- Verified Host Profile -->
+            <div class="flex items-center space-x-3 bg-surface-950/70 border border-slate-800 p-3 rounded-xl">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center font-bold text-white text-sm shadow-md">
+                <span id="detailHostInitials">RS</span>
+              </div>
+              <div class="flex-grow">
+                <div class="flex items-center space-x-1.5">
+                  <span id="detailHostName" class="text-xs font-bold text-white">Rahul Sen</span>
+                  <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]" title="Verified Landlord"></i>
+                </div>
+                <p id="detailHostSubtitle" class="text-[11px] text-slate-400 font-medium">NIT Durgapur Senior & Landlord</p>
+              </div>
+            </div>
+
+            <!-- Instant Contact Buttons -->
+            <div class="space-y-2">
+              <!-- WhatsApp Host -->
+              <a id="detailWhatsAppBtn" href="#" target="_blank" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 text-xs">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Chat on WhatsApp</span>
+              </a>
+              
+              <!-- Call Landlord -->
+              <a id="detailCallBtn" href="#" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
+                <i class="fa-solid fa-phone text-xs text-emerald-400"></i>
+                <span>Call Landlord</span>
+              </a>
+
+              <!-- Schedule a Visit -->
+              <button onclick="openScheduleVisitModal()" class="w-full bg-surface-950 hover:bg-surface-900 text-slate-300 border border-slate-800 font-medium py-2 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs">
+                <i class="fa-solid fa-calendar-days text-xs text-amber-400"></i>
+                <span>Schedule Room Visit</span>
+              </button>
+            </div>
+
+            <!-- Embedded Mini Leaflet Map -->
+            <div class="pt-2 border-t border-slate-800/80">
+              <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400 mb-2">
+                <span>Location & Campus Route</span>
+                <a id="detailGmapsRoute" href="#" target="_blank" class="text-emerald-400 hover:underline flex items-center space-x-1">
+                  <span>Google Maps</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
+              </div>
+              <div id="miniLeafletMap" class="h-44 w-full rounded-xl border border-slate-800 overflow-hidden shadow-inner"></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
 
-  <!-- ================= POST ROOM MODAL ================= -->
-  <div id="postRoomModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-surface-900 border border-slate-800 rounded-2xl max-w-md w-full p-5 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-        <h3 class="text-sm font-bold text-white">List a Room / Flatmate Space</h3>
-        <button onclick="closePostRoomModal()" class="text-slate-400 hover:text-white p-1">
-          <i class="fa-solid fa-xmark"></i>
+  <!-- ================= SCHEDULE ROOM VISIT MODAL ================= -->
+  <div id="scheduleVisitModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-sm ue5-card rounded-2xl p-5 border border-white/15 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+          <i class="fa-solid fa-calendar-check text-emerald-400"></i>
+          <span>Schedule Room Inspection</span>
+        </h3>
+        <button onclick="closeScheduleVisitModal()" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
-
-      <form onsubmit="handlePostRoom(event)" class="space-y-3">
+      <p class="text-xs text-slate-400">Select a preferred date and time to meet the landlord and tour the room.</p>
+      
+      <form onsubmit="handleScheduleVisitSubmit(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Listing Title</label>
-          <input type="text" id="newRoomTitle" required placeholder="e.g. 1 BHK Single Room near B-Zone Market" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Locality (e.g. Fuljhore, B-Zone)</label>
-            <input type="text" id="newRoomLocality" required placeholder="Fuljhore Road" 
-                   class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Monthly Rent (Rs.)</label>
-            <input type="number" id="newRoomRent" required min="500" max="100000" placeholder="4500" 
-                   class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Type</label>
-            <select id="newRoomType" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
-              <option value="single">Single Room</option>
-              <option value="shared">Shared Room / Flat</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Status</label>
-            <select id="newRoomAvail" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
-              <option value="true">Available Immediately</option>
-              <option value="false">Available Next Semester</option>
-            </select>
-          </div>
+          <label class="block text-slate-400 mb-1 font-medium">Preferred Date</label>
+          <input type="date" id="visitDateInput" required 
+                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Proximity / Distance Notes</label>
-          <input type="text" id="newRoomDistance" placeholder="e.g. 5 min walk to NIT North Gate, 500m to Hostel Haven" 
-                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+          <label class="block text-slate-400 mb-1 font-medium">Preferred Time</label>
+          <select id="visitTimeInput" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+            <option value="11:00 AM">Morning (11:00 AM - 1:00 PM)</option>
+            <option value="4:00 PM">Afternoon (4:00 PM - 6:00 PM)</option>
+            <option value="7:00 PM">Evening (7:00 PM - 8:30 PM)</option>
+          </select>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Description & Amenities</label>
-          <textarea id="newRoomDesc" rows="2" required placeholder="Detail study desk, WiFi speed, distance to gate, mess access, food habits..." 
-                    class="w-full bg-surface-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"></textarea>
-        </div>
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl transition text-xs mt-2">
-          Publish to RentSphere
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition shadow-md">
+          Confirm Schedule Request
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ================= AUTH MODAL ================= -->
-  <div id="authModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-surface-900 border border-slate-800 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
-      <div class="flex border-b border-slate-800 mb-3 pb-1 justify-between items-center">
-        <div class="flex space-x-3">
-          <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="font-bold text-xs text-emerald-400 border-b-2 border-emerald-400 pb-1">Sign In</button>
-          <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="font-bold text-xs text-slate-400 border-b-2 border-transparent pb-1">Create Account</button>
+  <!-- ================= MANDATORY AUTHENTICATION GATEWAY MODAL ================= -->
+  <div id="authGateOverlay" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-2xl flex items-center justify-center p-4 transition-all duration-300">
+    <div class="relative w-full max-w-md ue5-card rounded-3xl p-6 sm:p-8 text-center border border-white/15 shadow-2xl">
+      
+      <!-- Ambient Halo -->
+      <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-44 h-44 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Glowing Logo Icon -->
+      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 border border-emerald-400/40">
+        <i class="fa-solid fa-house-user text-white text-2xl"></i>
+      </div>
+
+      <h2 class="text-2xl font-black text-white tracking-tight">Welcome to RentSphere</h2>
+      <p class="text-xs text-emerald-400 font-bold mt-1 mint-glow">NIT Durgapur Student Accommodation Portal</p>
+      <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+        Access student room listings, check walking distances to campus gates, read verified senior reviews, and contact landlords directly.
+      </p>
+
+      <!-- 1-Click Quick Demo Login Button -->
+      <div class="mt-6">
+        <button onclick="quickDemoLogin()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold py-3 px-4 rounded-2xl transition shadow-xl shadow-emerald-500/25 flex items-center justify-center space-x-2 text-sm">
+          <i class="fa-solid fa-bolt text-amber-300"></i>
+          <span>1-Click Instant Demo Login</span>
+        </button>
+        <div class="text-[11px] text-slate-400 mt-1.5 font-mono">
+          Instant access with verified demo student credentials
         </div>
-        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white pb-1">
-          <i class="fa-solid fa-xmark text-sm"></i>
+      </div>
+
+      <!-- Divider -->
+      <div class="relative my-5 flex items-center justify-center">
+        <div class="border-t border-slate-800 w-full"></div>
+        <span class="bg-surface-900 px-3 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Or Email Account</span>
+        <div class="border-t border-slate-800 w-full"></div>
+      </div>
+
+      <!-- Sign In / Register Tabs -->
+      <div class="flex border-b border-slate-800 mb-4 justify-center space-x-6">
+        <button id="gateTabLoginBtn" onclick="switchGateAuthTab('login')" class="font-bold text-xs text-emerald-400 border-b-2 border-emerald-400 pb-1.5 transition">
+          Sign In
+        </button>
+        <button id="gateTabRegisterBtn" onclick="switchGateAuthTab('register')" class="font-bold text-xs text-slate-400 border-b-2 border-transparent pb-1.5 transition">
+          Create Account
         </button>
       </div>
 
-      <!-- Login Form -->
-      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3">
+      <!-- Gate Login Form -->
+      <form id="gateLoginForm" onsubmit="handleGateLogin(event)" class="space-y-3 text-left">
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Email</label>
-          <input type="email" id="loginEmail" required placeholder="demo@rentsphere.com" 
+          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Student Email</label>
+          <input type="email" id="gateLoginEmail" required placeholder="demo@rentsphere.com" 
                  class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Password</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••" 
+          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Password</label>
+          <input type="password" id="gateLoginPassword" required placeholder="••••••••" 
                  class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
         </div>
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl transition text-xs">
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
           Sign In
         </button>
       </form>
 
-      <!-- Register Form -->
-      <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 hidden">
+      <!-- Gate Register Form -->
+      <form id="gateRegisterForm" onsubmit="handleGateRegister(event)" class="space-y-3 text-left hidden">
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Email</label>
-          <input type="email" id="regEmail" required placeholder="student@nitdgp.ac.in" 
+          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Student / Landlord Email</label>
+          <input type="email" id="gateRegEmail" required placeholder="yourname@nitdgp.ac.in" 
                  class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Password</label>
-          <input type="password" id="regPassword" required placeholder="At least 6 characters" 
+          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Password</label>
+          <input type="password" id="gateRegPassword" required placeholder="At least 6 characters" 
                  class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Phone Number</label>
-          <input type="text" id="regPhone" placeholder="+91 9883913522" 
+          <label class="block text-[11px] text-slate-400 mb-1 font-medium">Phone Number</label>
+          <input type="text" id="gateRegPhone" placeholder="+91 9883913522" 
                  class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
         </div>
         <div>
-          <label class="block text-[11px] text-slate-400 mb-1">City / Campus</label>
-          <input type="text" id="regCity" placeholder="Durgapur" 
+          <label class="block text-[11px] text-slate-400 mb-1 font-medium">City</label>
+          <input type="text" id="gateRegCity" placeholder="Durgapur" 
                  class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
         </div>
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl transition text-xs">
-          Create Account
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
+          Create Account & Unlock
         </button>
       </form>
 
-      <div class="mt-3 pt-2.5 border-t border-slate-800 text-center text-[11px] text-slate-400">
-        Demo Account: <span class="text-emerald-400 font-mono">demo@rentsphere.com</span>
+    </div>
+  </div>
+
+  <!-- ================= POST A ROOM MODAL ================= -->
+  <div id="postRoomModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-lg ue5-card rounded-2xl p-6 border border-white/15 space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-white flex items-center space-x-2">
+          <i class="fa-solid fa-plus-circle text-emerald-400"></i>
+          <span>List a Campus Accommodation</span>
+        </h3>
+        <button onclick="closePostRoomModal()" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
       </div>
+
+      <form onsubmit="handlePostRoom(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 mb-1 font-medium">Listing Title</label>
+          <input type="text" id="newRoomTitle" required placeholder="e.g. Aashirbad PG & Student Home (Fuljhore)" 
+                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1 font-medium">Locality / Landmark</label>
+            <input type="text" id="newRoomLocality" required placeholder="Fuljhore Road" 
+                   class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1 font-medium">Monthly Rent (₹)</label>
+            <input type="number" id="newRoomRent" required placeholder="4500" 
+                   class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1 font-medium">Room Type</label>
+            <select id="newRoomType" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+              <option value="single">Single Room</option>
+              <option value="shared">Shared Room</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1 font-medium">Availability</label>
+            <select id="newRoomAvail" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+              <option value="true">Immediate Availability</option>
+              <option value="false">Occupied</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1 font-medium">Distance Metric (e.g. 🚶 350m to NIT North Gate)</label>
+          <input type="text" id="newRoomDistance" placeholder="🚶 350m (4 min walk) to NIT DGP North Gate" 
+                 class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1 font-medium">Description</label>
+          <textarea id="newRoomDesc" rows="3" required placeholder="Furnishing details, power backup, study table, wifi..." 
+                    class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md">
+          Publish Accommodation
+        </button>
+      </form>
     </div>
   </div>
 
   <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-surface-900 border border-emerald-500/40 text-white px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2 text-xs transition-all">
-    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
-    <span id="toastMsg">Action completed</span>
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden ue5-card border border-emerald-500/50 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs transition-all">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+    <span id="toastMsg" class="font-medium">Action completed</span>
   </div>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="border-t border-slate-800/80 bg-surface-950 py-6 text-xs text-slate-400 mt-12">
+  <footer class="border-t border-slate-800/80 bg-surface-950/90 py-6 text-xs text-slate-400 mt-12">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
       <div>
-        <span class="font-bold text-white">RentSphere</span> — Built by <strong class="text-emerald-400">Anubhav Paul</strong> (B.Tech '29, NIT Durgapur)
+        <span class="font-bold text-white dark:text-white light:text-slate-900">RentSphere</span> — Built by <strong class="text-emerald-400">Anubhav Paul</strong> (B.Tech '29, NIT Durgapur)
       </div>
       <div class="flex space-x-4 text-slate-400 text-xs">
         <a href="/docs" target="_blank" class="hover:text-emerald-400">FastAPI Swagger</a>
@@ -475,28 +839,85 @@
     </div>
   </footer>
 
-  <!-- ================= APPLICATION LOGIC & LEAFLET MAP ================= -->
+  <!-- ================= APPLICATION LOGIC & LEAFLET ================= -->
   <script>
     const API_BASE = window.location.origin;
     let currentAuthToken = localStorage.getItem("rentsphere_token") || null;
     let currentUser = null;
-    let currentActiveReviewRoomId = null;
-    let selectedRating = 5;
+    let currentActiveDetailRoom = null;
+    let currentActiveDetailReviews = [];
+    let selectedDetailRating = 5;
     let isShowingOnlyBookmarks = false;
     let searchDebounceTimer = null;
     let allRoomsCache = [];
+    
+    // Leaflet Maps
     let leafletMapInstance = null;
     let mapMarkersLayer = null;
+    let miniLeafletInstance = null;
+    let miniLeafletMarker = null;
+    let currentMapTileLayer = null;
+
+    // Theme Management
+    let currentTheme = localStorage.getItem("rentsphere_theme") || "dark";
 
     document.addEventListener("DOMContentLoaded", () => {
+      initTheme();
       checkAuthStatus();
+      initMainMap();
       loadRooms();
     });
 
-    // ================= AUTHENTICATION =================
+    // ================= THEME TOGGLE (☀️ / 🌙) =================
+    function initTheme() {
+      if (currentTheme === "light") {
+        document.documentElement.classList.remove("dark");
+        document.getElementById("themeIcon").className = "fa-solid fa-sun text-xs text-amber-500";
+      } else {
+        document.documentElement.classList.add("dark");
+        document.getElementById("themeIcon").className = "fa-solid fa-moon text-xs text-amber-400";
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      if (isDark) {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("rentsphere_theme", "light");
+        currentTheme = "light";
+        document.getElementById("themeIcon").className = "fa-solid fa-sun text-xs text-amber-500";
+        showToast("☀️ Light Mode Activated", "info");
+      } else {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("rentsphere_theme", "dark");
+        currentTheme = "dark";
+        document.getElementById("themeIcon").className = "fa-solid fa-moon text-xs text-amber-400";
+        showToast("🌙 Unreal Obsidian Dark Mode Activated", "success");
+      }
+      updateMapTileLayer();
+    }
+
+    function updateMapTileLayer() {
+      if (!leafletMapInstance) return;
+      const isDark = document.documentElement.classList.contains("dark");
+      const tileUrl = isDark 
+        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png'
+        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+      
+      if (currentMapTileLayer) {
+        leafletMapInstance.removeLayer(currentMapTileLayer);
+      }
+      currentMapTileLayer = L.tileLayer(tileUrl, {
+        maxZoom: 19,
+        attribution: '&copy; CartoDB &copy; OpenStreetMap'
+      }).addTo(leafletMapInstance);
+    }
+
+    // ================= MANDATORY AUTH GATEWAY =================
     async function checkAuthStatus() {
       if (!currentAuthToken) {
         renderAuthUI(null);
+        showAuthGate();
         return;
       }
       try {
@@ -506,6 +927,7 @@
         if (res.ok) {
           currentUser = await res.json();
           renderAuthUI(currentUser);
+          hideAuthGate();
         } else {
           logout();
         }
@@ -514,12 +936,20 @@
       }
     }
 
+    function showAuthGate() {
+      document.getElementById("authGateOverlay").classList.remove("hidden");
+    }
+
+    function hideAuthGate() {
+      document.getElementById("authGateOverlay").classList.add("hidden");
+    }
+
     function renderAuthUI(user) {
       const container = document.getElementById("authContainer");
       if (user) {
         container.innerHTML = `
-          <div class="flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-2 py-1 rounded-xl">
-            <span class="text-xs font-semibold text-emerald-400 font-mono">${user.email.split('@')[0]}</span>
+          <div class="flex items-center space-x-2 bg-surface-900 border border-slate-700/80 px-2.5 py-1 rounded-xl">
+            <span class="text-xs font-bold text-emerald-400 font-mono">${user.email.split('@')[0]}</span>
             <button onclick="logout()" title="Logout" class="text-xs text-slate-400 hover:text-rose-400 transition pl-1">
               <i class="fa-solid fa-power-off"></i>
             </button>
@@ -527,13 +957,23 @@
         `;
       } else {
         container.innerHTML = `
-          <button onclick="openAuthModal()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-3 py-1.5 rounded-lg border border-slate-700 transition">
+          <button onclick="showAuthGate()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-3 py-1.5 rounded-xl border border-slate-700 transition">
             Sign In
           </button>
         `;
       }
     }
 
+    function logout() {
+      currentAuthToken = null;
+      currentUser = null;
+      localStorage.removeItem("rentsphere_token");
+      renderAuthUI(null);
+      showAuthGate();
+      showToast("Logged out safely", "info");
+    }
+
+    // 1-Click Quick Demo Login (Uses pre-seeded demo user)
     async function quickDemoLogin() {
       const formData = new URLSearchParams();
       formData.append("username", "demo@rentsphere.com");
@@ -549,19 +989,34 @@
         if (res.ok && data.access_token) {
           currentAuthToken = data.access_token;
           localStorage.setItem("rentsphere_token", currentAuthToken);
-          showToast("Signed in as Demo User (NIT DGP)", "success");
+          hideAuthGate();
+          showToast("⚡ Welcome, Demo Student! All features unlocked.", "success");
           await checkAuthStatus();
           loadRooms();
+        } else {
+          showToast("Demo login error: " + (data.detail || "Check credentials"), "error");
         }
       } catch (err) {
-        showToast("Demo login issue", "error");
+        showToast("Connection issue", "error");
       }
     }
 
-    async function handleLogin(e) {
+    function switchGateAuthTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById("gateLoginForm").classList.toggle("hidden", !isLogin);
+      document.getElementById("gateRegisterForm").classList.toggle("hidden", isLogin);
+      document.getElementById("gateTabLoginBtn").className = isLogin 
+        ? "font-bold text-xs text-emerald-400 border-b-2 border-emerald-400 pb-1.5 transition"
+        : "font-bold text-xs text-slate-400 border-b-2 border-transparent pb-1.5 transition";
+      document.getElementById("gateTabRegisterBtn").className = !isLogin 
+        ? "font-bold text-xs text-emerald-400 border-b-2 border-emerald-400 pb-1.5 transition"
+        : "font-bold text-xs text-slate-400 border-b-2 border-transparent pb-1.5 transition";
+    }
+
+    async function handleGateLogin(e) {
       e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
+      const email = document.getElementById("gateLoginEmail").value.trim();
+      const password = document.getElementById("gateLoginPassword").value;
 
       const formData = new URLSearchParams();
       formData.append("username", email);
@@ -577,24 +1032,24 @@
         if (res.ok && data.access_token) {
           currentAuthToken = data.access_token;
           localStorage.setItem("rentsphere_token", currentAuthToken);
-          closeAuthModal();
-          showToast("Welcome back!", "success");
+          hideAuthGate();
+          showToast("Welcome back! 👋", "success");
           await checkAuthStatus();
           loadRooms();
         } else {
-          showToast(data.detail || "Invalid login credentials", "error");
+          showToast(data.detail || "Invalid credentials", "error");
         }
       } catch (err) {
-        showToast("Server error during login", "error");
+        showToast("Network error", "error");
       }
     }
 
-    async function handleRegister(e) {
+    async function handleGateRegister(e) {
       e.preventDefault();
-      const email = document.getElementById("regEmail").value;
-      const password = document.getElementById("regPassword").value;
-      const phone_number = document.getElementById("regPhone").value;
-      const city = document.getElementById("regCity").value;
+      const email = document.getElementById("gateRegEmail").value.trim();
+      const password = document.getElementById("gateRegPassword").value;
+      const phone_number = document.getElementById("gateRegPhone").value.trim();
+      const city = document.getElementById("gateRegCity").value.trim() || "Durgapur";
 
       try {
         const res = await fetch(`${API_BASE}/users/`, {
@@ -604,47 +1059,77 @@
         });
         const data = await res.json();
         if (res.ok) {
-          showToast("Account created! Please sign in.", "success");
-          switchAuthTab("login");
-          document.getElementById("loginEmail").value = email;
+          showToast("Account created! Logging in...", "success");
+          document.getElementById("gateLoginEmail").value = email;
+          document.getElementById("gateLoginPassword").value = password;
+          handleGateLogin(e);
         } else {
           showToast(data.detail || "Registration failed", "error");
         }
       } catch (err) {
-        showToast("Server error", "error");
+        showToast("Network error", "error");
       }
     }
 
-    function logout() {
-      currentAuthToken = null;
-      currentUser = null;
-      localStorage.removeItem("rentsphere_token");
-      renderAuthUI(null);
-      isShowingOnlyBookmarks = false;
-      document.getElementById("filterBanner").classList.add("hidden");
-      showToast("Signed out", "info");
-      loadRooms();
+    // ================= MAP INITIALIZATION =================
+    function initMainMap() {
+      // Centered between NIT Durgapur (23.5480, 87.2940)
+      leafletMapInstance = L.map('leafletMap').setView([23.5480, 87.2940], 13);
+      updateMapTileLayer();
+      mapMarkersLayer = L.layerGroup().addTo(leafletMapInstance);
     }
 
-    // ================= ROOM FEED & PROXIMITY CARDS =================
+    function updateMapMarkers(rooms) {
+      if (!mapMarkersLayer) return;
+      mapMarkersLayer.clearLayers();
+
+      // NIT Durgapur Landmark Pin
+      const nitPin = L.divIcon({
+        className: 'nit-pin',
+        html: `<div style="background:#10b981; color:#fff; padding:4px 8px; border-radius:12px; font-size:11px; font-weight:800; border:2px solid #fff; box-shadow:0 0 15px rgba(16,185,129,0.8); white-space:nowrap;">🎓 NIT Durgapur Main Campus</div>`,
+        iconSize: [160, 28]
+      });
+      L.marker([23.5480, 87.2940], { icon: nitPin }).addTo(mapMarkersLayer)
+        .bindPopup("<b style='color:#10b981'>NIT Durgapur</b><br><span style='font-size:11px'>Main Academic & Hostel Complex</span>");
+
+      // Render individual room pins
+      rooms.forEach(item => {
+        const r = item.Room;
+        if (r.latitude && r.longitude) {
+          const roomPin = L.divIcon({
+            className: 'room-pin',
+            html: `<div style="background:#0284c7; color:#fff; padding:3px 7px; border-radius:10px; font-size:10px; font-weight:bold; border:1px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,0.5); white-space:nowrap;">🏠 ₹${(r.rent_amount/1000).toFixed(1)}k</div>`,
+            iconSize: [70, 24]
+          });
+
+          const marker = L.marker([r.latitude, r.longitude], { icon: roomPin }).addTo(mapMarkersLayer);
+          marker.bindPopup(`
+            <div style="font-family:sans-serif; max-width:210px;">
+              <img src="${resolveImageUrl(r.image_url)}" style="width:100%; height:95px; object-fit:cover; border-radius:8px; margin-bottom:6px;">
+              <b style="color:#10b981; font-size:12px;">${escapeHtml(r.title)}</b><br>
+              <span style="font-size:11px; color:#94a3b8;">${escapeHtml(r.locality || r.city)}</span><br>
+              <b style="color:#fff; font-size:13px;">Rs. ${r.rent_amount.toLocaleString()}/mo</b><br>
+              <div style="font-size:10px; color:#cbd5e1; margin-top:3px;">${escapeHtml(r.distance_campus || '')}</div>
+              <button onclick="openRoomDetailModal(${r.id})" style="background:#10b981; color:#fff; font-size:11px; font-weight:bold; border:none; padding:4px 8px; border-radius:6px; margin-top:6px; cursor:pointer; width:100%;">Inspect Room & WhatsApp 👉</button>
+            </div>
+          `);
+        }
+      });
+    }
+
+    // ================= LISTINGS DATA LOADING =================
     async function loadRooms() {
-      const loading = document.getElementById("loadingState");
-      const empty = document.getElementById("emptyState");
       const grid = document.getElementById("roomsGrid");
+      const loading = document.getElementById("loadingIndicator");
+      const empty = document.getElementById("emptyIndicator");
 
       loading.classList.remove("hidden");
       empty.classList.add("hidden");
-      grid.innerHTML = "";
 
       let endpoint = `${API_BASE}/rooms/`;
 
-      if (isShowingOnlyBookmarks) {
-        if (!currentAuthToken) {
-          openAuthModal();
-          loading.classList.add("hidden");
-          return;
-        }
-        endpoint = `${API_BASE}/bookmarks/me`;
+      if (isShowingOnlyBookmarks && currentAuthToken) {
+        endpoint = `${API_BASE}/bookmarks/`;
       } else {
         const search = document.getElementById("searchInput").value.trim();
         const locality = document.getElementById("localityFilter").value;
@@ -653,7 +1138,7 @@
 
         const params = new URLSearchParams();
         if (search) params.append("search", search);
-        if (locality) params.append("search", locality); // Uses keyword search across title & description
+        if (locality) params.append("search", locality);
         if (type) params.append("room_type", type);
         if (maxRent && maxRent < 15000) params.append("max_rent", maxRent);
         params.append("limit", 50);
@@ -678,6 +1163,7 @@
 
         allRoomsCache = rooms;
         document.getElementById("roomCountBadge").innerText = rooms.length;
+        document.getElementById("statRoomCount").innerText = rooms.length;
         grid.innerHTML = rooms.map((item, idx) => renderRoomCard(item, idx)).join("");
         updateMapMarkers(rooms);
       } catch (err) {
@@ -688,13 +1174,13 @@
 
     function resolveImageUrl(url) {
       if (!url) return "https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&w=800&q=80";
-      // If served directly from file:// protocol
       if (url.startsWith("/static/") && window.location.protocol === "file:") {
         return url.replace("/static/", "./");
       }
       return url;
     }
 
+    // ================= ROOM CARD RENDERING =================
     function renderRoomCard(item, idx) {
       const room = item.Room;
       const bookmarks = item.bookmarks || 0;
@@ -705,46 +1191,43 @@
 
       const localityBadge = room.locality || room.city;
       const hasProximity = room.distance_campus || room.distance_food || room.distance_market || room.distance_mall;
-      const gmapsDirUrl = (room.latitude && room.longitude)
-        ? `https://www.google.com/maps/dir/?api=1&destination=${room.latitude},${room.longitude}`
-        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(room.title + ' ' + (room.city || 'Durgapur'))}`;
 
       return `
-        <div id="room-card-${room.id}" class="bg-surface-850 border border-slate-800/90 hover:border-slate-700 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 shadow-lg group relative" style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: translateZ(0);">
+        <div id="room-card-${room.id}" onclick="handleCardClick(event, ${room.id})" 
+             class="ue5-card ue5-card-hover rounded-3xl overflow-hidden flex flex-col justify-between cursor-pointer group relative">
           
           <!-- Image Header with Badges -->
-          <div class="relative h-44 overflow-hidden bg-surface-850 -mb-px">
+          <div class="relative h-48 overflow-hidden bg-surface-950 -mb-px">
             <img src="${imgUrl}" alt="${escapeHtml(room.title)}" 
                  onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = this.src.includes('/static/assets/') ? this.src.replace('/static/assets/', '/assets/') : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&w=800&q=80'; }"
                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500 block">
-            <div class="absolute inset-0 bg-gradient-to-t from-surface-850 from-0% via-transparent to-black/40 pointer-events-none"></div>
-            <div class="absolute -bottom-0.5 left-0 right-0 h-4 bg-gradient-to-t from-surface-850 to-transparent pointer-events-none"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-950/90 from-0% via-transparent to-black/30 pointer-events-none"></div>
             
             <!-- Top Badges -->
-            <div class="absolute top-2.5 left-2.5 flex space-x-1.5 z-10">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-emerald-950/90 text-emerald-300 border-emerald-800/80 backdrop-blur-sm">
+            <div class="absolute top-3 left-3 flex space-x-1.5 z-10">
+              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border bg-emerald-950/90 text-emerald-300 border-emerald-800/80 backdrop-blur-sm shadow-sm">
                 ${escapeHtml(localityBadge)}
               </span>
-              <span class="text-[10px] font-medium px-2 py-0.5 rounded-full border bg-slate-900/80 text-slate-300 border-slate-700 backdrop-blur-sm capitalize">
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-slate-900/90 text-slate-300 border-slate-700 backdrop-blur-sm capitalize">
                 ${escapeHtml(room.room_type)}
               </span>
             </div>
 
             <!-- Heart Bookmark Toggle -->
-            <button onclick="toggleBookmark(${room.id})" title="Save Listing" 
-                    class="absolute top-2.5 right-2.5 w-7 h-7 rounded-lg bg-surface-950/80 backdrop-blur-sm border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-rose-400 transition z-10">
+            <button onclick="event.stopPropagation(); toggleBookmark(${room.id})" title="Save Listing" 
+                    class="absolute top-3 right-3 w-8 h-8 rounded-xl bg-surface-950/80 backdrop-blur-md border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-rose-400 transition z-10 shadow-sm">
               <i class="fa-solid fa-heart text-xs ${bookmarks > 0 ? 'text-rose-500' : ''}"></i>
             </button>
 
             <!-- Rent Tag inside image -->
-            <div class="absolute bottom-2.5 left-2.5 z-10">
-              <span class="text-lg font-extrabold text-white">Rs. ${room.rent_amount.toLocaleString()}</span>
+            <div class="absolute bottom-3 left-3 z-10">
+              <span class="text-xl font-black text-white drop-shadow-md">Rs. ${room.rent_amount.toLocaleString()}</span>
               <span class="text-[11px] text-slate-300 font-medium">/month</span>
             </div>
           </div>
 
           <!-- Card Content -->
-          <div class="p-4 flex-grow flex flex-col justify-between relative z-10 bg-surface-850">
+          <div class="p-4 flex-grow flex flex-col justify-between relative z-10">
             <div>
               <h3 class="text-sm sm:text-base font-bold text-white group-hover:text-emerald-400 transition line-clamp-2 min-h-[1.5rem] leading-snug">
                 ${escapeHtml(room.title)}
@@ -752,7 +1235,7 @@
 
               <!-- Distance & Hotspot Proximity Pills -->
               ${hasProximity ? `
-              <div class="mt-2.5 space-y-1.5 bg-surface-950/70 border border-slate-800 p-2.5 rounded-xl text-[11px]">
+              <div class="mt-2.5 space-y-1.5 bg-surface-950/70 border border-slate-800/80 p-2.5 rounded-2xl text-[11px]">
                 ${room.distance_campus ? `
                   <div class="flex items-center text-emerald-300 font-semibold truncate">
                     <i class="fa-solid fa-graduation-cap w-4 text-emerald-400 text-xs"></i>
@@ -771,16 +1254,10 @@
                     <span class="truncate">${escapeHtml(room.distance_market)}</span>
                   </div>
                 ` : ''}
-                ${room.distance_mall ? `
-                  <div class="flex items-center text-slate-400 truncate">
-                    <i class="fa-solid fa-film w-4 text-slate-500 text-xs"></i>
-                    <span class="truncate">${escapeHtml(room.distance_mall)}</span>
-                  </div>
-                ` : ''}
               </div>
               ` : ''}
 
-              <!-- Description -->
+              <!-- Description Preview -->
               <p class="text-xs text-slate-400 mt-2.5 line-clamp-2 leading-relaxed">
                 ${escapeHtml(room.description)}
               </p>
@@ -788,28 +1265,20 @@
 
             <!-- Card Bottom Actions -->
             <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-              
-              <!-- Review score button -->
-              <button onclick="openReviewsModal(${room.id}, '${escapeHtml(room.title)}', '${escapeHtml(localityBadge)}', ${item.avg_rating || 0}, ${reviewsCount})" 
-                      class="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center space-x-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-lg transition">
+              <!-- Rating Pill -->
+              <div class="text-xs font-semibold text-amber-400 flex items-center space-x-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-xl">
                 <i class="fa-solid fa-star text-[10px]"></i>
                 <span>${rating}</span>
                 <span class="text-slate-400 text-[10px]">(${reviewsCount})</span>
-              </button>
-
-              <!-- Actions: Map Directions & Landlord Contact -->
-              <div class="flex items-center space-x-1.5">
-                <a href="${gmapsDirUrl}" target="_blank" title="Get Directions in Google Maps" 
-                   class="text-xs bg-slate-800 hover:bg-slate-700 text-emerald-400 p-1.5 rounded-lg border border-slate-700 transition flex items-center">
-                  <i class="fa-solid fa-location-arrow"></i>
-                </a>
-                
-                <button onclick="contactLandlord('${escapeHtml(room.owner.phone_number || room.owner.email)}', '${escapeHtml(room.title)}')" 
-                        class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-2.5 py-1 rounded-lg transition">
-                  Contact
-                </button>
               </div>
 
+              <!-- View Details Button -->
+              <div class="flex items-center space-x-1.5">
+                <button class="text-xs font-bold bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/30 px-3 py-1 rounded-xl transition flex items-center space-x-1">
+                  <span>Explore</span>
+                  <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </button>
+              </div>
             </div>
 
           </div>
@@ -818,94 +1287,248 @@
       `;
     }
 
-    // ================= INTERACTIVE CAMPUS MAP (LEAFLET) =================
-    function toggleMap() {
-      const mapSec = document.getElementById("mapSection");
-      const btnText = document.getElementById("mapToggleText");
-      const isHidden = mapSec.classList.contains("hidden");
-
-      if (isHidden) {
-        mapSec.classList.remove("hidden");
-        btnText.innerText = "Hide Campus Map";
-        initOrRefreshMap();
-      } else {
-        mapSec.classList.add("hidden");
-        btnText.innerText = "Open Interactive Campus Map";
+    function handleCardClick(e, roomId) {
+      if (!currentAuthToken) {
+        showAuthGate();
+        return;
       }
+      openRoomDetailModal(roomId);
     }
 
-    function initOrRefreshMap() {
-      if (!leafletMapInstance) {
-        // Center on NIT Durgapur
-        leafletMapInstance = L.map('leafletMap').setView([23.5489, 87.2931], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(leafletMapInstance);
-
-        // Core Durgapur Student Landmarks
-        const landmarkIcon = L.divIcon({
-          className: 'custom-icon',
-          html: '<div style="background:#10b981; color:#fff; padding:4px 7px; border-radius:12px; font-size:11px; font-weight:bold; border:2px solid #fff; white-space:nowrap; box-shadow:0 2px 5px rgba(0,0,0,0.4)">🎓 NIT DGP Campus</div>',
-          iconSize: [120, 30]
-        });
-        L.marker([23.5489, 87.2931], { icon: landmarkIcon }).addTo(leafletMapInstance).bindPopup("<b>NIT Durgapur</b><br>Mahatma Gandhi Avenue");
-
-        const mallIcon = L.divIcon({
-          className: 'custom-icon',
-          html: '<div style="background:#f59e0b; color:#fff; padding:4px 7px; border-radius:12px; font-size:11px; font-weight:bold; border:2px solid #fff; white-space:nowrap; box-shadow:0 2px 5px rgba(0,0,0,0.4)">🎬 Junction Mall</div>',
-          iconSize: [110, 30]
-        });
-        L.marker([23.5350, 87.2980], { icon: mallIcon }).addTo(leafletMapInstance).bindPopup("<b>Junction Mall / City Centre</b><br>Inox, KFC, Shopping Hub");
-
-        const marketIcon = L.divIcon({
-          className: 'custom-icon',
-          html: '<div style="background:#a855f7; color:#fff; padding:4px 7px; border-radius:12px; font-size:11px; font-weight:bold; border:2px solid #fff; white-space:nowrap; box-shadow:0 2px 5px rgba(0,0,0,0.4)">🛍️ Benachity Market</div>',
-          iconSize: [130, 30]
-        });
-        L.marker([23.5580, 87.2810], { icon: marketIcon }).addTo(leafletMapInstance).bindPopup("<b>Benachity Market Place</b><br>Grocery, Stationary & Street Food Hub");
-
-        mapMarkersLayer = L.layerGroup().addTo(leafletMapInstance);
+    // ================= SPLIT-SCREEN DETAIL VIEW CONTROLLER =================
+    async function openRoomDetailModal(roomId) {
+      if (!currentAuthToken) {
+        showAuthGate();
+        return;
       }
 
+      const item = allRoomsCache.find(x => x.Room.id === roomId);
+      if (!item) return;
+
+      const room = item.Room;
+      currentActiveDetailRoom = room;
+
+      // Populate Header & Badges
+      document.getElementById("detailTitle").innerText = room.title;
+      document.getElementById("detailLocalityBadge").innerText = room.locality || room.city;
+      document.getElementById("detailTypeBadge").innerText = room.room_type;
+      document.getElementById("detailLocalityFull").querySelector("span").innerText = `${room.locality || ''}, ${room.city || 'Durgapur'}`;
+      document.getElementById("detailRent").innerText = room.rent_amount.toLocaleString();
+      document.getElementById("detailOccupancy").innerText = room.room_type === 'shared' ? '2-3 Students' : 'Single Occupancy';
+      document.getElementById("detailDeposit").innerText = `₹${room.rent_amount.toLocaleString()}`;
+
+      // Image
+      const rawImg = room.image_url || "https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&w=800&q=80";
+      document.getElementById("detailHeroImg").src = resolveImageUrl(rawImg);
+
+      // Description
+      document.getElementById("detailDescription").innerText = room.description;
+
+      // Rating
+      const rating = item.avg_rating && item.avg_rating > 0 ? item.avg_rating.toFixed(1) : "New";
+      document.getElementById("detailAvgRating").innerText = rating;
+      document.getElementById("detailReviewsCount").innerText = item.reviews_count || 0;
+
+      // Bookmark Button State
+      const bBtn = document.getElementById("detailBookmarkBtn");
+      bBtn.innerHTML = `<i class="fa-solid fa-heart text-xs ${item.bookmarks > 0 ? 'text-rose-500' : ''}"></i>`;
+
+      // Host Information
+      const owner = room.owner || {};
+      const hostName = owner.email ? owner.email.split('@')[0].replace('.', ' ').toUpperCase() : "Rahul Sen";
+      document.getElementById("detailHostName").innerText = hostName;
+      document.getElementById("detailHostInitials").innerText = hostName.split(' ').map(n => n[0]).join('').slice(0, 2);
+
+      // Direct WhatsApp Link with Pre-filled inquiry
+      const cleanPhone = (owner.phone_number || "+919883913522").replace(/[^0-9]/g, "");
+      const waMessage = encodeURIComponent(`Hi ${hostName}, I saw your listing "${room.title}" on RentSphere. Is it currently available for a visit?`);
+      document.getElementById("detailWhatsAppBtn").href = `https://wa.me/${cleanPhone.startsWith('91') ? cleanPhone : '91' + cleanPhone}?text=${waMessage}`;
+
+      // Call Link
+      document.getElementById("detailCallBtn").href = `tel:${owner.phone_number || '+919883913522'}`;
+
+      // Commute List
+      const commuteList = document.getElementById("detailCommuteList");
+      commuteList.innerHTML = `
+        ${room.distance_campus ? `<div class="flex items-center text-emerald-400 bg-surface-950 p-2.5 rounded-xl border border-slate-800 font-semibold"><i class="fa-solid fa-graduation-cap w-5 text-sm"></i><span>${escapeHtml(room.distance_campus)}</span></div>` : ''}
+        ${room.distance_food ? `<div class="flex items-center text-amber-300 bg-surface-950 p-2.5 rounded-xl border border-slate-800 font-semibold"><i class="fa-solid fa-utensils w-5 text-sm"></i><span>${escapeHtml(room.distance_food)}</span></div>` : ''}
+        ${room.distance_market ? `<div class="flex items-center text-slate-300 bg-surface-950 p-2.5 rounded-xl border border-slate-800 font-semibold"><i class="fa-solid fa-bag-shopping w-5 text-sm"></i><span>${escapeHtml(room.distance_market)}</span></div>` : ''}
+        ${room.distance_mall ? `<div class="flex items-center text-slate-400 bg-surface-950 p-2.5 rounded-xl border border-slate-800 font-semibold"><i class="fa-solid fa-film w-5 text-sm"></i><span>${escapeHtml(room.distance_mall)}</span></div>` : ''}
+      `;
+
+      // Google Maps Route Link
+      const gmapsUrl = (room.latitude && room.longitude)
+        ? `https://www.google.com/maps/dir/?api=1&destination=${room.latitude},${room.longitude}`
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(room.title + ' ' + (room.city || 'Durgapur'))}`;
+      document.getElementById("detailGmapsRoute").href = gmapsUrl;
+
+      // Show Modal
+      switchDetailTab('overview');
+      document.getElementById("roomDetailModal").classList.remove("hidden");
+
+      // Initialize or update Mini Leaflet Map
       setTimeout(() => {
-        leafletMapInstance.invalidateSize();
-        updateMapMarkers(allRoomsCache);
-      }, 200);
+        initMiniMap(room.latitude || 23.5480, room.longitude || 87.2940, room.title);
+      }, 150);
+
+      // Load Live Reviews
+      loadDetailReviews(room.id);
     }
 
-    function updateMapMarkers(rooms) {
-      if (!leafletMapInstance || !mapMarkersLayer) return;
-      mapMarkersLayer.clearLayers();
+    function closeRoomDetailModal() {
+      document.getElementById("roomDetailModal").classList.add("hidden");
+      currentActiveDetailRoom = null;
+    }
 
-      rooms.forEach(item => {
-        const r = item.Room;
-        if (r.latitude && r.longitude) {
-          const roomPin = L.divIcon({
-            className: 'room-pin',
-            html: `<div style="background:#0284c7; color:#fff; padding:3px 6px; border-radius:8px; font-size:10px; font-weight:bold; border:1px solid #fff; box-shadow:0 2px 4px rgba(0,0,0,0.4); white-space:nowrap;">🏠 Rs. ${(r.rent_amount/1000).toFixed(1)}k</div>`,
-            iconSize: [70, 24]
-          });
-
-          const marker = L.marker([r.latitude, r.longitude], { icon: roomPin }).addTo(mapMarkersLayer);
-          marker.bindPopup(`
-            <div style="font-family:sans-serif; max-width:200px;">
-              <img src="${resolveImageUrl(r.image_url)}" onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = this.src.includes('/static/assets/') ? this.src.replace('/static/assets/', '/assets/') : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&w=800&q=80'; }" style="width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:5px;">
-              <b style="color:#10b981; font-size:12px;">${escapeHtml(r.title)}</b><br>
-              <span style="font-size:11px; color:#94a3b8;">${escapeHtml(r.locality || r.city)}</span><br>
-              <b style="color:#fff; font-size:13px;">Rs. ${r.rent_amount.toLocaleString()}/mo</b><br>
-              <div style="font-size:10px; color:#cbd5e1; margin-top:3px;">${escapeHtml(r.distance_campus || '')}</div>
-              <a href="#room-card-${r.id}" style="color:#38bdf8; font-size:11px; display:inline-block; margin-top:4px;">View Card 👇</a>
-            </div>
-          `);
+    function switchDetailTab(tab) {
+      const tabs = ['overview', 'amenities', 'commute', 'reviews'];
+      tabs.forEach(t => {
+        const isCurrent = t === tab;
+        const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        const content = document.getElementById(`detailTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        if (btn) {
+          btn.className = isCurrent 
+            ? "pb-2.5 border-b-2 border-emerald-400 text-emerald-400 transition flex items-center space-x-1.5"
+            : "pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-white transition flex items-center space-x-1.5";
+        }
+        if (content) {
+          content.classList.toggle("hidden", !isCurrent);
         }
       });
     }
 
-    // ================= ACTIONS & MODALS =================
+    function initMiniMap(lat, lng, title) {
+      const isDark = document.documentElement.classList.contains("dark");
+      const tileUrl = isDark 
+        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png'
+        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+
+      if (!miniLeafletInstance) {
+        miniLeafletInstance = L.map('miniLeafletMap').setView([lat, lng], 15);
+        L.tileLayer(tileUrl, { maxZoom: 19 }).addTo(miniLeafletInstance);
+      } else {
+        miniLeafletInstance.invalidateSize();
+        miniLeafletInstance.setView([lat, lng], 15);
+      }
+
+      if (miniLeafletMarker) {
+        miniLeafletInstance.removeLayer(miniLeafletMarker);
+      }
+
+      const pin = L.divIcon({
+        className: 'mini-pin',
+        html: `<div style="background:#10b981; color:#fff; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 0 10px rgba(16,185,129,0.8);"><i class="fa-solid fa-house" style="font-size:10px;"></i></div>`,
+        iconSize: [22, 22]
+      });
+
+      miniLeafletMarker = L.marker([lat, lng], { icon: pin }).addTo(miniLeafletInstance)
+        .bindPopup(`<b style="font-size:11px; color:#10b981">${escapeHtml(title)}</b>`);
+    }
+
+    async function loadDetailReviews(roomId) {
+      const container = document.getElementById("detailReviewsContainer");
+      container.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs"><i class="fa-solid fa-spinner fa-spin text-emerald-400 mr-1.5"></i> Loading feedback...</div>`;
+
+      try {
+        const res = await fetch(`${API_BASE}/reviews/${roomId}`);
+        const data = await res.json();
+        if (res.ok && data.reviews && data.reviews.length > 0) {
+          container.innerHTML = data.reviews.map(rev => `
+            <div class="bg-surface-950/80 border border-slate-800 rounded-2xl p-3.5 space-y-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-200">${escapeHtml(rev.user.email.split('@')[0])}</span>
+                <span class="text-amber-400 font-mono font-bold">${'★'.repeat(rev.rating)}</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(rev.comment || "Verified student resident.")}</p>
+            </div>
+          `).join("");
+        } else {
+          container.innerHTML = `<div class="text-center py-4 text-slate-500 text-xs">No reviews submitted yet. Be the first to share your rating!</div>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div class="text-center text-rose-400 text-xs py-4">Unable to load reviews.</div>`;
+      }
+    }
+
+    function setDetailRating(r) {
+      selectedDetailRating = r;
+      document.getElementById("detailRatingSelectedText").innerText = `${r} Star${r > 1 ? 's' : ''}`;
+      const stars = document.getElementById("detailStarSelector").querySelectorAll("i");
+      stars.forEach((star, idx) => {
+        star.classList.toggle("text-amber-400", idx < r);
+        star.classList.toggle("text-slate-600", idx >= r);
+      });
+    }
+
+    async function submitDetailReview() {
+      if (!currentAuthToken) {
+        showAuthGate();
+        return;
+      }
+      if (!currentActiveDetailRoom) return;
+
+      const comment = document.getElementById("detailReviewComment").value.trim();
+      try {
+        const res = await fetch(`${API_BASE}/reviews/${currentActiveDetailRoom.id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${currentAuthToken}`
+          },
+          body: JSON.stringify({ rating: selectedDetailRating, comment })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById("detailReviewComment").value = "";
+          showToast("Review submitted successfully! ⭐", "success");
+          loadDetailReviews(currentActiveDetailRoom.id);
+          loadRooms();
+        } else {
+          showToast(data.detail || "Error submitting review", "error");
+        }
+      } catch (err) {
+        showToast("Connection issue", "error");
+      }
+    }
+
+    async function toggleBookmarkFromDetail() {
+      if (!currentActiveDetailRoom) return;
+      await toggleBookmark(currentActiveDetailRoom.id);
+      const bBtn = document.getElementById("detailBookmarkBtn");
+      bBtn.querySelector("i").classList.toggle("text-rose-500");
+    }
+
+    function shareListing() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+        showToast("Listing link copied to clipboard! 📋", "success");
+      }
+    }
+
+    function openScheduleVisitModal() {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      document.getElementById("visitDateInput").min = tomorrow.toISOString().split("T")[0];
+      document.getElementById("visitDateInput").value = tomorrow.toISOString().split("T")[0];
+      document.getElementById("scheduleVisitModal").classList.remove("hidden");
+    }
+
+    function closeScheduleVisitModal() {
+      document.getElementById("scheduleVisitModal").classList.add("hidden");
+    }
+
+    function handleScheduleVisitSubmit(e) {
+      e.preventDefault();
+      const date = document.getElementById("visitDateInput").value;
+      const time = document.getElementById("visitTimeInput").value;
+      closeScheduleVisitModal();
+      showToast(`Visit scheduled for ${date} at ${time}! Landlord has been notified. 📅`, "success");
+    }
+
+    // ================= ACTIONS =================
     async function toggleBookmark(roomId) {
       if (!currentAuthToken) {
-        openAuthModal();
-        showToast("Please sign in to save rooms", "info");
+        showAuthGate();
         return;
       }
       try {
@@ -927,98 +1550,18 @@
 
     function toggleMyBookmarksOnly() {
       if (!currentAuthToken) {
-        openAuthModal();
+        showAuthGate();
         return;
       }
       isShowingOnlyBookmarks = !isShowingOnlyBookmarks;
       document.getElementById("filterBanner").classList.toggle("hidden", !isShowingOnlyBookmarks);
-      document.getElementById("myBookmarksBtn").classList.toggle("bg-amber-500/20", isShowingOnlyBookmarks);
+      document.getElementById("myBookmarksBtn").classList.toggle("border-rose-500", isShowingOnlyBookmarks);
       loadRooms();
-    }
-
-    async function openReviewsModal(roomId, title, locality, avgRating, totalReviews) {
-      currentActiveReviewRoomId = roomId;
-      document.getElementById("modalRoomTitle").innerText = title;
-      document.getElementById("modalRoomLocality").innerText = locality;
-      document.getElementById("modalRoomRating").innerText = avgRating > 0 ? `★ ${avgRating.toFixed(1)}` : "★ New";
-      document.getElementById("modalRoomTotalReviews").innerText = `${totalReviews} reviews`;
-
-      const list = document.getElementById("modalReviewsList");
-      list.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs"><i class="fa-solid fa-spinner fa-spin text-emerald-400 mr-1.5"></i> Loading feedback...</div>`;
-      document.getElementById("reviewsModal").classList.remove("hidden");
-
-      try {
-        const res = await fetch(`${API_BASE}/reviews/${roomId}`);
-        const data = await res.json();
-        if (res.ok && data.reviews && data.reviews.length > 0) {
-          list.innerHTML = data.reviews.map(rev => `
-            <div class="bg-surface-950/80 border border-slate-800 rounded-xl p-3 space-y-1">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-semibold text-slate-200">${escapeHtml(rev.user.email.split('@')[0])}</span>
-                <span class="text-amber-400 font-mono font-bold">${'★'.repeat(rev.rating)}</span>
-              </div>
-              <p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(rev.comment || "Verified student tenant.")}</p>
-            </div>
-          `).join("");
-        } else {
-          list.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">No feedback yet. Be the first senior/batchmate to review!</div>`;
-        }
-      } catch (err) {
-        list.innerHTML = `<div class="text-center text-rose-400 text-xs py-4">Failed to load feedback.</div>`;
-      }
-    }
-
-    function closeReviewsModal() {
-      document.getElementById("reviewsModal").classList.add("hidden");
-      currentActiveReviewRoomId = null;
-    }
-
-    function setRating(r) {
-      selectedRating = r;
-      document.getElementById("selectedRatingText").innerText = `${r} Star${r > 1 ? 's' : ''}`;
-      const stars = document.getElementById("starRatingSelector").querySelectorAll("i");
-      stars.forEach((star, idx) => {
-        star.classList.toggle("text-amber-400", idx < r);
-        star.classList.toggle("text-slate-600", idx >= r);
-      });
-    }
-
-    async function submitReview() {
-      if (!currentAuthToken) {
-        openAuthModal();
-        showToast("Please sign in to review", "info");
-        return;
-      }
-      if (!currentActiveReviewRoomId) return;
-
-      const comment = document.getElementById("reviewCommentInput").value.trim();
-      try {
-        const res = await fetch(`${API_BASE}/reviews/${currentActiveReviewRoomId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${currentAuthToken}`
-          },
-          body: JSON.stringify({ rating: selectedRating, comment })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          document.getElementById("reviewCommentInput").value = "";
-          showToast("Review posted! ⭐", "success");
-          closeReviewsModal();
-          loadRooms();
-        } else {
-          showToast(data.detail || "Error posting review", "error");
-        }
-      } catch (err) {
-        showToast("Connection issue", "error");
-      }
     }
 
     function openPostRoomModal() {
       if (!currentAuthToken) {
-        openAuthModal();
-        showToast("Please sign in to list accommodation", "info");
+        showAuthGate();
         return;
       }
       document.getElementById("postRoomModal").classList.remove("hidden");
@@ -1054,30 +1597,15 @@
         });
         const data = await res.json();
         if (res.ok) {
-          showToast("Room published! 🏠", "success");
+          showToast("Room published successfully! 🏠", "success");
           closePostRoomModal();
           loadRooms();
         } else {
-          showToast(data.detail || "Failed to publish", "error");
+          showToast(data.detail || "Failed to publish room", "error");
         }
       } catch (err) {
-        showToast("Network error", "error");
+        showToast("Network issue", "error");
       }
-    }
-
-    function contactLandlord(phoneOrEmail, roomTitle) {
-      alert(`📞 Landlord / Flatmate Contact Details:\n\n${phoneOrEmail}\n\nListing: "${roomTitle}"\n\nReach out directly via phone or WhatsApp mentioning RentSphere!`);
-    }
-
-    function openAuthModal() { document.getElementById("authModal").classList.remove("hidden"); }
-    function closeAuthModal() { document.getElementById("authModal").classList.add("hidden"); }
-
-    function switchAuthTab(tab) {
-      const isLogin = tab === 'login';
-      document.getElementById("loginForm").classList.toggle("hidden", !isLogin);
-      document.getElementById("registerForm").classList.toggle("hidden", isLogin);
-      document.getElementById("tabLoginBtn").className = isLogin ? "font-bold text-xs text-emerald-400 border-b-2 border-emerald-400 pb-1" : "font-bold text-xs text-slate-400 border-b-2 border-transparent pb-1";
-      document.getElementById("tabRegisterBtn").className = !isLogin ? "font-bold text-xs text-emerald-400 border-b-2 border-emerald-400 pb-1" : "font-bold text-xs text-slate-400 border-b-2 border-transparent pb-1";
     }
 
     function handleSearchDebounce() {
@@ -1108,7 +1636,7 @@
       document.getElementById("priceDisplay").innerText = "Up to Rs. 15,000/mo";
       isShowingOnlyBookmarks = false;
       document.getElementById("filterBanner").classList.add("hidden");
-      document.getElementById("myBookmarksBtn").classList.remove("bg-amber-500/20");
+      document.getElementById("myBookmarksBtn").classList.remove("border-rose-500");
       loadRooms();
     }
 
@@ -1122,7 +1650,7 @@
                        type === "info" ? "fa-solid fa-circle-info text-cyan-400" :
                        "fa-solid fa-circle-check text-emerald-400";
       toast.classList.remove("hidden");
-      setTimeout(() => toast.classList.add("hidden"), 3000);
+      setTimeout(() => toast.classList.add("hidden"), 3200);
     }
 
     function escapeHtml(str) {
