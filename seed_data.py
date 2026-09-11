@@ -4,7 +4,7 @@ from app.database import SessionLocal, engine
 from app import models, utils
 
 def seed():
-    print("[+] Seeding RentSphere with 14 authentic, verified Durgapur & Kolkata listings...")
+    print("[+] Seeding RentSphere with authentic, verified Durgapur & NIT DGP listings...")
     db = SessionLocal()
 
     try:
@@ -268,40 +268,44 @@ def seed():
                 "owner_id": ankit.id
             },
             {
-                "title": "Salt Lake Sector V Tech Studio (Kolkata)",
-                "description": "Walkable to Wipro, TCS & DLF IT parks. Fully air-conditioned, high-speed internet, elevator, security surveillance, laundry facilities. Designed for tech interns.",
-                "city": "Kolkata",
-                "locality": "Salt Lake Sector V",
-                "rent_amount": 9500,
+                "title": "Prantika Housing Complex 1BHK (Near NIT DGP)",
+                "description": "Just 200m from NIT DGP Main Gate. Independent 1BHK flat with high-speed fiber internet, study table, balcony overlooking trees, power backup, and attached bath. Preferred by final-year students.",
+                "city": "Durgapur",
+                "locality": "Prantika (NIT Main Gate)",
+                "rent_amount": 5500,
                 "room_type": "single",
                 "is_available": True,
-                "latitude": 22.5800,
-                "longitude": 88.4350,
-                "distance_campus": "🚇 200m to Sector V Metro Station",
-                "distance_mall": "🏢 300m to Central Mall New Town",
-                "distance_market": "🛍️ 100m to College More Grocery & Food Hub",
-                "distance_food": "☕ 50m to Tech Park Food Street",
-                "image_url": "/static/assets/rooms/saltlake_sector5.jpg",
+                "latitude": 23.5480,
+                "longitude": 87.2940,
+                "distance_campus": "🚶 200m (3 min walk) to NIT DGP Main Gate",
+                "distance_mall": "🎬 2.9 km to Junction Mall",
+                "distance_market": "🛍️ 1.5 km to Benachity Market",
+                "distance_food": "🌯 400m to Nescafe & Hostel Haven",
+                "image_url": "/static/assets/rooms/prantika_flat.jpg",
                 "owner_id": rahul.id
             },
             {
-                "title": "New Town Action Area 1 Twin Sharing (Kolkata)",
-                "description": "Opposite Candor TechSpace. Twin beds, separate study desks, shared kitchen with microwave and water purifier, twice-weekly cleaning included.",
-                "city": "Kolkata",
-                "locality": "New Town Action Area 1",
-                "rent_amount": 6000,
-                "room_type": "shared",
+                "title": "Suhatta Housing Master Suite (City Centre)",
+                "description": "Walkable to Junction Mall & City Centre bus stop. Premium spacious room with attached balcony, inverter backup, covered bike parking, and water purifier. Very peaceful environment for studies.",
+                "city": "Durgapur",
+                "locality": "City Centre (Near Suhatta Complex)",
+                "rent_amount": 6800,
+                "room_type": "single",
                 "is_available": True,
-                "latitude": 22.5890,
-                "longitude": 88.4620,
-                "distance_campus": "🚌 300m to Candor TechSpace Bus Terminal",
-                "distance_mall": "🎬 800m to Axis Mall & Multiplex",
-                "distance_market": "🛍️ 200m to New Town Daily Market",
-                "distance_food": "🍛 150m to Food Court Street",
-                "image_url": "/static/assets/rooms/newtown_action_area.jpg",
+                "latitude": 23.5350,
+                "longitude": 87.2990,
+                "distance_campus": "🚌 2.0 km (5 min auto) to NIT DGP Gate",
+                "distance_mall": "🎬 300m (4 min walk) to Junction Mall & Inox",
+                "distance_market": "🛍️ 2.6 km to Benachity",
+                "distance_food": "🍕 200m to City Centre Food Hub",
+                "image_url": "/static/assets/rooms/fortune_park_suite.jpg",
                 "owner_id": priya.id
             }
         ]
+
+        # Purge any remaining Kolkata listings from database
+        db.query(models.Room).filter(models.Room.city == "Kolkata").delete(synchronize_session=False)
+        db.commit()
 
         created_rooms = []
         for r in rooms_data:
@@ -325,17 +329,17 @@ def seed():
                 print(f"  [OK] Updated listing: {r['title']} ({r['locality']})")
 
 
-        # Also ensure legacy prototype listings 1-9 are updated with authentic attributes
+        # Also ensure legacy prototype listings 1-9 are updated with authentic Durgapur attributes
         legacy_updates = {
-            1: {'title': 'Godrej Waterside Studio Flat (Salt Lake Sector V)', 'locality': 'Salt Lake Sector V (Near College More)', 'city': 'Kolkata', 'rent_amount': 8000, 'image_url': '/static/assets/rooms/kolkata_it_studio.jpg', 'latitude': 22.5735, 'longitude': 88.4330, 'distance_campus': '🚇 150m to Sector V Metro Station', 'distance_mall': '🏢 250m to Central Mall New Town', 'distance_market': '🛍️ 100m to College More Grocery Hub', 'distance_food': '☕ 50m to Godrej Waterside Food Stalls'},
+            1: {'title': 'Prantika Green Residency 1BHK', 'locality': 'Prantika (Near NIT Main Gate)', 'city': 'Durgapur', 'rent_amount': 5200, 'image_url': '/static/assets/rooms/prantika_flat.jpg', 'latitude': 23.5485, 'longitude': 87.2945, 'distance_campus': '🚶 250m (3 min walk) to NIT Main Gate', 'distance_mall': '🎬 2.8 km to Junction Mall', 'distance_market': '🛍️ 1.6 km to Benachity', 'distance_food': '🌯 350m to Hostel Haven'},
             2: {'title': 'Prantika Housing Complex 1BHK (Near NIT DGP)', 'locality': 'Prantika (NIT Main Gate)', 'city': 'Durgapur', 'rent_amount': 6000, 'image_url': '/static/assets/rooms/prantika_flat.jpg', 'latitude': 23.5480, 'longitude': 87.2940, 'distance_campus': '🚶 200m (3 min walk) to NIT DGP Main Gate', 'distance_mall': '🎬 2.9 km to Junction Mall', 'distance_market': '🛍️ 1.5 km to Benachity Market', 'distance_food': '🌯 400m to Nescafe & Hostel Haven'},
             3: {'title': 'B-Zone Steel Township Flat (Near A-Zone Market)', 'locality': 'B-Zone (Steel Township)', 'city': 'Durgapur', 'rent_amount': 3800, 'image_url': '/static/assets/rooms/bzone_green_avenue.jpg', 'latitude': 23.5430, 'longitude': 87.2870, 'distance_campus': '🚶 400m (5 min walk) to NIT West Gate & Hall 7', 'distance_mall': '🎬 2.5 km to Junction Mall', 'distance_market': '🛍️ 800m to A-Zone Market', 'distance_food': '🍲 350m to Hostel Haven'},
             4: {'title': 'Muchipara GT Road Scholar Room (GT Road)', 'locality': 'Muchipara (GT Road Junction)', 'city': 'Durgapur', 'rent_amount': 4500, 'image_url': '/static/assets/rooms/muchipara_studio.jpg', 'latitude': 23.5300, 'longitude': 87.3300, 'distance_campus': '🚌 3.5 km (Direct Toto to NIT Campus)', 'distance_mall': '🎬 4.0 km to Junction Mall', 'distance_market': '🛍️ 4.2 km to Benachity', 'distance_food': '🍛 150m to Muchipara Dhaba'},
             5: {'title': 'Suhatta Housing Master Suite (City Centre)', 'locality': 'City Centre (Near Suhatta Complex)', 'city': 'Durgapur', 'rent_amount': 7500, 'image_url': '/static/assets/rooms/fortune_park_suite.jpg', 'latitude': 23.5350, 'longitude': 87.2990, 'distance_campus': '🚌 2.0 km (5 min auto) to NIT DGP Gate', 'distance_mall': '🎬 300m (4 min walk) to Junction Mall & Inox', 'distance_market': '🛍️ 2.6 km to Benachity', 'distance_food': '🍕 200m to City Centre Food Hub'},
-            6: {'title': 'DLF IT Park Tech Studio (Sector V)', 'locality': 'Sector V (Opposite DLF 1)', 'city': 'Kolkata', 'rent_amount': 9500, 'image_url': '/static/assets/rooms/saltlake_sector5.jpg', 'latitude': 22.5780, 'longitude': 88.4340, 'distance_campus': '🚇 180m to Sector V Metro Station', 'distance_mall': '🏢 350m to Central Mall', 'distance_market': '🛍️ 120m to College More Market', 'distance_food': '☕ 40m to Sector V IT Food Street'},
-            7: {'title': 'Action Area 1 Modern Twin Sharing (New Town)', 'locality': 'New Town Action Area 1', 'city': 'Kolkata', 'rent_amount': 6000, 'image_url': '/static/assets/rooms/newtown_action_area.jpg', 'latitude': 22.5880, 'longitude': 88.4600, 'distance_campus': '🚌 250m to Candor TechSpace', 'distance_mall': '🎬 600m to Axis Mall & Multiplex', 'distance_market': '🛍️ 180m to Daily Vegetable Market', 'distance_food': '🍛 100m to New Town Street Food'},
-            8: {'title': 'Jadavpur 8B Student Flat (South Kolkata)', 'locality': 'Jadavpur (Near 8B Bus Stand)', 'city': 'Kolkata', 'rent_amount': 8000, 'image_url': '/static/assets/rooms/jadavpur_student_flat.jpg', 'latitude': 22.4980, 'longitude': 88.3680, 'distance_campus': '🚶 250m (3 min walk) to Jadavpur University', 'distance_mall': '🎬 1.2 km to South City Mall', 'distance_market': '🛍️ 50m (Directly at 8B Market Hub)', 'distance_food': '🥘 100m to Jadavpur Coffee & Roll Stalls'},
-            9: {'title': 'Ruby Hospital / EM Bypass 3BHK Flatmate (Kolkata)', 'locality': 'Kasba / EM Bypass (Near Ruby Hospital)', 'city': 'Kolkata', 'rent_amount': 5000, 'image_url': '/static/assets/rooms/ruby_em_bypass.jpg', 'latitude': 22.5130, 'longitude': 88.4020, 'distance_campus': '🚇 200m to Hemanta Mukherjee (Ruby) Metro', 'distance_mall': '🎬 600m to Acropolis Mall & Geetanjali Stadium', 'distance_market': '🛍️ 150m to Ruby Daily Grocery Market', 'distance_food': '🍜 100m to EM Bypass Dhabas & Fast Food'}
+            6: {'title': 'Jemua Horizon 2BHK (Fuljhore Extension)', 'locality': 'Fuljhore (Jemua Road)', 'city': 'Durgapur', 'rent_amount': 6500, 'image_url': '/static/assets/rooms/jemua_horizon.jpg', 'latitude': 23.5535, 'longitude': 87.2990, 'distance_campus': '🚶 450m (6 min walk) to NIT North Gate', 'distance_mall': '🎬 3.4 km to Junction Mall', 'distance_market': '🛍️ 1.9 km to Benachity', 'distance_food': '🍲 500m to Hostel Haven'},
+            7: {'title': 'Bhiringi More Student PG (Near Benachity)', 'locality': 'Bhiringi (Near Benachity)', 'city': 'Durgapur', 'rent_amount': 3500, 'image_url': '/static/assets/rooms/bhiringi_pg.jpg', 'latitude': 23.5490, 'longitude': 87.2810, 'distance_campus': '🚌 1.1 km (3 min auto) to NIT DGP West Gate', 'distance_mall': '🎬 2.6 km to Junction Mall', 'distance_market': '🛍️ 300m to Benachity Main Market', 'distance_food': '🍜 200m to Bhiringi Street Food'},
+            8: {'title': 'Manishankar Sri Krishna Kunj 1BHK', 'locality': 'Jemua Road, Fuljhore', 'city': 'Durgapur', 'rent_amount': 6200, 'image_url': '/static/assets/rooms/sri_krishna_kunj.jpg', 'latitude': 23.5550, 'longitude': 87.3010, 'distance_campus': '🚶 600m (8 min walk) to NIT DGP Main Gate', 'distance_mall': '🎬 3.6 km to Junction Mall', 'distance_market': '🛍️ 2.1 km to Benachity Market', 'distance_food': '☕ 750m to Hostel Haven & Nescafe'},
+            9: {'title': 'Aashirbad PG Student Home (Fuljhore)', 'locality': 'Fuljhore Road', 'city': 'Durgapur', 'rent_amount': 4500, 'image_url': '/static/assets/rooms/fuljhore_student_room.jpg', 'latitude': 23.5525, 'longitude': 87.2975, 'distance_campus': '🚶 350m (4 min walk) to NIT DGP North Gate', 'distance_mall': '🎬 3.2 km to Junction Mall', 'distance_market': '🛍️ 1.8 km to Benachity Market', 'distance_food': '🌯 500m to Hostel Haven'}
         }
         for rid, leg_data in legacy_updates.items():
             l_room = db.query(models.Room).filter(models.Room.id == rid).first()

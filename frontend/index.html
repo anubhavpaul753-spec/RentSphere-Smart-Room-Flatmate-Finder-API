@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RentSphere — Durgapur & Kolkata Student Living (NIT DGP)</title>
+  <title>RentSphere — NIT Durgapur Campus Student Living & Flatmate Finder</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -107,6 +107,14 @@
     
     #leafletMap { height: 380px; width: 100%; border-radius: 1rem; z-index: 10; }
     #miniLeafletMap { height: 180px; width: 100%; border-radius: 0.75rem; z-index: 10; }
+
+    /* Clean OpenStreetMap Obsidian Dark Filter (Zero API Key & Zero Watermarks) */
+    .dark .leaflet-tile-pane {
+      filter: brightness(0.65) invert(1) contrast(2.8) hue-rotate(200deg) saturate(0.3) brightness(0.75);
+    }
+    html:not(.dark) .leaflet-tile-pane {
+      filter: none;
+    }
     
     .leaflet-popup-content-wrapper {
       background: #0f172a;
@@ -198,13 +206,13 @@
       <div class="max-w-2xl">
         <div class="inline-flex items-center space-x-2 bg-emerald-950/80 border border-emerald-800/60 px-3 py-1 rounded-full text-xs font-semibold text-emerald-400 mb-2.5 mint-glow">
           <i class="fa-solid fa-map-pin text-xs"></i>
-          <span>Real Durgapur & Kolkata Student Accommodations</span>
+          <span>Authentic NIT Durgapur Student Accommodations & PGs</span>
         </div>
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white dark:text-white light:text-slate-900 leading-tight">
-          Find Your Perfect Campus Room or Flatmate
+          Find Your Campus Room & Flatmates near NIT DGP
         </h1>
         <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
-          Curated student flats, single PGs, and shared rooms within 500m of <strong class="text-emerald-400 font-semibold">NIT Durgapur (North Gate, Hall 7, Fuljhore)</strong> and tech parks in Kolkata.
+          Curated student rooms, single PGs, and shared flats within walking distance of <strong class="text-emerald-400 font-semibold">NIT Durgapur (North Gate, Hall 7, Fuljhore, Prantika)</strong> and prime residential areas like City Centre & Benachity Bazaar.
         </p>
       </div>
 
@@ -257,19 +265,16 @@
         <!-- Locality Dropdown -->
         <div class="relative">
           <select id="localityFilter" onchange="loadRooms()" class="w-full bg-surface-950/80 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 transition cursor-pointer">
-            <option value="">All Localities (Durgapur & Kolkata)</option>
-            <optgroup label="Durgapur (Near NIT DGP)">
+            <option value="">All Localities (NIT DGP & Durgapur)</option>
+            <optgroup label="Near NIT Durgapur Campus">
               <option value="Fuljhore">Fuljhore (NIT North Gate)</option>
+              <option value="Prantika">Prantika (NIT Main Gate)</option>
               <option value="B-Zone">B-Zone (Hall 7 / West Gate)</option>
-              <option value="City Centre">City Centre (Junction Mall)</option>
-              <option value="Benachity">Benachity Market</option>
-              <option value="Muchipara">Muchipara (GT Road)</option>
             </optgroup>
-            <optgroup label="Kolkata (IT Parks)">
-              <option value="Salt Lake Sector V">Salt Lake Sector V</option>
-              <option value="New Town">New Town Action Area</option>
-              <option value="Jadavpur">Jadavpur (8B Stand)</option>
-              <option value="EM Bypass">EM Bypass (Ruby Hospital)</option>
+            <optgroup label="Durgapur Residential Hubs">
+              <option value="City Centre">City Centre (Junction Mall / Suhatta)</option>
+              <option value="Benachity">Benachity Bazaar / Bhiringi</option>
+              <option value="Muchipara">Muchipara (GT Road)</option>
             </optgroup>
           </select>
         </div>
@@ -301,14 +306,17 @@
         <button onclick="quickFilter('locality', 'Fuljhore')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
           🚶 Fuljhore (North Gate)
         </button>
+        <button onclick="quickFilter('locality', 'Prantika')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+          🎓 Prantika (Main Gate)
+        </button>
         <button onclick="quickFilter('locality', 'B-Zone')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
           🏡 B-Zone (Hall 7)
         </button>
         <button onclick="quickFilter('locality', 'City Centre')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
-          🎬 City Centre (Junction Mall)
+          🎬 City Centre
         </button>
-        <button onclick="quickFilter('locality', 'Salt Lake Sector V')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
-          💻 Sector V Tech Studio
+        <button onclick="quickFilter('locality', 'Benachity')" class="bg-surface-950/90 hover:bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700/70 transition">
+          🛍️ Benachity Bazaar
         </button>
         <button onclick="resetFilters()" class="text-emerald-400 hover:underline ml-auto font-semibold">
           Reset Filters
@@ -899,17 +907,12 @@
 
     function updateMapTileLayer() {
       if (!leafletMapInstance) return;
-      const isDark = document.documentElement.classList.contains("dark");
-      const tileUrl = isDark 
-        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
-      
       if (currentMapTileLayer) {
         leafletMapInstance.removeLayer(currentMapTileLayer);
       }
-      currentMapTileLayer = L.tileLayer(tileUrl, {
+      currentMapTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; CartoDB &copy; OpenStreetMap'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
       }).addTo(leafletMapInstance);
     }
 
@@ -1194,14 +1197,17 @@
 
       return `
         <div id="room-card-${room.id}" onclick="handleCardClick(event, ${room.id})" 
-             class="ue5-card ue5-card-hover rounded-3xl overflow-hidden flex flex-col justify-between cursor-pointer group relative">
+             class="ue5-card ue5-card-hover rounded-3xl overflow-hidden flex flex-col justify-between cursor-pointer group relative bg-surface-850 dark:bg-surface-850"
+             style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: translateZ(0);">
           
           <!-- Image Header with Badges -->
-          <div class="relative h-48 overflow-hidden bg-surface-950 -mb-px">
+          <div class="relative h-48 overflow-hidden bg-surface-950 -mb-2">
             <img src="${imgUrl}" alt="${escapeHtml(room.title)}" 
                  onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = this.src.includes('/static/assets/') ? this.src.replace('/static/assets/', '/assets/') : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&w=800&q=80'; }"
                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500 block">
             <div class="absolute inset-0 bg-gradient-to-t from-surface-950/90 from-0% via-transparent to-black/30 pointer-events-none"></div>
+            <!-- Bottom overlap shield ensuring 0px gap at fractional display scaling -->
+            <div class="absolute -bottom-1 left-0 right-0 h-4 bg-surface-850 dark:bg-surface-850 pointer-events-none z-10"></div>
             
             <!-- Top Badges -->
             <div class="absolute top-3 left-3 flex space-x-1.5 z-10">
@@ -1226,8 +1232,8 @@
             </div>
           </div>
 
-          <!-- Card Content -->
-          <div class="p-4 flex-grow flex flex-col justify-between relative z-10">
+          <!-- Card Content (Solid Background + Overlap z-20) -->
+          <div class="p-4 flex-grow flex flex-col justify-between relative z-20 bg-surface-850 dark:bg-surface-850 pt-3">
             <div>
               <h3 class="text-sm sm:text-base font-bold text-white group-hover:text-emerald-400 transition line-clamp-2 min-h-[1.5rem] leading-snug">
                 ${escapeHtml(room.title)}
@@ -1398,14 +1404,12 @@
     }
 
     function initMiniMap(lat, lng, title) {
-      const isDark = document.documentElement.classList.contains("dark");
-      const tileUrl = isDark 
-        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
-
       if (!miniLeafletInstance) {
         miniLeafletInstance = L.map('miniLeafletMap').setView([lat, lng], 15);
-        L.tileLayer(tileUrl, { maxZoom: 19 }).addTo(miniLeafletInstance);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(miniLeafletInstance);
       } else {
         miniLeafletInstance.invalidateSize();
         miniLeafletInstance.setView([lat, lng], 15);
